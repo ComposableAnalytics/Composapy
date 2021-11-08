@@ -1,0 +1,13 @@
+#python crap
+__pycache__/
+
+#IDE settings
+.pytest_cache/
+.vscode/
+.idea/
+
+#environment specific settings
+.env
+
+#binding config file, doesn't belong in project directory
+python.exe.config
