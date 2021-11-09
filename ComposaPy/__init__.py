@@ -3,9 +3,11 @@ import clr
 from dotenv import load_dotenv, dotenv_values
 
 SETUP_ENV = "../.setup.env"
+LOCAL_ENV = "../.local.env"
 DLL_ENV = "../.dll.env"
 
 load_dotenv(SETUP_ENV)
+load_dotenv(LOCAL_ENV)
 
 
 def add_dll_reference(name: str, value: str):

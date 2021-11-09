@@ -7,8 +7,7 @@ __pycache__/
 .idea/
 
 #environment specific settings
-ComposaPy/.setup.env
-.*.env
+.local.env
 
 #binding config file, doesn't belong in project directory
 python.exe.config
