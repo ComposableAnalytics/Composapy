@@ -36,7 +36,7 @@ class PandasMixin:
     }
     session = None
 
-    def convert_table_to_pandas(self, table):
+    def convert_table_to_df(self, table):
         table_results = self.session._services["TableService"].GetResultFromTable(
             table, 0, 0x7FFFFFFF
         )
@@ -68,10 +68,3 @@ class PandasMixin:
                 column_def.Type
             ]
         return dtypes_dict
-
-
-# table_column_dict = table.Columns.Dictionary
-# for key in table.Columns.Dictionary.Keys:
-#    column = table_column_dict[key]
-#    if column.Type == "DATETIMEOFFSET":
-#        dtypes_dict[column.Name] = 'datetime64'

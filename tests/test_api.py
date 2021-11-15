@@ -59,7 +59,7 @@ def test_convert_table_to_pandas(dataflow: DataFlow):
     dataflow_rs = dataflow.run(app_id)
     dataflow.app_service.DeleteApplication(app_id)
     table = dataflow_rs.modules.first_with_name("Table Creator").result
-    df = dataflow.convert_table_to_pandas(table)
+    df = dataflow.convert_table_to_df(table)
 
     assert type(df) == type(pd.DataFrame())
 
@@ -69,7 +69,7 @@ def test_convert_table_to_pandas_dtypes(dataflow: DataFlow, dataflow_id: int):
     dataflow_rs = dataflow.run(dataflow_id)
     modules = dataflow_rs.modules
     table = modules.first_with_name("Sql Query").result
-    df = dataflow.convert_table_to_pandas(table)
+    df = dataflow.convert_table_to_df(table)
 
     assert type(df) == type(pd.DataFrame())
     assert df.dtypes["SystemDateTimeOffset"] == "datetime64[ns]"
@@ -84,20 +84,19 @@ def test_external_input_int(dataflow: DataFlow, dataflow_id: int):
     assert dataflow_rs.modules.first_with_name("Calculator").result == 5.0
 
 
-# @pytest.mark.parametrize("dataflow_id", ["EXTERNAL_INPUT_TABLE_ID"], indirect=True)
-# def test_external_input_table(dataflow: DataFlow, dataflow_id: int):
-#     test_input = { "TableInput": pd.DataFrame({"a": [1]}) }
-#
-#     dataflow_rs = dataflow.run(dataflow_id, external_inputs=test_input)
-#
-#     expected_table = Table()
+@pytest.mark.parametrize("dataflow_id", ["EXTERNAL_INPUT_TABLE_ID"], indirect=True)
+def test_external_input_table(dataflow: DataFlow, dataflow_id: int):
+    # easiest way to create  a table is to just get it from another test dataflow
+    from dotenv import dotenv_values
+    table_dataflow_id = int(dotenv_values(".test.env").get("CONVERT_TABLE_TO_PANDAS_DTYPES_ID"))
+    table_dataflow = dataflow.run(table_dataflow_id)
+    table = table_dataflow.modules.first_with_name("Sql Query").result
+    test_input = { "TableInput": table }
 
-    # expected_table.Headers = List[str]("a")
-    # expected_table.Columns = TableColumnCollection(1)
+    dataflow_rs = dataflow.run(dataflow_id, external_inputs=test_input)
 
-    # assert dataflow_rs.modules.first().result.Headers == expected_table.Headers
-    # assert dataflow_rs.modules.first().result.Columns == expected_table.Columns
-
+    assert dataflow_rs.modules.first().result.Headers == table.Headers
+    assert dataflow_rs.modules.first().result.SqlQuery == table.SqlQuery
 
 
 # def test_all_external_inputs_pw(self):
