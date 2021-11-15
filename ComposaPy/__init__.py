@@ -2,6 +2,7 @@ import os
 import clr
 from dotenv import load_dotenv, dotenv_values
 
+
 SETUP_ENV = "../.setup.env"
 LOCAL_ENV = "../.local.env"
 DLL_ENV = "../.dll.env"
@@ -18,5 +19,3 @@ def add_dll_reference(name: str, value: str):
 
 for key, path in dotenv_values(DLL_ENV).items():
     add_dll_reference(key, path)
-
-from .ComposaPy import *

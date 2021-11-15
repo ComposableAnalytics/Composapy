@@ -7,7 +7,8 @@ __pycache__/
 .idea/
 
 #environment specific settings
-.local.env
+*.local.env
+*.test.env
 
 #binding config file, doesn't belong in project directory
 python.exe.config
