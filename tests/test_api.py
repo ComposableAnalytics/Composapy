@@ -53,7 +53,7 @@ def test_run_dataflow_get_output(dataflow: DataFlow):
 
 def test_convert_table_to_pandas(dataflow: DataFlow):
     app_id = dataflow.import_app_from_json(
-        str(Path(ROOT_PATH_PYTHONNET, "tests", "TestFiles", "tablecreator.json"))
+        str(Path(ROOT_PATH_PYTHONNET, "Tests", "TestFiles", "tablecreator.json"))
     )
 
     dataflow_rs = dataflow.run(app_id)
