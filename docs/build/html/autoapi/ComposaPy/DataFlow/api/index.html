@@ -37,7 +37,7 @@
           <div class="body" role="main">
             
   <section id="module-ComposaPy.DataFlow.api">
-<span id="composapy-dataflow-api"></span><h1><a class="reference internal" href="#module-ComposaPy.DataFlow.api" title="ComposaPy.DataFlow.api"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ComposaPy.DataFlow.api</span></code></a><a class="headerlink" href="#module-ComposaPy.DataFlow.api" title="Permalink to this headline">¶</a></h1>
+<span id="composapy-dataflow-api"></span><h1><a class="reference internal" href="../../../../generated/ComposaPy.DataFlow.api.html#module-ComposaPy.DataFlow.api" title="ComposaPy.DataFlow.api"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ComposaPy.DataFlow.api</span></code></a><a class="headerlink" href="#module-ComposaPy.DataFlow.api" title="Permalink to this headline">¶</a></h1>
 <section id="module-contents">
 <h2>Module Contents<a class="headerlink" href="#module-contents" title="Permalink to this headline">¶</a></h2>
 <section id="classes">
@@ -58,35 +58,21 @@
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ComposaPy.DataFlow.api.</span></span><span class="sig-name descname"><span class="pre">DataFlow</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">session</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../../session/index.html#ComposaPy.session.Session" title="ComposaPy.session.Session"><span class="pre">ComposaPy.session.Session</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="../../mixins/index.html#ComposaPy.mixins.PandasMixin" title="ComposaPy.mixins.PandasMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ComposaPy.mixins.PandasMixin</span></code></a>, <a class="reference internal" href="../../api/index.html#ComposaPy.api.ComposableApi" title="ComposaPy.api.ComposableApi"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ComposaPy.api.ComposableApi</span></code></a></p>
 <p>A wrapper class for DataFlow operations.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow._external_input_names">
-<span class="sig-name descname"><span class="pre">_external_input_names</span></span><em class="property"><span class="w"> </span><span class="pre">=</span> <span class="pre">['External</span> <span class="pre">String</span> <span class="pre">Input',</span> <span class="pre">'External</span> <span class="pre">Line</span> <span class="pre">Input',</span> <span class="pre">'External</span> <span class="pre">Private</span> <span class="pre">Input',</span> <span class="pre">'External</span> <span class="pre">Int</span> <span class="pre">Input',...</span></em><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow._external_input_names" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow._application_contract">
-<span class="sig-name descname"><span class="pre">_application_contract</span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow._application_contract" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow.application_contract">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">application_contract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">CompAnalytics.Contracts.Application</span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.application_contract" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow.app_service">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">CompAnalytics.IServices.IApplicationService</span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.app_service" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow.service">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">service</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">CompAnalytics.IServices.IApplicationService</span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.service" title="Permalink to this definition">¶</a></dt>
+<dd><p>A composable analytics csharp binding to the IServices.IApplicationService (otherwise
+known as a DataFlow service) object.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow.create">
-<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/index.html#ComposaPy.DataFlow.models.DataFlowObject" title="ComposaPy.DataFlow.models.DataFlowObject"><span class="pre">ComposaPy.DataFlow.models.DataFlowObject</span></a></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.create" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow.save">
-<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">CompAnalytics.Contracts.Application</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.save" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../models/index.html#ComposaPy.DataFlow.models.DataFlowObject" title="ComposaPy.DataFlow.models.DataFlowObject"><span class="pre">ComposaPy.DataFlow.models.DataFlowObject</span></a></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.create" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a json formatted string or a local file path containing a valid json. Imports
+the dataflow using the dataflow service binding, and returns a DataFlowObject.
+Note that creating does not save the dataflow, the .save() method must be called on
+DataFlowObject to save it in your composable database.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow.run_status">
@@ -109,42 +95,12 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow.import_app_from_json">
-<span class="sig-name descname"><span class="pre">import_app_from_json</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.import_app_from_json" title="Permalink to this definition">¶</a></dt>
-<dd><p>import and save app from a json string of an app.</p>
-<p>Parameters
-(string) json: json string of app.</p>
-<p>Return
-(int) app_id: the id of the app.</p>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">app_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../models/index.html#ComposaPy.DataFlow.models.RunSet" title="ComposaPy.DataFlow.models.RunSet"><span class="pre">ComposaPy.DataFlow.models.RunSet</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.run" title="Permalink to this definition">¶</a></dt>
-<dd><p>Runs a dataflow from the app id.</p>
-<p>Parameters
-(int) id: id of the dataflow
-(dict[str,any]) external_inputs: any external modules (external int, table,
-file, etc) that require outside input to run can be added using a dictionary
-with the module input’s name and corresponding value</p>
-<p>Return
-(int) run_id: associated run id</p>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../models/index.html#ComposaPy.DataFlow.models.RunSet" title="ComposaPy.DataFlow.models.RunSet"><span class="pre">ComposaPy.DataFlow.models.RunSet</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>Runs a dataflow from the dataflow id (an invalid id will cause this method to return None).
+Any external modules (external int, table, file) that require outside input to run can be
+added using a dictionary with the module input’s name and corresponding contract.</p>
 </dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow._overwrite_module_inputs">
-<span class="sig-name descname"><span class="pre">_overwrite_module_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompAnalytics.Contracts.Module</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow._overwrite_module_inputs" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow._update_module_valueobj">
-<span class="sig-name descname"><span class="pre">_update_module_valueobj</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompAnalytics.Contracts.Module</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module_input</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow._update_module_valueobj" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.api.DataFlow.get_run_info">
-<span class="sig-name descname"><span class="pre">get_run_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.api.DataFlow.get_run_info" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -165,19 +121,11 @@ with the module input’s name and corresponding value</p>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a><ul>
 <li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow">DataFlow</a><ul>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow._external_input_names">_external_input_names</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow._application_contract">_application_contract</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.application_contract">application_contract</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.app_service">app_service</a></li>
+<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.service">service</a></li>
 <li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.create">create</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.save">save</a></li>
 <li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.run_status">run_status</a></li>
 <li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.wait_for_run_execution">wait_for_run_execution</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.import_app_from_json">import_app_from_json</a></li>
 <li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.run">run</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow._overwrite_module_inputs">_overwrite_module_inputs</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow._update_module_valueobj">_update_module_valueobj</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.api.DataFlow.get_run_info">get_run_info</a></li>
 </ul>
 </li>
 </ul>

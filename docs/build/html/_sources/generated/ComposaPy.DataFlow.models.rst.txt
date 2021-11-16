@@ -1,4 +1,4 @@
-ComposaPy.DataFlow.models
+﻿ComposaPy.DataFlow.models
 =========================
 
 .. automodule:: ComposaPy.DataFlow.models
@@ -20,8 +20,9 @@ ComposaPy.DataFlow.models
       DataFlowObject
       Input
       Module
-      ModuleSet
+      ModuleRunSet
       Result
+      ResultModule
       RunSet
    
    

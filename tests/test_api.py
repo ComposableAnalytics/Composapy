@@ -4,6 +4,7 @@ from pathlib import Path
 import pandas as pd
 
 from ComposaPy.DataFlow.api import DataFlow
+from ComposaPy.DataFlow.models import DataFlowObject
 from ComposaPy.QueryView.api import QueryView
 from ComposaPy.session import Session
 
@@ -18,51 +19,59 @@ ROOT_PATH_PYTHONNET = os.getenv("ROOT_PATH_PYTHONNET")
 def session():
     return Session(TEST_USERNAME, TEST_PASSWORD)
 
+
 @pytest.fixture
 def dataflow(session: Session) -> DataFlow:
     return DataFlow(session)
+
+
+@pytest.fixture
+def dataflow_object(dataflow: DataFlow, request) -> DataFlowObject:
+    return dataflow.create(
+        file_path=str(Path(ROOT_PATH_PYTHONNET, "tests", "TestFiles", request.param))
+    )
+
+
+# used when a fixture needs another copy of parameterized fixture
+dataflow_object_extra = dataflow_object
+
 
 @pytest.fixture
 def queryview(session: Session) -> QueryView:
     return QueryView(session)
 
 
-@pytest.fixture
-def dataflow_id(request) -> int:
-    from dotenv import dotenv_values
-    return int(dotenv_values(".test.env").get(request.param))
+@pytest.mark.parametrize("dataflow_object", ["calculator_test.json"], indirect=True)
+def test_run_dataflow_get_output(dataflow_object: DataFlowObject):
+    dataflow_rs = dataflow_object.run()
 
-
-def test_run_dataflow_get_output(dataflow: DataFlow):
-    app_id = dataflow.import_app_from_json(
-        str(Path(ROOT_PATH_COMPOSABLE, "UnitTests", "TestData", "CalculatorTest.json"))
-    )
-    dataflow_rs = dataflow.run(app_id)
     modules = dataflow_rs.modules
-
     assert len(modules) == 5
     assert modules[0].result == 3.0
     assert modules[1].result == 5.0
-
-    assert modules.first_with_name("String Formatter 2").result == "This is a bad format"
-
-
-def test_convert_table_to_pandas(dataflow: DataFlow):
-    app_id = dataflow.import_app_from_json(
-        str(Path(ROOT_PATH_PYTHONNET, "Tests", "TestFiles", "tablecreator.json"))
+    assert (
+        modules.first_with_name("String Formatter 2").result == "This is a bad format"
     )
 
-    dataflow_rs = dataflow.run(app_id)
-    dataflow.app_service.DeleteApplication(app_id)
+
+@pytest.mark.parametrize("dataflow_object", ["tablecreator.json"], indirect=True)
+def test_convert_table_to_pandas(dataflow_object: DataFlowObject, dataflow: DataFlow):
+    dataflow_rs = dataflow_object.run()
+
     table = dataflow_rs.modules.first_with_name("Table Creator").result
     df = dataflow.convert_table_to_df(table)
 
     assert type(df) == type(pd.DataFrame())
 
 
-@pytest.mark.parametrize("dataflow_id", ["CONVERT_TABLE_TO_PANDAS_DTYPES_ID"], indirect=True)
-def test_convert_table_to_pandas_dtypes(dataflow: DataFlow, dataflow_id: int):
-    dataflow_rs = dataflow.run(dataflow_id)
+@pytest.mark.parametrize(
+    "dataflow_object", ["convert_table_to_pandas_dtypes.json"], indirect=True
+)
+def test_convert_table_to_pandas_dtypes(
+    dataflow_object: DataFlowObject, dataflow: DataFlow
+):
+    dataflow_rs = dataflow_object.run()
+
     modules = dataflow_rs.modules
     table = modules.first_with_name("Sql Query").result
     df = dataflow.convert_table_to_df(table)
@@ -71,25 +80,26 @@ def test_convert_table_to_pandas_dtypes(dataflow: DataFlow, dataflow_id: int):
     assert df.dtypes["SystemDateTimeOffset"] == "datetime64[ns]"
 
 
-@pytest.mark.parametrize("dataflow_id", ["EXTERNAL_INPUT_INT_ID"], indirect=True)
-def test_external_input_int(dataflow: DataFlow, dataflow_id: int):
-    test_input = { "IntInput": 3 }
-
-    dataflow_rs = dataflow.run(dataflow_id, external_inputs=test_input)
+@pytest.mark.parametrize("dataflow_object", ["external_input_int.json"], indirect=True)
+def test_external_input_int(dataflow_object: DataFlowObject, dataflow: DataFlow):
+    dataflow_rs = dataflow_object.run(external_inputs={"IntInput": 3})
 
     assert dataflow_rs.modules.first_with_name("Calculator").result == 5.0
 
 
-@pytest.mark.parametrize("dataflow_id", ["EXTERNAL_INPUT_TABLE_ID"], indirect=True)
-def test_external_input_table(dataflow: DataFlow, dataflow_id: int):
-    # easiest way to create  a table is to just get it from another test dataflow
-    from dotenv import dotenv_values
-    table_dataflow_id = int(dotenv_values(".test.env").get("CONVERT_TABLE_TO_PANDAS_DTYPES_ID"))
-    table_dataflow = dataflow.run(table_dataflow_id)
-    table = table_dataflow.modules.first_with_name("Sql Query").result
-    test_input = { "TableInput": table }
+@pytest.mark.parametrize(
+    "dataflow_object", ["external_input_table.json"], indirect=True
+)
+@pytest.mark.parametrize(
+    "dataflow_object_extra", ["convert_table_to_pandas_dtypes.json"], indirect=True
+)
+def test_external_input_table(
+    dataflow_object: DataFlowObject, dataflow_object_extra: DataFlowObject
+):
+    # lazily create a new table contract by running a dataflow that has a table result
+    table = dataflow_object_extra.run().modules.first_with_name("Sql Query").result
 
-    dataflow_rs = dataflow.run(dataflow_id, external_inputs=test_input)
+    dataflow_rs = dataflow_object.run(external_inputs={"TableInput": table})
 
     assert dataflow_rs.modules.first().result.Headers == table.Headers
     assert dataflow_rs.modules.first().result.SqlQuery == table.SqlQuery

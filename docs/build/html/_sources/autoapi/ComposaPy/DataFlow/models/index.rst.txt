@@ -15,11 +15,29 @@ Classes
    ComposaPy.DataFlow.models.Input
    ComposaPy.DataFlow.models.Result
    ComposaPy.DataFlow.models.Module
-   ComposaPy.DataFlow.models.ModuleSet
+   ComposaPy.DataFlow.models.ResultModule
+   ComposaPy.DataFlow.models.ModuleRunSet
    ComposaPy.DataFlow.models.RunSet
    ComposaPy.DataFlow.models.DataFlowObject
 
 
+
+Functions
+~~~~~~~~~
+
+.. autoapisummary::
+
+   ComposaPy.DataFlow.models._overwrite_module_inputs
+   ComposaPy.DataFlow.models._update_module_valueobj
+
+
+
+Attributes
+~~~~~~~~~~
+
+.. autoapisummary::
+
+   ComposaPy.DataFlow.models.EXTERNAL_INPUT_NAMES
 
 
 .. py:exception:: ModuleResultError
@@ -29,7 +47,15 @@ Classes
    Common base class for all non-exit exceptions.
 
 
-.. py:class:: Input(module_input_contract)
+.. py:data:: EXTERNAL_INPUT_NAMES
+   :annotation: = ['External String Input', 'External Line Input', 'External Private Input', 'External Int Input',...
+
+   
+
+.. py:class:: Input(contract: CompAnalytics.Contracts.ModuleInput)
+
+   Wraps ModuleIn contract for a simplified textual user interface.
+       
 
    .. py:attribute:: contract
       :annotation: :CompAnalytics.Contracts.ModuleInput
@@ -39,9 +65,15 @@ Classes
    .. py:method:: value(self) -> any
       :property:
 
+      Returns the contract member, ValueObj (value).
+              
 
 
-.. py:class:: Result(module_output_contract)
+
+.. py:class:: Result(contract: CompAnalytics.Contracts.ModuleOutput)
+
+   Wraps ModuleOut contract for a simplified textual user interface.
+       
 
    .. py:attribute:: contract
       :annotation: :CompAnalytics.Contracts.ModuleOutput
@@ -51,29 +83,48 @@ Classes
    .. py:method:: value(self) -> any
       :property:
 
+      Returns the contract member, ValueObj (value).
+              
 
 
-.. py:class:: Module(module_contract)
+
+.. py:class:: Module(contract: CompAnalytics.Contracts.Module)
+
+   The object representation of a module inside a dataflow object.
+       
 
    .. py:attribute:: contract
       :annotation: :CompAnalytics.Contracts.Module
 
       
 
-   .. py:method:: id(self) -> int
-      :property:
-
-
    .. py:method:: name(self) -> str
       :property:
+
+      Returns the module name.
+              
 
 
    .. py:method:: inputs(self) -> dict[int, Input]
       :property:
 
+      Maps each module input, by name, to a corresponding Input object.
+              
+
+
+
+.. py:class:: ResultModule(contract: CompAnalytics.Contracts.Module)
+
+   Bases: :py:obj:`Module`
+
+   Extends Module to give the ability to retrieve module results.
+       
 
    .. py:method:: results(self) -> dict[int, Result]
       :property:
+
+      Maps each module result, by name, to a corresponding Result object.
+              
 
 
    .. py:method:: result(self) -> any
@@ -84,10 +135,13 @@ Classes
 
 
 
-.. py:class:: ModuleSet(modules: tuple[Module])
+.. py:class:: ModuleRunSet(modules: tuple[Module] | tuple[ResultModule])
+
+   Wrapper for objects with parent Module, for convenience methods on the set of items
+   contained with self._modules.
 
    .. py:attribute:: _modules
-      :annotation: :tuple[Module]
+      :annotation: :tuple[Module] | tuple[ResultModule]
 
       
 
@@ -102,14 +156,24 @@ Classes
 
    .. py:method:: first(self)
 
+      Returns first module in self._modules.
+              
+
 
    .. py:method:: first_with_name(self, name)
 
-      Matches by first module with occurring name.
+      Matches by first module in self._modules with given name.
+              
 
 
 
-.. py:class:: RunSet(application_contract: CompAnalytics.Contracts.Application)
+.. py:class:: RunSet(contract: CompAnalytics.Contracts.Application)
+
+   Similar to a DataFlowObject, with a couple of differences. The first difference is that 
+   every RunSet has an id, where as a DataFlowObject only has an ID if it is saved. The second 
+   difference is that the modules property on a RunSet returns ModuleRunSet<ResultModule> 
+   instead of ModuleRunSet<Module>, which has the additional functionality of viewing module 
+   results.
 
    .. py:attribute:: contract
       :annotation: :CompAnalytics.Contracts.Application
@@ -119,27 +183,66 @@ Classes
    .. py:method:: id(self) -> int
       :property:
 
+      Returns the id of dataflow run. Every RunSet is guaranteed to have an id with non-null 
+      value.
 
-   .. py:method:: modules(self) -> ModuleSet
+
+   .. py:method:: modules(self) -> ModuleRunSet
       :property:
 
+      A ModuleRunSet made up of ResultModule's.
+              
 
 
-.. py:class:: DataFlowObject(application_contract: CompAnalytics.Contracts.Application)
+
+.. py:class:: DataFlowObject(contract: CompAnalytics.Contracts.Application, service: CompAnalytics.IServices.IApplicationService)
 
    Bases: :py:obj:`CompAnalytics.Contracts.Application`
 
+   DataFlowObject can be used to both model and save dataflow configurations, both saved and 
+   before saving. Holds a reference to the service needed to carry out operations on it's behalf.
+
    .. py:attribute:: contract
       :annotation: :CompAnalytics.Contracts.Application
 
       
 
-   .. py:method:: id(self) -> int
+   .. py:attribute:: _service
+      :annotation: :CompAnalytics.IServices.IApplicationService
+
+      
+
+   .. py:method:: id(self) -> Optional[int]
       :property:
 
+      The contract id. An unsaved DataFlowObject's id property is None.
+              
 
-   .. py:method:: modules(self) -> list[Module]
+
+   .. py:method:: modules(self) -> ModuleRunSet
       :property:
 
+      A ModuleRunSet made up of Module's.
+              
+
+
+   .. py:method:: save(self) -> DataFlowObject
+
+      Saves the contract representation of DataFlowObject, uses server response as the newly
+      updated contract object (for instance, saving an unsaved contract will give it an id).
+
+
+   .. py:method:: run(self, external_inputs: dict[str, any] = None) -> RunSet
+
+      Runs the dataflow represented by contained contract. Any external modules
+      (external int, table, file) that require outside input to run can be added using a
+      dictionary with the module input's name and corresponding contract.
+
+
+
+.. py:function:: _overwrite_module_inputs(external_inputs: dict[str, any], module: CompAnalytics.Contracts.Module) -> None
+
+
+.. py:function:: _update_module_valueobj(external_inputs: dict[str, any], module: CompAnalytics.Contracts.Module, module_input) -> None
 
 

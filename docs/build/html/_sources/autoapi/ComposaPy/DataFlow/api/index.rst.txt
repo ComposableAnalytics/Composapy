@@ -23,28 +23,19 @@ Classes
 
    A wrapper class for DataFlow operations.
 
-   .. py:attribute:: _external_input_names
-      :annotation: = ['External String Input', 'External Line Input', 'External Private Input', 'External Int Input',...
-
-      
-
-   .. py:attribute:: _application_contract
-      
-
-      
-
-   .. py:method:: application_contract(self) -> CompAnalytics.Contracts.Application
+   .. py:method:: service(self) -> CompAnalytics.IServices.IApplicationService
       :property:
 
-
-   .. py:method:: app_service(self) -> CompAnalytics.IServices.IApplicationService
-      :property:
-
-
-   .. py:method:: create(self, json: str = None, file_name: str = None) -> ComposaPy.DataFlow.models.DataFlowObject
+      A composable analytics csharp binding to the IServices.IApplicationService (otherwise
+      known as a DataFlow service) object.
 
 
-   .. py:method:: save(self) -> Optional[CompAnalytics.Contracts.Application]
+   .. py:method:: create(self, json: str = None, file_path: str = None) -> ComposaPy.DataFlow.models.DataFlowObject
+
+      Takes a json formatted string or a local file path containing a valid json. Imports
+      the dataflow using the dataflow service binding, and returns a DataFlowObject.
+      Note that creating does not save the dataflow, the .save() method must be called on
+      DataFlowObject to save it in your composable database.
 
 
    .. py:method:: run_status(self, run_id: int)
@@ -69,38 +60,11 @@ Classes
       (dict[str, int]) execution_status: status of the execution
 
 
-   .. py:method:: import_app_from_json(self, json: str) -> int
+   .. py:method:: run(self, dataflow_id: int, external_inputs: dict[str, any] = None) -> Optional[ComposaPy.DataFlow.models.RunSet]
 
-      import and save app from a json string of an app.
-
-      Parameters
-      (string) json: json string of app.
-
-      Return
-      (int) app_id: the id of the app.
-
-
-   .. py:method:: run(self, app_id: int, external_inputs: dict[str, any] = None) -> Optional[ComposaPy.DataFlow.models.RunSet]
-
-      Runs a dataflow from the app id.
-
-      Parameters
-      (int) id: id of the dataflow
-      (dict[str,any]) external_inputs: any external modules (external int, table,
-      file, etc) that require outside input to run can be added using a dictionary
-      with the module input's name and corresponding value
-
-      Return
-      (int) run_id: associated run id
-
-
-   .. py:method:: _overwrite_module_inputs(self, external_inputs: dict[str, any], module: CompAnalytics.Contracts.Module) -> None
-
-
-   .. py:method:: _update_module_valueobj(self, external_inputs: dict[str, any], module: CompAnalytics.Contracts.Module, module_input) -> None
-
-
-   .. py:method:: get_run_info(self, id: int) -> None
+      Runs a dataflow from the dataflow id (an invalid id will cause this method to return None).
+      Any external modules (external int, table, file) that require outside input to run can be
+      added using a dictionary with the module input's name and corresponding contract.
 
 
 
