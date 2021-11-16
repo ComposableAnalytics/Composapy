@@ -18,7 +18,7 @@ print(sys.path)
 
 # -- Project information -----------------------------------------------------
 
-project = "src"
+project = "ComposaPy"
 copyright = "2021, michael surdouski"
 author = "michael surdouski"
 
@@ -33,7 +33,7 @@ release = "0.1"
 # ones.
 extensions = ["autoapi.extension"]
 
-autoapi_dirs = ["../../src"]
+autoapi_dirs = ["../../ComposaPy"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]

@@ -1,4 +1,4 @@
-from src.session import Session
+from ComposaPy.session import Session
 
 
 class ComposableApi:

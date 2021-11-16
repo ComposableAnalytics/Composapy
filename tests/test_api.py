@@ -3,9 +3,9 @@ import os
 from pathlib import Path
 import pandas as pd
 
-from src.DataFlow.api import DataFlow
-from src.QueryView.api import QueryView
-from src.session import Session
+from ComposaPy.DataFlow.api import DataFlow
+from ComposaPy.QueryView.api import QueryView
+from ComposaPy.session import Session
 
 TEST_API_KEY = os.getenv("TEST_API_KEY")
 TEST_USERNAME = os.getenv("TEST_USERNAME")
@@ -49,7 +49,7 @@ def test_run_dataflow_get_output(dataflow: DataFlow):
 
 def test_convert_table_to_pandas(dataflow: DataFlow):
     app_id = dataflow.import_app_from_json(
-        str(Path(ROOT_PATH_PYTHONNET, "tests", "TestFiles", "tablecreator.json"))
+        str(Path(ROOT_PATH_PYTHONNET, "Tests", "TestFiles", "tablecreator.json"))
     )
 
     dataflow_rs = dataflow.run(app_id)

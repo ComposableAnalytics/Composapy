@@ -6,9 +6,9 @@ from CompAnalytics import Contracts, IServices
 from CompAnalytics.IServices import *
 from CompAnalytics.Contracts import *
 
-from src.DataFlow.models import DataFlowObject, RunSet
-from src.api import ComposableApi
-from src.mixins import PandasMixin
+from ComposaPy.DataFlow.models import DataFlowObject, RunSet
+from ComposaPy.api import ComposableApi
+from ComposaPy.mixins import PandasMixin
 
 
 class DataFlow(PandasMixin, ComposableApi):
