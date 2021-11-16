@@ -3,9 +3,9 @@ import pandas as pd
 
 from CompAnalytics.IServices import *
 
-from ComposaPy.api import ComposableApi
-from ComposaPy.mixins import PandasMixin
-from ComposaPy.stream import CsStream
+from src.api import ComposableApi
+from src.mixins import PandasMixin
+from src.stream import CsStream
 
 
 class QueryView(PandasMixin, ComposableApi):

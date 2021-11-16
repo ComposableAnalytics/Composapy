@@ -34,9 +34,9 @@ def load_init() -> None:
         if is_project_dll(_path):
             add_dll_reference(_path)
 
-    from ComposaPy.DataFlow.api import DataFlow
-    from ComposaPy.QueryView.api import QueryView
-    from ComposaPy.session import Session
+    from src.DataFlow.api import DataFlow
+    from src.QueryView.api import QueryView
+    from src.session import Session
 
 
 run_path = Path.cwd()
