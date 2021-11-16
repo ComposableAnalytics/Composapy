@@ -48,11 +48,52 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ComposaPy.mixins.PandasMixin" title="ComposaPy.mixins.PandasMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PandasMixin</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ComposaPy.mixins.ObjectSetMixin" title="ComposaPy.mixins.ObjectSetMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ObjectSetMixin</span></code></a></p></td>
+<td><p>Used for object model sets which require element navigation tree utilities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ComposaPy.mixins.PandasMixin" title="ComposaPy.mixins.PandasMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PandasMixin</span></code></a></p></td>
 <td><p></p></td>
 </tr>
 </tbody>
 </table>
+<dl class="py class">
+<dt class="sig sig-object py" id="ComposaPy.mixins.ObjectSetMixin">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ComposaPy.mixins.</span></span><span class="sig-name descname"><span class="pre">ObjectSetMixin</span></span><a class="headerlink" href="#ComposaPy.mixins.ObjectSetMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Used for object model sets which require element navigation tree utilities.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ComposaPy.mixins.ObjectSetMixin._target">
+<span class="sig-name descname"><span class="pre">_target</span></span><a class="headerlink" href="#ComposaPy.mixins.ObjectSetMixin._target" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ComposaPy.mixins.ObjectSetMixin.__len__">
+<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.mixins.ObjectSetMixin.__len__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ComposaPy.mixins.ObjectSetMixin.__getitem__">
+<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.mixins.ObjectSetMixin.__getitem__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ComposaPy.mixins.ObjectSetMixin.__iter__">
+<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.mixins.ObjectSetMixin.__iter__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ComposaPy.mixins.ObjectSetMixin.first">
+<span class="sig-name descname"><span class="pre">first</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.mixins.ObjectSetMixin.first" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns first module in self._target.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ComposaPy.mixins.ObjectSetMixin.first_with_name">
+<span class="sig-name descname"><span class="pre">first_with_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.mixins.ObjectSetMixin.first_with_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches by first in self._target with given name.</p>
+</dd></dl>
+
+</dd></dl>
+
 <dl class="py class">
 <dt class="sig sig-object py" id="ComposaPy.mixins.PandasMixin">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ComposaPy.mixins.</span></span><span class="sig-name descname"><span class="pre">PandasMixin</span></span><a class="headerlink" href="#ComposaPy.mixins.PandasMixin" title="Permalink to this definition">¶</a></dt>
@@ -104,6 +145,15 @@
 <li><a class="reference internal" href="#"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ComposaPy.mixins</span></code></a><ul>
 <li><a class="reference internal" href="#module-contents">Module Contents</a><ul>
 <li><a class="reference internal" href="#classes">Classes</a><ul>
+<li><a class="reference internal" href="#ComposaPy.mixins.ObjectSetMixin">ObjectSetMixin</a><ul>
+<li><a class="reference internal" href="#ComposaPy.mixins.ObjectSetMixin._target">_target</a></li>
+<li><a class="reference internal" href="#ComposaPy.mixins.ObjectSetMixin.__len__">__len__</a></li>
+<li><a class="reference internal" href="#ComposaPy.mixins.ObjectSetMixin.__getitem__">__getitem__</a></li>
+<li><a class="reference internal" href="#ComposaPy.mixins.ObjectSetMixin.__iter__">__iter__</a></li>
+<li><a class="reference internal" href="#ComposaPy.mixins.ObjectSetMixin.first">first</a></li>
+<li><a class="reference internal" href="#ComposaPy.mixins.ObjectSetMixin.first_with_name">first_with_name</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#ComposaPy.mixins.PandasMixin">PandasMixin</a><ul>
 <li><a class="reference internal" href="#ComposaPy.mixins.PandasMixin.MAP_CS_TYPES_TO_PANDAS_TYPES">MAP_CS_TYPES_TO_PANDAS_TYPES</a></li>
 <li><a class="reference internal" href="#ComposaPy.mixins.PandasMixin.MAP_STRING_TYPES_TO_PANDAS_TYPES">MAP_STRING_TYPES_TO_PANDAS_TYPES</a></li>

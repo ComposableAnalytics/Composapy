@@ -3,6 +3,8 @@ from typing import Optional
 
 from CompAnalytics import Contracts, IServices
 
+from ComposaPy.mixins import ObjectSetMixin
+
 
 class ModuleResultError(Exception):
     pass
@@ -109,41 +111,22 @@ class ResultModule(Module):
         return next(iter(self.results.values())).value
 
 
-class ModuleRunSet:
+class ModuleSet(ObjectSetMixin):
     """Wrapper for objects with parent Module, for convenience methods on the set of items
-    contained with self._modules.
+    contained with self._target.
     """
 
-    _modules: tuple[Module] | tuple[ResultModule]
+    _target: tuple[Module] | tuple[ResultModule]
 
     def __init__(self, modules: tuple[Module] | tuple[ResultModule]) -> None:
-        self._modules = modules
-
-    def __len__(self):
-        return len(self._modules)
-
-    def __getitem__(self, index):
-        return self._modules[index]
-
-    def __iter__(self):
-        return iter(self._modules)
-
-    def first(self):
-        """Returns first module in self._modules.
-        """
-        return next(iter(self._modules))
-
-    def first_with_name(self, name):
-        """Matches by first module in self._modules with given name.
-        """
-        return next(item for item in self._modules if item.name == name)
+        self._target = modules
 
 
-class RunSet:
+class DataFlowRun:
     """Similar to a DataFlowObject, with a couple of differences. The first difference is that 
-    every RunSet has an id, where as a DataFlowObject only has an ID if it is saved. The second 
-    difference is that the modules property on a RunSet returns ModuleRunSet<ResultModule> 
-    instead of ModuleRunSet<Module>, which has the additional functionality of viewing module 
+    every DataFlowRun has an id, where as a DataFlowObject only has an ID if it is saved. The second 
+    difference is that the modules property on a DataFlowRun returns ModuleSet<ResultModule> 
+    instead of ModuleSet<Module>, which has the additional functionality of viewing module 
     results.
     """
 
@@ -154,21 +137,30 @@ class RunSet:
 
     @property
     def id(self) -> int:
-        """Returns the id of dataflow run. Every RunSet is guaranteed to have an id with non-null 
+        """Returns the id of dataflow run. Every DataFlowRun is guaranteed to have an id with non-null 
         value.
         """
         return self.contract.Id
 
     @property
-    def modules(self) -> ModuleRunSet:
-        """A ModuleRunSet made up of ResultModule's.
+    def modules(self) -> ModuleSet:
+        """A ModuleSet made up of ResultModule's.
         """
-        return ModuleRunSet(
+        return ModuleSet(
             tuple(ResultModule(_module) for _module in self.contract.Modules)
         )
 
 
-class DataFlowObject(Contracts.Application):
+class DataFlowRunSet(ObjectSetMixin):
+    """Wrapper for dataflow run objects, using ObjectSetMixin convenience mixin utilities."""
+
+    _target = tuple[DataFlowRun]
+
+    def __init__(self, dataflow_runs: tuple[DataFlowRun]) -> None:
+        self._target = dataflow_runs
+
+
+class DataFlowObject:
     """DataFlowObject can be used to both model and save dataflow configurations, both saved and 
     before saving. Holds a reference to the service needed to carry out operations on it's behalf.
     """
@@ -189,10 +181,10 @@ class DataFlowObject(Contracts.Application):
         return self.contract.Id
 
     @property
-    def modules(self) -> ModuleRunSet:
-        """A ModuleRunSet made up of Module's.
+    def modules(self) -> ModuleSet:
+        """A ModuleSet made up of Module's.
         """
-        return ModuleRunSet(tuple(Module(_module) for _module in self.contract.Modules))
+        return ModuleSet(tuple(Module(_module) for _module in self.contract.Modules))
 
     def save(self) -> DataFlowObject:
         """Saves the contract representation of DataFlowObject, uses server response as the newly
@@ -201,7 +193,7 @@ class DataFlowObject(Contracts.Application):
         self.contract = self._service.SaveApplication(self.contract)
         return self
 
-    def run(self, external_inputs: dict[str, any] = None) -> RunSet:
+    def run(self, external_inputs: dict[str, any] = None) -> DataFlowRun:
         """Runs the dataflow represented by contained contract. Any external modules
         (external int, table, file) that require outside input to run can be added using a
         dictionary with the module input's name and corresponding contract.
@@ -218,7 +210,7 @@ class DataFlowObject(Contracts.Application):
             self.contract, Contracts.ExecutionContextOptions()
         )
         run = self._service.RunExecutionContext(execution_context)
-        return RunSet(run)
+        return DataFlowRun(run)
 
 
 def _overwrite_module_inputs(

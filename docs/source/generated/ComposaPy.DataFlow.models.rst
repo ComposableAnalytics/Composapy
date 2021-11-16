@@ -18,12 +18,13 @@
    .. autosummary::
    
       DataFlowObject
+      DataFlowRun
+      DataFlowRunSet
       Input
       Module
-      ModuleRunSet
+      ModuleSet
       Result
       ResultModule
-      RunSet
    
    
 

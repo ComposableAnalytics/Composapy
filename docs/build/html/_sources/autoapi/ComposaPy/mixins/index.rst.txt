@@ -12,8 +12,41 @@ Classes
 
 .. autoapisummary::
 
+   ComposaPy.mixins.ObjectSetMixin
    ComposaPy.mixins.PandasMixin
 
+
+
+
+.. py:class:: ObjectSetMixin
+
+   Used for object model sets which require element navigation tree utilities.
+       
+
+   .. py:attribute:: _target
+      
+
+      
+
+   .. py:method:: __len__(self)
+
+
+   .. py:method:: __getitem__(self, index)
+
+
+   .. py:method:: __iter__(self)
+
+
+   .. py:method:: first(self)
+
+      Returns first module in self._target.
+              
+
+
+   .. py:method:: first_with_name(self, name)
+
+      Matches by first in self._target with given name.
+              
 
 
 

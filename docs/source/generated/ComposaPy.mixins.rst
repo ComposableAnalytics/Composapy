@@ -1,4 +1,4 @@
-ComposaPy.mixins
+﻿ComposaPy.mixins
 ================
 
 .. automodule:: ComposaPy.mixins
@@ -17,6 +17,7 @@ ComposaPy.mixins
 
    .. autosummary::
    
+      ObjectSetMixin
       PandasMixin
    
    

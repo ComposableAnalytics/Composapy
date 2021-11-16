@@ -60,13 +60,16 @@
 <tr class="row-even"><td><p><a class="reference internal" href="#ComposaPy.DataFlow.models.ResultModule" title="ComposaPy.DataFlow.models.ResultModule"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ResultModule</span></code></a></p></td>
 <td><p>Extends Module to give the ability to retrieve module results.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet" title="ComposaPy.DataFlow.models.ModuleRunSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModuleRunSet</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleSet" title="ComposaPy.DataFlow.models.ModuleSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ModuleSet</span></code></a></p></td>
 <td><p>Wrapper for objects with parent Module, for convenience methods on the set of items</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#ComposaPy.DataFlow.models.RunSet" title="ComposaPy.DataFlow.models.RunSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">RunSet</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRun" title="ComposaPy.DataFlow.models.DataFlowRun"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFlowRun</span></code></a></p></td>
 <td><p>Similar to a DataFlowObject, with a couple of differences. The first difference is that</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowObject" title="ComposaPy.DataFlow.models.DataFlowObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFlowObject</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRunSet" title="ComposaPy.DataFlow.models.DataFlowRunSet"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFlowRunSet</span></code></a></p></td>
+<td><p>Wrapper for dataflow run objects, using ObjectSetMixin convenience mixin utilities.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowObject" title="ComposaPy.DataFlow.models.DataFlowObject"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DataFlowObject</span></code></a></p></td>
 <td><p>DataFlowObject can be used to both model and save dataflow configurations, both saved and</p></td>
 </tr>
 </tbody>
@@ -192,77 +195,62 @@ Cannot be used if there is more than one result.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.ModuleRunSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ComposaPy.DataFlow.models.</span></span><span class="sig-name descname"><span class="pre">ModuleRunSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ComposaPy.DataFlow.models.Module" title="ComposaPy.DataFlow.models.Module"><span class="pre">Module</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ComposaPy.DataFlow.models.ResultModule" title="ComposaPy.DataFlow.models.ResultModule"><span class="pre">ResultModule</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.ModuleRunSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wrapper for objects with parent Module, for convenience methods on the set of items
-contained with self._modules.</p>
+<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.ModuleSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ComposaPy.DataFlow.models.</span></span><span class="sig-name descname"><span class="pre">ModuleSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">modules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ComposaPy.DataFlow.models.Module" title="ComposaPy.DataFlow.models.Module"><span class="pre">Module</span></a><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ComposaPy.DataFlow.models.ResultModule" title="ComposaPy.DataFlow.models.ResultModule"><span class="pre">ResultModule</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.ModuleSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../mixins/index.html#ComposaPy.mixins.ObjectSetMixin" title="ComposaPy.mixins.ObjectSetMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ComposaPy.mixins.ObjectSetMixin</span></code></a></p>
+<p>Wrapper for objects with parent Module, for convenience methods on the set of items
+contained with self._target.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.ModuleRunSet._modules">
-<span class="sig-name descname"><span class="pre">_modules</span></span><em class="property"><span class="w"> </span><span class="pre">:tuple[Module]</span> <span class="pre">|</span> <span class="pre">tuple[ResultModule]</span></em><a class="headerlink" href="#ComposaPy.DataFlow.models.ModuleRunSet._modules" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.ModuleSet._target">
+<span class="sig-name descname"><span class="pre">_target</span></span><em class="property"><span class="w"> </span><span class="pre">:tuple[Module]</span> <span class="pre">|</span> <span class="pre">tuple[ResultModule]</span></em><a class="headerlink" href="#ComposaPy.DataFlow.models.ModuleSet._target" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowRun">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ComposaPy.DataFlow.models.</span></span><span class="sig-name descname"><span class="pre">DataFlowRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompAnalytics.Contracts.Application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowRun" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similar to a DataFlowObject, with a couple of differences. The first difference is that
+every DataFlowRun has an id, where as a DataFlowObject only has an ID if it is saved. The second
+difference is that the modules property on a DataFlowRun returns ModuleSet&lt;ResultModule&gt;
+instead of ModuleSet&lt;Module&gt;, which has the additional functionality of viewing module
+results.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowRun.contract">
+<span class="sig-name descname"><span class="pre">contract</span></span><em class="property"><span class="w"> </span><span class="pre">:CompAnalytics.Contracts.Application</span></em><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowRun.contract" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.ModuleRunSet.__len__">
-<span class="sig-name descname"><span class="pre">__len__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.ModuleRunSet.__len__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.ModuleRunSet.__getitem__">
-<span class="sig-name descname"><span class="pre">__getitem__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.ModuleRunSet.__getitem__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.ModuleRunSet.__iter__">
-<span class="sig-name descname"><span class="pre">__iter__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.ModuleRunSet.__iter__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.ModuleRunSet.first">
-<span class="sig-name descname"><span class="pre">first</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.ModuleRunSet.first" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns first module in self._modules.</p>
+<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowRun.id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowRun.id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the id of dataflow run. Every DataFlowRun is guaranteed to have an id with non-null
+value.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.ModuleRunSet.first_with_name">
-<span class="sig-name descname"><span class="pre">first_with_name</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.ModuleRunSet.first_with_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>Matches by first module in self._modules with given name.</p>
+<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowRun.modules">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleSet" title="ComposaPy.DataFlow.models.ModuleSet"><span class="pre">ModuleSet</span></a></span></span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowRun.modules" title="Permalink to this definition">¶</a></dt>
+<dd><p>A ModuleSet made up of ResultModule’s.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.RunSet">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ComposaPy.DataFlow.models.</span></span><span class="sig-name descname"><span class="pre">RunSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompAnalytics.Contracts.Application</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.RunSet" title="Permalink to this definition">¶</a></dt>
-<dd><p>Similar to a DataFlowObject, with a couple of differences. The first difference is that
-every RunSet has an id, where as a DataFlowObject only has an ID if it is saved. The second
-difference is that the modules property on a RunSet returns ModuleRunSet&lt;ResultModule&gt;
-instead of ModuleRunSet&lt;Module&gt;, which has the additional functionality of viewing module
-results.</p>
+<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowRunSet">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ComposaPy.DataFlow.models.</span></span><span class="sig-name descname"><span class="pre">DataFlowRunSet</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataflow_runs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRun" title="ComposaPy.DataFlow.models.DataFlowRun"><span class="pre">DataFlowRun</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowRunSet" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../../mixins/index.html#ComposaPy.mixins.ObjectSetMixin" title="ComposaPy.mixins.ObjectSetMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ComposaPy.mixins.ObjectSetMixin</span></code></a></p>
+<p>Wrapper for dataflow run objects, using ObjectSetMixin convenience mixin utilities.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.RunSet.contract">
-<span class="sig-name descname"><span class="pre">contract</span></span><em class="property"><span class="w"> </span><span class="pre">:CompAnalytics.Contracts.Application</span></em><a class="headerlink" href="#ComposaPy.DataFlow.models.RunSet.contract" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowRunSet._target">
+<span class="sig-name descname"><span class="pre">_target</span></span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowRunSet._target" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.RunSet.id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#ComposaPy.DataFlow.models.RunSet.id" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the id of dataflow run. Every RunSet is guaranteed to have an id with non-null
-value.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="ComposaPy.DataFlow.models.RunSet.modules">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet" title="ComposaPy.DataFlow.models.ModuleRunSet"><span class="pre">ModuleRunSet</span></a></span></span><a class="headerlink" href="#ComposaPy.DataFlow.models.RunSet.modules" title="Permalink to this definition">¶</a></dt>
-<dd><p>A ModuleRunSet made up of ResultModule’s.</p>
-</dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowObject">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ComposaPy.DataFlow.models.</span></span><span class="sig-name descname"><span class="pre">DataFlowObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompAnalytics.Contracts.Application</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">service</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">CompAnalytics.IServices.IApplicationService</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowObject" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-obj docutils literal notranslate"><span class="pre">CompAnalytics.Contracts.Application</span></code></p>
-<p>DataFlowObject can be used to both model and save dataflow configurations, both saved and
+<dd><p>DataFlowObject can be used to both model and save dataflow configurations, both saved and
 before saving. Holds a reference to the service needed to carry out operations on it’s behalf.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowObject.contract">
@@ -282,8 +270,8 @@ before saving. Holds a reference to the service needed to carry out operations o
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowObject.modules">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet" title="ComposaPy.DataFlow.models.ModuleRunSet"><span class="pre">ModuleRunSet</span></a></span></span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowObject.modules" title="Permalink to this definition">¶</a></dt>
-<dd><p>A ModuleRunSet made up of Module’s.</p>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modules</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleSet" title="ComposaPy.DataFlow.models.ModuleSet"><span class="pre">ModuleSet</span></a></span></span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowObject.modules" title="Permalink to this definition">¶</a></dt>
+<dd><p>A ModuleSet made up of Module’s.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -295,7 +283,7 @@ updated contract object (for instance, saving an unsaved contract will give it a
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ComposaPy.DataFlow.models.DataFlowObject.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ComposaPy.DataFlow.models.RunSet" title="ComposaPy.DataFlow.models.RunSet"><span class="pre">RunSet</span></a></span></span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowObject.run" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRun" title="ComposaPy.DataFlow.models.DataFlowRun"><span class="pre">DataFlowRun</span></a></span></span><a class="headerlink" href="#ComposaPy.DataFlow.models.DataFlowObject.run" title="Permalink to this definition">¶</a></dt>
 <dd><p>Runs the dataflow represented by contained contract. Any external modules
 (external int, table, file) that require outside input to run can be added using a
 dictionary with the module input’s name and corresponding contract.</p>
@@ -354,19 +342,18 @@ dictionary with the module input’s name and corresponding contract.</p>
 <li><a class="reference internal" href="#ComposaPy.DataFlow.models.ResultModule.result">result</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet">ModuleRunSet</a><ul>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet._modules">_modules</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet.__len__">__len__</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet.__getitem__">__getitem__</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet.__iter__">__iter__</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet.first">first</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleRunSet.first_with_name">first_with_name</a></li>
+<li><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleSet">ModuleSet</a><ul>
+<li><a class="reference internal" href="#ComposaPy.DataFlow.models.ModuleSet._target">_target</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.RunSet">RunSet</a><ul>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.RunSet.contract">contract</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.RunSet.id">id</a></li>
-<li><a class="reference internal" href="#ComposaPy.DataFlow.models.RunSet.modules">modules</a></li>
+<li><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRun">DataFlowRun</a><ul>
+<li><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRun.contract">contract</a></li>
+<li><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRun.id">id</a></li>
+<li><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRun.modules">modules</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRunSet">DataFlowRunSet</a><ul>
+<li><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowRunSet._target">_target</a></li>
 </ul>
 </li>
 <li><a class="reference internal" href="#ComposaPy.DataFlow.models.DataFlowObject">DataFlowObject</a><ul>

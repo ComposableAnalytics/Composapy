@@ -16,8 +16,9 @@ Classes
    ComposaPy.DataFlow.models.Result
    ComposaPy.DataFlow.models.Module
    ComposaPy.DataFlow.models.ResultModule
-   ComposaPy.DataFlow.models.ModuleRunSet
-   ComposaPy.DataFlow.models.RunSet
+   ComposaPy.DataFlow.models.ModuleSet
+   ComposaPy.DataFlow.models.DataFlowRun
+   ComposaPy.DataFlow.models.DataFlowRunSet
    ComposaPy.DataFlow.models.DataFlowObject
 
 
@@ -135,44 +136,25 @@ Attributes
 
 
 
-.. py:class:: ModuleRunSet(modules: tuple[Module] | tuple[ResultModule])
+.. py:class:: ModuleSet(modules: tuple[Module] | tuple[ResultModule])
+
+   Bases: :py:obj:`ComposaPy.mixins.ObjectSetMixin`
 
    Wrapper for objects with parent Module, for convenience methods on the set of items
-   contained with self._modules.
+   contained with self._target.
 
-   .. py:attribute:: _modules
+   .. py:attribute:: _target
       :annotation: :tuple[Module] | tuple[ResultModule]
 
       
 
-   .. py:method:: __len__(self)
 
-
-   .. py:method:: __getitem__(self, index)
-
-
-   .. py:method:: __iter__(self)
-
-
-   .. py:method:: first(self)
-
-      Returns first module in self._modules.
-              
-
-
-   .. py:method:: first_with_name(self, name)
-
-      Matches by first module in self._modules with given name.
-              
-
-
-
-.. py:class:: RunSet(contract: CompAnalytics.Contracts.Application)
+.. py:class:: DataFlowRun(contract: CompAnalytics.Contracts.Application)
 
    Similar to a DataFlowObject, with a couple of differences. The first difference is that 
-   every RunSet has an id, where as a DataFlowObject only has an ID if it is saved. The second 
-   difference is that the modules property on a RunSet returns ModuleRunSet<ResultModule> 
-   instead of ModuleRunSet<Module>, which has the additional functionality of viewing module 
+   every DataFlowRun has an id, where as a DataFlowObject only has an ID if it is saved. The second 
+   difference is that the modules property on a DataFlowRun returns ModuleSet<ResultModule> 
+   instead of ModuleSet<Module>, which has the additional functionality of viewing module 
    results.
 
    .. py:attribute:: contract
@@ -183,21 +165,31 @@ Attributes
    .. py:method:: id(self) -> int
       :property:
 
-      Returns the id of dataflow run. Every RunSet is guaranteed to have an id with non-null 
+      Returns the id of dataflow run. Every DataFlowRun is guaranteed to have an id with non-null 
       value.
 
 
-   .. py:method:: modules(self) -> ModuleRunSet
+   .. py:method:: modules(self) -> ModuleSet
       :property:
 
-      A ModuleRunSet made up of ResultModule's.
+      A ModuleSet made up of ResultModule's.
               
 
 
 
-.. py:class:: DataFlowObject(contract: CompAnalytics.Contracts.Application, service: CompAnalytics.IServices.IApplicationService)
+.. py:class:: DataFlowRunSet(dataflow_runs: tuple[DataFlowRun])
 
-   Bases: :py:obj:`CompAnalytics.Contracts.Application`
+   Bases: :py:obj:`ComposaPy.mixins.ObjectSetMixin`
+
+   Wrapper for dataflow run objects, using ObjectSetMixin convenience mixin utilities.
+
+   .. py:attribute:: _target
+      
+
+      
+
+
+.. py:class:: DataFlowObject(contract: CompAnalytics.Contracts.Application, service: CompAnalytics.IServices.IApplicationService)
 
    DataFlowObject can be used to both model and save dataflow configurations, both saved and 
    before saving. Holds a reference to the service needed to carry out operations on it's behalf.
@@ -219,10 +211,10 @@ Attributes
               
 
 
-   .. py:method:: modules(self) -> ModuleRunSet
+   .. py:method:: modules(self) -> ModuleSet
       :property:
 
-      A ModuleRunSet made up of Module's.
+      A ModuleSet made up of Module's.
               
 
 
@@ -232,7 +224,7 @@ Attributes
       updated contract object (for instance, saving an unsaved contract will give it an id).
 
 
-   .. py:method:: run(self, external_inputs: dict[str, any] = None) -> RunSet
+   .. py:method:: run(self, external_inputs: dict[str, any] = None) -> DataFlowRun
 
       Runs the dataflow represented by contained contract. Any external modules
       (external int, table, file) that require outside input to run can be added using a
