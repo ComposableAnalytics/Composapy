@@ -1,0 +1,46 @@
+:py:mod:`ComposaPy.mixins`
+==========================
+
+.. py:module:: ComposaPy.mixins
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ComposaPy.mixins.PandasMixin
+
+
+
+
+.. py:class:: PandasMixin
+
+   .. py:attribute:: MAP_CS_TYPES_TO_PANDAS_TYPES
+      
+
+      
+
+   .. py:attribute:: MAP_STRING_TYPES_TO_PANDAS_TYPES
+      
+
+      
+
+   .. py:attribute:: session
+      
+
+      
+
+   .. py:method:: convert_table_to_df(self, table)
+
+
+   .. py:method:: _make_pandas_dtypes_dict(self, table_columns)
+
+
+   .. py:method:: _make_pandas_dtypes_from_list_of_column_defs(self, list_of_column_defs)
+
+
+

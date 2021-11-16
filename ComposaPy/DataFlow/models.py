@@ -1,9 +1,12 @@
 from CompAnalytics import Contracts
 
 
+class ModuleResultError(Exception):
+    pass
+
+
 class Input:
     contract: Contracts.ModuleInput
-    # connections: list[str]  # guid-strings
 
     def __init__(self, module_input_contract):
         self.contract = module_input_contract
@@ -15,7 +18,6 @@ class Input:
 
 class Result:
     contract: Contracts.ModuleOutput
-    # connections: list[str]  # guid-strings
 
     def __init__(self, module_output_contract):
         self.contract = module_output_contract
@@ -55,8 +57,16 @@ class Module:
 
     @property
     def result(self) -> any:
-        """Convenience property that gets the first result.value from results."""
+        """Convenience property that gets the first result.value from results.
+        Cannot be used if there is more than one result.
+        """
 
+        if len(self.results) > 1:
+            raise ModuleResultError(
+                "Unable to retrieve singular result, multiple results exist. "
+                "For modules that contain multiple results, please use "
+                "results instead of result."
+            )
         return next(iter(self.results.values())).value
 
 
@@ -96,8 +106,6 @@ class RunSet:
     @property
     def modules(self) -> ModuleSet:
         return ModuleSet(tuple(Module(_module) for _module in self.contract.Modules))
-
-
 
 
 class DataFlowObject(Contracts.Application):

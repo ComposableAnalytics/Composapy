@@ -1,0 +1,24 @@
+:py:mod:`ComposaPy.session`
+===========================
+
+.. py:module:: ComposaPy.session
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ComposaPy.session.Session
+
+
+
+
+.. py:class:: Session(username_or_api, password=None)
+
+   Use as initialization parameter for any class contained within an api.py file.
+
+

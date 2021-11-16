@@ -1,21 +1,48 @@
 import os
 import clr
-from dotenv import load_dotenv, dotenv_values
+import logging
+from dotenv import load_dotenv
+from pathlib import Path
 
 
-SETUP_ENV = "../.setup.env"
-LOCAL_ENV = "../.local.env"
-DLL_ENV = "../.dll.env"
-
-load_dotenv(SETUP_ENV)
-load_dotenv(LOCAL_ENV)
-
-
-def add_dll_reference(name: str, value: str):
-    if name.startswith("COMP"):
-        value = os.path.join(os.getenv("ROOT_PATH_COMPOSABLE"), value)
-    clr.AddReference(value)
+def add_dll_reference(path: Path) -> None:
+    try:
+        clr.AddReference(str(path))
+    except:
+        logging.warning(f"Failed to load .dll : {path}.")
 
 
-for key, path in dotenv_values(DLL_ENV).items():
-    add_dll_reference(key, path)
+def is_project_dll(path: Path) -> bool:
+    return (
+        path.is_file()
+        and path.name.endswith(".dll")
+        and path.name.startswith("CompAnalytics")
+    )
+
+
+def load_init() -> None:
+    SETUP_ENV = "../.setup.env"
+    LOCAL_ENV = "../.local.env"
+
+    load_dotenv(SETUP_ENV)
+    load_dotenv(LOCAL_ENV)
+
+    copy_plugins_path = Path(
+        os.getenv("ROOT_PATH_COMPOSABLE"), "CopyPlugins", "bin", "Debug"
+    )
+    for _path in copy_plugins_path.iterdir():
+        if is_project_dll(_path):
+            add_dll_reference(_path)
+
+    from ComposaPy.DataFlow.api import DataFlow
+    from ComposaPy.QueryView.api import QueryView
+    from ComposaPy.session import Session
+
+
+run_path = Path.cwd()
+os.chdir(os.path.dirname(Path(__file__)))
+
+try:
+    load_init()
+finally:
+    os.chdir(run_path)

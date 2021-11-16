@@ -1,17 +1,16 @@
-from CompAnalytics.IServices import *
-
 import numpy as np
 import pandas as pd
 
+from CompAnalytics.IServices import *
+
 from ComposaPy.api import ComposableApi
 from ComposaPy.mixins import PandasMixin
-from ComposaPy.session import (
-    CsStream,
-    Session,
-)
+from ComposaPy.stream import CsStream
 
 
 class QueryView(PandasMixin, ComposableApi):
+    """A wrapper class for DataFlow operations."""
+
     def get_queryview(self, id: int) -> pd.DataFrame:
         queryview_service = self.session._services["QueryViewService"]
         queryview = queryview_service.Get(id)
@@ -48,7 +47,8 @@ class QueryView(PandasMixin, ComposableApi):
 
         queryview = self.session._services["QueryViewService"].Get(queryview_id)
         queryview_data = self.session._services["QueryViewService"].RunQueryDynamic(
-                queryview)
+            queryview
+        )
         columns_definitions = queryview_data.ColumnDefinitions
         column_names = []
         column_dtypes = {}

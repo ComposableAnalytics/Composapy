@@ -4,6 +4,7 @@ import System
 import System.Net
 from CompAnalytics import Contracts, IServices
 from CompAnalytics.IServices import *
+from CompAnalytics.Contracts import *
 
 from ComposaPy.DataFlow.models import DataFlowObject, RunSet
 from ComposaPy.api import ComposableApi
@@ -11,6 +12,8 @@ from ComposaPy.mixins import PandasMixin
 
 
 class DataFlow(PandasMixin, ComposableApi):
+    """A wrapper class for DataFlow operations."""
+
     _external_input_names = [
         "External String Input",
         "External Line Input",
@@ -36,9 +39,11 @@ class DataFlow(PandasMixin, ComposableApi):
     def app_service(self) -> IServices.IApplicationService:
         return self.session._services["ApplicationService"]
 
-    def create(self, json: str=None, file_name: str=None) -> DataFlowObject:
+    def create(self, json: str = None, file_name: str = None) -> DataFlowObject:
         if json and file_name:
-            raise ValueError("Cannot use both json and file_name arguments, please choose one.")
+            raise ValueError(
+                "Cannot use both json and file_name arguments, please choose one."
+            )
 
         if file_name:
             json = System.IO.File.ReadAllText(json)
@@ -88,48 +93,6 @@ class DataFlow(PandasMixin, ComposableApi):
         output["run_id"] = run_id
         return output
 
-    def get_run_modules(self, run_id: int) -> list[dict]:
-        """
-        Get list of modules of a run.
-
-        Parameters
-        (int) app_id: id of the app.
-
-        Return
-        (list[dict]) modules: list of modules.
-        """
-
-        app = self.app_service.GetRun(run_id).Application
-        # dataflow_runset = RunSet(app)
-        list_of_modules = app.Modules
-        modules_by_id = {}
-
-        for module in list_of_modules:
-            curr_module_values = {}
-            curr_module_values["Name"] = module.Name
-            curr_module_values["ModuleType"] = module.ModuleType.Name
-            curr_module_values["Id"] = module.Id
-
-            module_outputs_names = list(module.ModuleOutputs.Indexes.Keys)
-            # print(module_outputs_names)
-            module_inputs_names = list(module.ModuleInputs.Indexes.Keys)
-
-            module_outputs = {}
-            for name in module_outputs_names:
-                module_outputs[name] = module.ModuleOutputs.GetItemForKey(name).ValueObj
-
-            module_inputs = {}
-            for name in module_inputs_names:
-                module_inputs[name] = module.ModuleInputs.GetItemForKey(name).ValueObj
-
-            curr_module_values["ModuleOutputValues"] = module_outputs
-            curr_module_values["ModuleInputValues"] = module_inputs
-
-            modules_by_id[module.Id] = curr_module_values
-
-        output = list(modules_by_id.values())
-        return output
-
     def import_app_from_json(self, json: str) -> int:
         """
         import and save app from a json string of an app.
@@ -146,7 +109,9 @@ class DataFlow(PandasMixin, ComposableApi):
         saved_app = self.app_service.SaveApplication(app)
         return saved_app.Id
 
-    def run(self, app_id: int, external_inputs: dict[str, any] = None) -> Optional[RunSet]:
+    def run(
+        self, app_id: int, external_inputs: dict[str, any] = None
+    ) -> Optional[RunSet]:
         """
         Runs a dataflow from the app id.
 

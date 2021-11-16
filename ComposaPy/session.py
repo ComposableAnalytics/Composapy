@@ -1,27 +1,13 @@
 import System
 import System.Net
-from System import Uri, Byte, Array
+from System import Uri
 from CompAnalytics import IServices
 from CompAnalytics.IServices import *
 
-import io
-
-
-class CsStream(io.RawIOBase):
-    def __init__(self, stream):
-        self.messageBodyStream = stream
-        self.buffer = Array.CreateInstance(Byte, 4096)
-
-    def read(self, size=-1):
-        read_size = 4096 if size == -1 else min(size, 4096)
-        number_bytes_read = self.messageBodyStream.Read(self.buffer, 0, read_size)
-        return bytes(self.buffer)[0:number_bytes_read]
-
-    def readable(self):
-        return True
-
 
 class Session:
+    """Use as initialization parameter for any class contained within an api.py file."""
+
     def __init__(self, username_or_api, password=None):
         if password == None:
             connection_settings = IServices.Deploy.ConnectionSettings()

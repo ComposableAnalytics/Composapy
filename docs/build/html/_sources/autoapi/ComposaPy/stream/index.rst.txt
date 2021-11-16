@@ -1,0 +1,36 @@
+:py:mod:`ComposaPy.stream`
+==========================
+
+.. py:module:: ComposaPy.stream
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ComposaPy.stream.CsStream
+
+
+
+
+.. py:class:: CsStream(stream)
+
+   Bases: :py:obj:`io.RawIOBase`
+
+   Base class for raw binary I/O.
+
+   .. py:method:: read(self, size=-1)
+
+
+   .. py:method:: readable(self)
+
+      Return whether object was opened for reading.
+
+      If False, read() will raise OSError.
+
+
+

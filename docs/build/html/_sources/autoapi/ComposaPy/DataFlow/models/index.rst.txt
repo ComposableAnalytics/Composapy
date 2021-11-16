@@ -1,0 +1,145 @@
+:py:mod:`ComposaPy.DataFlow.models`
+===================================
+
+.. py:module:: ComposaPy.DataFlow.models
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ComposaPy.DataFlow.models.Input
+   ComposaPy.DataFlow.models.Result
+   ComposaPy.DataFlow.models.Module
+   ComposaPy.DataFlow.models.ModuleSet
+   ComposaPy.DataFlow.models.RunSet
+   ComposaPy.DataFlow.models.DataFlowObject
+
+
+
+
+.. py:exception:: ModuleResultError
+
+   Bases: :py:obj:`Exception`
+
+   Common base class for all non-exit exceptions.
+
+
+.. py:class:: Input(module_input_contract)
+
+   .. py:attribute:: contract
+      :annotation: :CompAnalytics.Contracts.ModuleInput
+
+      
+
+   .. py:method:: value(self) -> any
+      :property:
+
+
+
+.. py:class:: Result(module_output_contract)
+
+   .. py:attribute:: contract
+      :annotation: :CompAnalytics.Contracts.ModuleOutput
+
+      
+
+   .. py:method:: value(self) -> any
+      :property:
+
+
+
+.. py:class:: Module(module_contract)
+
+   .. py:attribute:: contract
+      :annotation: :CompAnalytics.Contracts.Module
+
+      
+
+   .. py:method:: id(self) -> int
+      :property:
+
+
+   .. py:method:: name(self) -> str
+      :property:
+
+
+   .. py:method:: inputs(self) -> dict[int, Input]
+      :property:
+
+
+   .. py:method:: results(self) -> dict[int, Result]
+      :property:
+
+
+   .. py:method:: result(self) -> any
+      :property:
+
+      Convenience property that gets the first result.value from results.
+      Cannot be used if there is more than one result.
+
+
+
+.. py:class:: ModuleSet(modules: tuple[Module])
+
+   .. py:attribute:: _modules
+      :annotation: :tuple[Module]
+
+      
+
+   .. py:method:: __len__(self)
+
+
+   .. py:method:: __getitem__(self, index)
+
+
+   .. py:method:: __iter__(self)
+
+
+   .. py:method:: first(self)
+
+
+   .. py:method:: first_with_name(self, name)
+
+      Matches by first module with occurring name.
+
+
+
+.. py:class:: RunSet(application_contract: CompAnalytics.Contracts.Application)
+
+   .. py:attribute:: contract
+      :annotation: :CompAnalytics.Contracts.Application
+
+      
+
+   .. py:method:: id(self) -> int
+      :property:
+
+
+   .. py:method:: modules(self) -> ModuleSet
+      :property:
+
+
+
+.. py:class:: DataFlowObject(application_contract: CompAnalytics.Contracts.Application)
+
+   Bases: :py:obj:`CompAnalytics.Contracts.Application`
+
+   .. py:attribute:: contract
+      :annotation: :CompAnalytics.Contracts.Application
+
+      
+
+   .. py:method:: id(self) -> int
+      :property:
+
+
+   .. py:method:: modules(self) -> list[Module]
+      :property:
+
+
+

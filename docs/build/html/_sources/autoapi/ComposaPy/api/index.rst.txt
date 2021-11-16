@@ -1,0 +1,29 @@
+:py:mod:`ComposaPy.api`
+=======================
+
+.. py:module:: ComposaPy.api
+
+
+Module Contents
+---------------
+
+Classes
+~~~~~~~
+
+.. autoapisummary::
+
+   ComposaPy.api.ComposableApi
+
+
+
+
+.. py:class:: ComposableApi(session: ComposaPy.session.Session)
+
+   Superclass that all api classes must inherit from.
+
+   .. py:attribute:: session
+      
+
+      
+
+

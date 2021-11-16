@@ -2,14 +2,10 @@ import pytest
 import os
 from pathlib import Path
 import pandas as pd
-from time import time
 
 from ComposaPy.DataFlow.api import DataFlow
 from ComposaPy.QueryView.api import QueryView
 from ComposaPy.session import Session
-
-from System.Collections.Generic import List
-from CompAnalytics.Contracts.Tables import Table, TableColumnCollection
 
 TEST_API_KEY = os.getenv("TEST_API_KEY")
 TEST_USERNAME = os.getenv("TEST_USERNAME")
@@ -99,14 +95,17 @@ def test_external_input_table(dataflow: DataFlow, dataflow_id: int):
     assert dataflow_rs.modules.first().result.SqlQuery == table.SqlQuery
 
 
-# def test_all_external_inputs_pw(self):
-#     comp_session = ca.ComposableSession(user,pw)
-#     path_to_my_csv = r'C:\Composable\Product\UnitTests\TestData\DupColumns.csv'
-#     dict_of_inputs = {'IntInput': 3, 'FileInput': path_to_my_csv, 'TableInput': pd.DataFrame({'a':[1]})}
-#     dataflow_id = 7552
-#     run_id = comp_session.run_dataflow_with_inputs(dataflow_id,dict_of_inputs)
-#     print(run_id)
-#     csv_test = Path(ROOT_PATH_COMPOSABLE, "UnitTests", "TestData", "DupColumns.csv")
+# @pytest.mark.parametrize("dataflow_id", ["EXTERNAL_INPUT_FILE_ID"], indirect=True)
+# def test_external_input_file(dataflow: DataFlow, dataflow_id: int):
+#
+#     table_dataflow = dataflow.run(table_dataflow_id)
+#     table = table_dataflow.modules.first_with_name("Sql Query").result
+#     test_input = { "TableInput": table }
+#
+#     dataflow_rs = dataflow.run(dataflow_id, external_inputs=test_input)
+#
+#     assert dataflow_rs.modules.first().result.Headers == table.Headers
+#     assert dataflow_rs.modules.first().result.SqlQuery == table.SqlQuery
 
 
 # def test_queryview_to_pandas(queryview: QueryView):
