@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: composapy
+Version: 0.0.41
+Summary: ComposableAnalytics csharp binding for python
+Home-page: https://github.com/ComposableAnalytics/ComposaPy
+Author: michael surdouski
+Author-email: michael.surdouski@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/ComposableAnalytics/ComposaPy/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7.1
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+Composable's API binding for python.
+
+README to be expanded as development continues.
+
+

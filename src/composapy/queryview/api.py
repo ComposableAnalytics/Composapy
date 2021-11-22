@@ -3,16 +3,16 @@ import pandas as pd
 
 from CompAnalytics.IServices import *
 
-from ComposaPy.api import ComposableApi
-from ComposaPy.mixins import PandasMixin
-from ComposaPy.stream import CsStream
+from ..api import ComposableApi
+from ..mixins import PandasMixin
+from ..stream import CsStream
 
 
 class QueryView(PandasMixin, ComposableApi):
-    """A wrapper class for DataFlow operations."""
+    """A wrapper class for dataflow operations."""
 
     def get_queryview(self, id: int) -> pd.DataFrame:
-        queryview_service = self.session._services["QueryViewService"]
+        queryview_service = self.session.services["QueryViewService"]
         queryview = queryview_service.Get(id)
         queryview_data = queryview_service.RunQueryDynamic(queryview)
         column_names = []
@@ -45,8 +45,8 @@ class QueryView(PandasMixin, ComposableApi):
         (pd.DataFrame) df: DataFrame of Queryview.
         """
 
-        queryview = self.session._services["QueryViewService"].Get(queryview_id)
-        queryview_data = self.session._services["QueryViewService"].RunQueryDynamic(
+        queryview = self.session.services["QueryViewService"].Get(queryview_id)
+        queryview_data = self.session.services["QueryViewService"].RunQueryDynamic(
             queryview
         )
         columns_definitions = queryview_data.ColumnDefinitions
@@ -79,14 +79,14 @@ class QueryView(PandasMixin, ComposableApi):
         (pd.DataFrame) df: DataFrame of Queryview.
         """
 
-        queryview = self.session._services["QueryViewService"].Get(queryview_id)
+        queryview = self.session.services["QueryViewService"].Get(queryview_id)
         paging_options = queryview.PagingOptions
         # print(paging_options.PageNum)
         # print(paging_options.PageLimit)
         paging_options.PageNum = 1
         paging_options.PageLimit = 0x7FFFFFFF
         queryview.PagingOptions = paging_options
-        stream = self.session._services["QueryViewService"].GetQueryResultsDownloadWeb(
+        stream = self.session.services["QueryViewService"].GetQueryResultsDownloadWeb(
             queryview, "csv"
         )
         df = pd.read_csv(CsStream(stream))

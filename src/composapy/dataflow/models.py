@@ -1,9 +1,9 @@
 from __future__ import annotations
-from typing import Optional
+from typing import Optional, Tuple, Dict
 
 from CompAnalytics import Contracts, IServices
 
-from ComposaPy.mixins import ObjectSetMixin
+from ..mixins import ObjectSetMixin
 
 
 class ModuleResultError(Exception):
@@ -28,8 +28,7 @@ EXTERNAL_INPUT_NAMES = (
 
 
 class Input:
-    """Wraps ModuleIn contract for a simplified textual user interface.
-    """
+    """Wraps ModuleIn contract for a simplified textual user interface."""
 
     contract: Contracts.ModuleInput
 
@@ -38,14 +37,12 @@ class Input:
 
     @property
     def value(self) -> any:
-        """Returns the contract member, ValueObj (value).
-        """
+        """Returns the contract member, ValueObj (value)."""
         return self.contract.ValueObj
 
 
 class Result:
-    """Wraps ModuleOut contract for a simplified textual user interface.
-    """
+    """Wraps ModuleOut contract for a simplified textual user interface."""
 
     contract: Contracts.ModuleOutput
 
@@ -54,14 +51,12 @@ class Result:
 
     @property
     def value(self) -> any:
-        """Returns the contract member, ValueObj (value).
-        """
+        """Returns the contract member, ValueObj (value)."""
         return self.contract.ValueObj
 
 
 class Module:
-    """The object representation of a module inside a dataflow object.
-    """
+    """The object representation of a module inside a dataflow object."""
 
     contract: Contracts.Module
 
@@ -70,14 +65,12 @@ class Module:
 
     @property
     def name(self) -> str:
-        """Returns the module name.
-        """
+        """Returns the module name."""
         return self.contract.Name
 
     @property
-    def inputs(self) -> dict[int, Input]:
-        """Maps each module input, by name, to a corresponding Input object.
-        """
+    def inputs(self) -> Dict[int, Input]:
+        """Maps each module input, by name, to a corresponding Input object."""
         return {
             name: Input(name.ModuleInputs.GetItemForKey(name))
             for name in self.contract.ModuleInputs.Indexes.Keys
@@ -85,13 +78,11 @@ class Module:
 
 
 class ResultModule(Module):
-    """Extends Module to give the ability to retrieve module results.
-    """
+    """Extends Module to give the ability to retrieve module results."""
 
     @property
-    def results(self) -> dict[int, Result]:
-        """Maps each module result, by name, to a corresponding Result object.
-        """
+    def results(self) -> Dict[int, Result]:
+        """Maps each module result, by name, to a corresponding Result object."""
         return {
             name: Result(self.contract.ModuleOutputs.GetItemForKey(name))
             for name in self.contract.ModuleOutputs.Indexes.Keys
@@ -116,52 +107,60 @@ class ModuleSet(ObjectSetMixin):
     contained with self._target.
     """
 
-    _target: tuple[Module] | tuple[ResultModule]
+    _target: Tuple[Module] | Tuple[ResultModule]
 
-    def __init__(self, modules: tuple[Module] | tuple[ResultModule]) -> None:
+    def __init__(self, modules: Tuple[Module] | Tuple[ResultModule]) -> None:
         self._target = modules
 
 
 class DataFlowRun:
-    """Similar to a DataFlowObject, with a couple of differences. The first difference is that 
-    every DataFlowRun has an id, where as a DataFlowObject only has an ID if it is saved. The second 
-    difference is that the modules property on a DataFlowRun returns ModuleSet<ResultModule> 
-    instead of ModuleSet<Module>, which has the additional functionality of viewing module 
+    """Similar to a DataFlowObject, with a couple of differences. The first difference is that
+    every DataFlowRun has an id, where as a DataFlowObject only has an ID if it is saved. The second
+    difference is that the modules property on a DataFlowRun returns ModuleSet<ResultModule>
+    instead of ModuleSet<Module>, which has the additional functionality of viewing module
     results.
     """
 
-    contract: Contracts.Application
+    contract: Contracts.ExecutionState
 
-    def __init__(self, contract: Contracts.Application) -> None:
-        self.contract = contract
+    def __init__(self, execution_state: Contracts.ExecutionState) -> None:
+        self.contract = execution_state
 
     @property
     def id(self) -> int:
-        """Returns the id of dataflow run. Every DataFlowRun is guaranteed to have an id with non-null 
-        value.
+        """Returns the id of dataflow run. Every DataFlowRun is guaranteed to have an id with a
+        non-null value.
         """
-        return self.contract.Id
+        return self.contract.Handle.Id
+
+    @property
+    def app_id(self) -> int:
+        """Returns the originating dataflow application id, assuming originating dataflow was
+        saved.
+        """
+        return self.contract.Handle.AppId
 
     @property
     def modules(self) -> ModuleSet:
-        """A ModuleSet made up of ResultModule's.
-        """
+        """A ModuleSet made up of ResultModule's."""
         return ModuleSet(
-            tuple(ResultModule(_module) for _module in self.contract.Modules)
+            tuple(
+                ResultModule(_module) for _module in self.contract.Application.Modules
+            )
         )
 
 
 class DataFlowRunSet(ObjectSetMixin):
     """Wrapper for dataflow run objects, using ObjectSetMixin convenience mixin utilities."""
 
-    _target = tuple[DataFlowRun]
+    _target: Tuple[DataFlowRun]
 
-    def __init__(self, dataflow_runs: tuple[DataFlowRun]) -> None:
+    def __init__(self, dataflow_runs: Tuple[DataFlowRun]) -> None:
         self._target = dataflow_runs
 
 
 class DataFlowObject:
-    """DataFlowObject can be used to both model and save dataflow configurations, both saved and 
+    """DataFlowObject can be used to both model and save dataflow configurations, both saved and
     before saving. Holds a reference to the service needed to carry out operations on it's behalf.
     """
 
@@ -176,14 +175,12 @@ class DataFlowObject:
 
     @property
     def id(self) -> Optional[int]:
-        """The contract id. An unsaved DataFlowObject's id property is None.
-        """
+        """The contract id. An unsaved DataFlowObject's id property is None."""
         return self.contract.Id
 
     @property
     def modules(self) -> ModuleSet:
-        """A ModuleSet made up of Module's.
-        """
+        """A ModuleSet made up of Module's."""
         return ModuleSet(tuple(Module(_module) for _module in self.contract.Modules))
 
     def save(self) -> DataFlowObject:
@@ -193,28 +190,29 @@ class DataFlowObject:
         self.contract = self._service.SaveApplication(self.contract)
         return self
 
-    def run(self, external_inputs: dict[str, any] = None) -> DataFlowRun:
+    def run(self, external_inputs: Dict[str, any] = None) -> DataFlowRun:
         """Runs the dataflow represented by contained contract. Any external modules
         (external int, table, file) that require outside input to run can be added using a
         dictionary with the module input's name and corresponding contract.
         """
         for module in self.modules:
-            module.RequestingExecution = True
+            module.contract.RequestingExecution = True
             if (
                 external_inputs
                 and module.contract.ModuleType.Name in EXTERNAL_INPUT_NAMES
             ):
                 _overwrite_module_inputs(external_inputs, module.contract)
 
-        execution_context = self._service.CreateExecutionContext(
+        execution_handle = self._service.CreateExecutionContext(
             self.contract, Contracts.ExecutionContextOptions()
         )
-        run = self._service.RunExecutionContext(execution_context)
-        return DataFlowRun(run)
+        self._service.RunExecutionContext(execution_handle)
+        execution_state = self._service.GetRun(execution_handle.Id)
+        return DataFlowRun(execution_state)
 
 
 def _overwrite_module_inputs(
-    external_inputs: dict[str, any], module: Contracts.Module
+    external_inputs: Dict[str, any], module: Contracts.Module
 ) -> None:
     module_input = module.ModuleInputs.GetItemForKey("Name")
     if module_input.ValueObj in external_inputs.keys():
@@ -222,7 +220,7 @@ def _overwrite_module_inputs(
 
 
 def _update_module_valueobj(
-    external_inputs: dict[str, any], module: Contracts.Module, module_input
+    external_inputs: Dict[str, any], module: Contracts.Module, module_input
 ) -> None:
     cache_input = module.ModuleInputs.GetItemForKey("Input")
     cache_input.ValueObj = external_inputs[module_input.ValueObj]

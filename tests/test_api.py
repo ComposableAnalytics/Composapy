@@ -1,23 +1,27 @@
+from __future__ import annotations
 import pytest
 import os
 from pathlib import Path
 import pandas as pd
 
-from ComposaPy.DataFlow.api import DataFlow
-from ComposaPy.DataFlow.models import DataFlowObject
-from ComposaPy.QueryView.api import QueryView
-from ComposaPy.session import Session
+from dotenv import load_dotenv
 
-TEST_API_KEY = os.getenv("TEST_API_KEY")
-TEST_USERNAME = os.getenv("TEST_USERNAME")
-TEST_PASSWORD = os.getenv("TEST_PASSWORD")
-ROOT_PATH_COMPOSABLE = os.getenv("ROOT_PATH_COMPOSABLE")
-ROOT_PATH_PYTHONNET = os.getenv("ROOT_PATH_PYTHONNET")
+load_dotenv(".test.env")
+
+from src.composapy.loader import load_init
+
+load_init()
+
+
+#  from src.composapy.queryview.api import QueryView
+from src.composapy.dataflow.api import DataFlow
+from src.composapy.dataflow.models import DataFlowObject
+from src.composapy.session import Session
 
 
 @pytest.fixture
 def session():
-    return Session(TEST_USERNAME, TEST_PASSWORD)
+    return Session(os.getenv("TEST_USERNAME"), os.getenv("TEST_PASSWORD"))
 
 
 @pytest.fixture
@@ -28,7 +32,7 @@ def dataflow(session: Session) -> DataFlow:
 @pytest.fixture
 def dataflow_object(dataflow: DataFlow, request) -> DataFlowObject:
     return dataflow.create(
-        file_path=str(Path(ROOT_PATH_PYTHONNET, "tests", "TestFiles", request.param))
+        file_path=str(Path(os.path.dirname(Path(__file__)), "TestFiles", request.param))
     )
 
 
@@ -37,8 +41,8 @@ dataflow_object_extra = dataflow_object
 
 
 @pytest.fixture
-def queryview(session: Session) -> QueryView:
-    return QueryView(session)
+def queryview(session: Session) -> queryview:
+    return queryview(session)
 
 
 @pytest.mark.parametrize("dataflow_object", ["calculator_test.json"], indirect=True)
@@ -106,7 +110,7 @@ def test_external_input_table(
 
 
 # @pytest.mark.parametrize("dataflow_id", ["EXTERNAL_INPUT_FILE_ID"], indirect=True)
-# def test_external_input_file(dataflow: DataFlow, dataflow_id: int):
+# def test_external_input_file(dataflow: dataflow, dataflow_id: int):
 #
 #     table_dataflow = dataflow.run(table_dataflow_id)
 #     table = table_dataflow.modules.first_with_name("Sql Query").result
@@ -118,13 +122,13 @@ def test_external_input_table(
 #     assert dataflow_rs.modules.first().result.SqlQuery == table.SqlQuery
 
 
-# def test_queryview_to_pandas(queryview: QueryView):
+# def test_queryview_to_pandas(queryview: queryview):
 #     df = queryview.queryview_from_id(137072)
 #     print(df.head())
 #     print(df.dtypes)
 #
 #
-# def test_queryview_to_pandas_streaming(queryview: QueryView):
+# def test_queryview_to_pandas_streaming(queryview: queryview):
 #     t = time()
 #     df = queryview.queryview_from_id(137072)
 #     print(time() - t)

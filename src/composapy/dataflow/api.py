@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Dict
 
 import System
 import System.Net
@@ -6,25 +6,23 @@ from CompAnalytics import Contracts, IServices
 from CompAnalytics.IServices import *
 from CompAnalytics.Contracts import *
 
-from ComposaPy.DataFlow.models import DataFlowObject, DataFlowRun, DataFlowRunSet
-from ComposaPy.api import ComposableApi
-from ComposaPy.mixins import PandasMixin
+from .models import DataFlowObject, DataFlowRun, DataFlowRunSet
+from ..api import ComposableApi
+from ..mixins import PandasMixin
 
 
 class DataFlow(PandasMixin, ComposableApi):
-    """A wrapper class for DataFlow service-level operations.
-    """
+    """A wrapper class for dataflow service-level operations."""
 
     @property
     def service(self) -> IServices.IApplicationService:
         """A composable analytics csharp binding to the IServices.IApplicationService (otherwise
-        known as a DataFlow service) object.
+        known as a dataflow service) object.
         """
-        return self.session._services["ApplicationService"]
+        return self.session.services["ApplicationService"]
 
     def get(self, dataflow_id: int) -> DataFlowObject:
-        """Returns wrapped dataflow contract inside a dataflow object.
-        """
+        """Returns wrapped dataflow contract inside a dataflow object."""
         dataflow = self.service.GetApplication(dataflow_id)
         return DataFlowObject(dataflow, self.service)
 
@@ -45,19 +43,19 @@ class DataFlow(PandasMixin, ComposableApi):
         return DataFlowObject(app, self.service)
 
     def get_run(self, run_id: int) -> DataFlowRun:
-        """Returns wrapped dataflow contract inside of a DataFlowRun object.
-        """
-        run = self.service.GetRun(run_id)
-        return DataFlowRun(run)
+        """Returns wrapped dataflow contract inside of a DataFlowRun object."""
+        execution_state = self.service.GetRun(run_id)
+        return DataFlowRun(execution_state)
 
     def get_runs(self, dataflow_id) -> DataFlowRunSet:
-        """Returns a DataFlowRunSet -- a wrapped set of DataFlowRun.
-        """
-        runs = self.service.GetAppRuns(dataflow_id)
-        return DataFlowRunSet(tuple(DataFlowRun(run) for run in runs))
+        """Returns a DataFlowRunSet -- a wrapped set of DataFlowRun."""
+        execution_states = self.service.GetAppRuns(dataflow_id)
+        return DataFlowRunSet(
+            tuple(DataFlowRun(execution_state) for execution_state in execution_states)
+        )
 
     def run(
-        self, dataflow_id: int, external_inputs: dict[str, any] = None
+        self, dataflow_id: int, external_inputs: Dict[str, any] = None
     ) -> Optional[DataFlowRun]:
         """
         Runs a dataflow from the dataflow id (an invalid id will cause this method to return None).
@@ -70,17 +68,16 @@ class DataFlow(PandasMixin, ComposableApi):
             return None
 
         dataflow_object = DataFlowObject(dataflow, self.service)
-        dataflow_rs = dataflow_object.run(external_inputs=external_inputs)
-        return dataflow_rs
+        dataflow_run = dataflow_object.run(external_inputs=external_inputs)
+        return dataflow_run
 
     def run_status(self, run_id: int):
-        """
-        """
+        """ """
 
         run = self.service.GetRun(run_id)
         return System.Enum.GetNames(Contracts.ExecutionStatus)[run.Status]
 
-    def wait_for_run_execution(self, run_id: int) -> dict[str, int]:
+    def wait_for_run_execution(self, run_id: int) -> Dict[str, int]:
         """
         Waits until run has finished.
 

@@ -3,8 +3,7 @@ import pandas as pd
 
 
 class ObjectSetMixin:
-    """Used for object model sets which require element navigation tree utilities.
-    """
+    """Used for object model sets which require element navigation tree utilities."""
 
     _target = None
 
@@ -18,14 +17,22 @@ class ObjectSetMixin:
         return iter(self._target)
 
     def first(self):
-        """Returns first module in self._target.
-        """
+        """Returns first module in self._target."""
         return next(iter(self._target))
 
     def first_with_name(self, name):
-        """Matches by first in self._target with given name.
-        """
+        """Matches by first in self._target with given name."""
         return next(item for item in self._target if item.name == name)
+
+    def filter(self, **kwargs):
+        """Filters based on a module field value, such as name.
+        example: modules.filter(name=module_name)
+        """
+        return tuple(
+            n
+            for n in self._target
+            if all(getattr(n, k) == v for k, v in kwargs.items())
+        )
 
 
 class PandasMixin:
@@ -63,7 +70,7 @@ class PandasMixin:
     session = None
 
     def convert_table_to_df(self, table):
-        table_results = self.session._services["TableService"].GetResultFromTable(
+        table_results = self.session.services["TableService"].GetResultFromTable(
             table, 0, 0x7FFFFFFF
         )
         headers = table_results.Headers
