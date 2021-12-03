@@ -12,3 +12,7 @@ __pycache__/
 
 #binding config file, doesn't belong in project directory
 python.exe.config
+
+#build artifacts
+src/composapy.egg-info/PKG-INFO
+dist/*

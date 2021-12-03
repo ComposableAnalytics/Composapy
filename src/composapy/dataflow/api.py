@@ -3,8 +3,8 @@ from typing import Optional, Dict
 import System
 import System.Net
 from CompAnalytics import Contracts, IServices
-from CompAnalytics.IServices import *
 from CompAnalytics.Contracts import *
+from CompAnalytics.IServices import *
 
 from .models import DataFlowObject, DataFlowRun, DataFlowRunSet
 from ..api import ComposableApi
@@ -14,17 +14,10 @@ from ..mixins import PandasMixin
 class DataFlow(PandasMixin, ComposableApi):
     """A wrapper class for dataflow service-level operations."""
 
-    @property
-    def service(self) -> IServices.IApplicationService:
-        """A composable analytics csharp binding to the IServices.IApplicationService (otherwise
-        known as a dataflow service) object.
-        """
-        return self.session.services["ApplicationService"]
-
     def get(self, dataflow_id: int) -> DataFlowObject:
         """Returns wrapped dataflow contract inside a dataflow object."""
-        dataflow = self.service.GetApplication(dataflow_id)
-        return DataFlowObject(dataflow, self.service)
+        dataflow = self.session.app_service.GetApplication(dataflow_id)
+        return DataFlowObject(dataflow, self.session)
 
     def create(self, json: str = None, file_path: str = None) -> DataFlowObject:
         """Takes a json formatted string or a local file path containing a valid json. Imports
@@ -39,19 +32,22 @@ class DataFlow(PandasMixin, ComposableApi):
         if file_path:
             json = System.IO.File.ReadAllText(file_path)
 
-        app = self.service.ImportApplicationFromString(json)
-        return DataFlowObject(app, self.service)
+        app = self.session.app_service.ImportApplicationFromString(json)
+        return DataFlowObject(app, self.session)
 
     def get_run(self, run_id: int) -> DataFlowRun:
         """Returns wrapped dataflow contract inside of a DataFlowRun object."""
-        execution_state = self.service.GetRun(run_id)
-        return DataFlowRun(execution_state)
+        execution_state = self.session.app_service.GetRun(run_id)
+        return DataFlowRun(execution_state, self.session)
 
     def get_runs(self, dataflow_id) -> DataFlowRunSet:
         """Returns a DataFlowRunSet -- a wrapped set of DataFlowRun."""
-        execution_states = self.service.GetAppRuns(dataflow_id)
+        execution_states = self.session.app_service.GetAppRuns(dataflow_id)
         return DataFlowRunSet(
-            tuple(DataFlowRun(execution_state) for execution_state in execution_states)
+            tuple(
+                DataFlowRun(execution_state, self.session)
+                for execution_state in execution_states
+            )
         )
 
     def run(
@@ -63,18 +59,18 @@ class DataFlow(PandasMixin, ComposableApi):
         added using a dictionary with the module input's name and corresponding contract.
         """
 
-        dataflow = self.service.GetApplication(dataflow_id)
+        dataflow = self.session.app_service.GetApplication(dataflow_id)
         if not dataflow:
             return None
 
-        dataflow_object = DataFlowObject(dataflow, self.service)
+        dataflow_object = DataFlowObject(dataflow, self.session)
         dataflow_run = dataflow_object.run(external_inputs=external_inputs)
         return dataflow_run
 
     def run_status(self, run_id: int):
         """ """
 
-        run = self.service.GetRun(run_id)
+        run = self.session.app_service.GetRun(run_id)
         return System.Enum.GetNames(Contracts.ExecutionStatus)[run.Status]
 
     def wait_for_run_execution(self, run_id: int) -> Dict[str, int]:
@@ -88,12 +84,14 @@ class DataFlow(PandasMixin, ComposableApi):
         (dict[str, int]) execution_status: status of the execution
         """
 
-        run = self.service.GetRun(run_id)
+        run = self.session.app_service.GetRun(run_id)
         if run.Status == Contracts.ExecutionStatus.Running:
-            self.service.WaitForExecutionContext(run.Handle)
+            self.session.app_service.WaitForExecutionContext(run.Handle)
         execution_names = System.Enum.GetNames(Contracts.ExecutionStatus)
 
         output = {}
-        output["execution_status"] = execution_names[self.service.GetRun(run_id).Status]
+        output["execution_status"] = execution_names[
+            self.session.app_service.GetRun(run_id).Status
+        ]
         output["run_id"] = run_id
         return output

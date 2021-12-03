@@ -1,25 +1,18 @@
+import sys
 import os
 import logging
 from pathlib import Path
 from typing import Dict
 
 
-def add_dll_reference(path: Path) -> None:
+def add_dll_reference(path: str) -> None:
     """Attempts to connect to csharp language runtime library at specified path."""
     try:
         import clr
 
-        clr.AddReference(str(path))
+        clr.AddReference(path)
     except:
         logging.warning(f"Failed to load .dll : {path}.")
-
-
-def _is_project_dll(path: Path) -> bool:
-    return (
-        path.is_file()
-        and path.name.endswith(".dll")
-        and path.name.startswith("CompAnalytics")
-    )
 
 
 def load_init(environment_variables: Dict = None) -> None:
@@ -31,7 +24,7 @@ def load_init(environment_variables: Dict = None) -> None:
         for key, val in environment_variables.items():
             os.environ[key] = val
 
-    if not os.getenv("ROOT_PATH_COMPOSABLE"):
+    if not os.getenv("DATALAB_DLL_DIR"):
         try:
             from dotenv import load_dotenv
 
@@ -39,12 +32,16 @@ def load_init(environment_variables: Dict = None) -> None:
         except Exception:
             logging.warning(f"failed to load_dotenv with local environment settings")
 
-    copy_plugins_path = Path(
-        os.getenv("ROOT_PATH_COMPOSABLE"), "CopyPlugins", "bin", "Debug"
-    )
-    for _path in copy_plugins_path.iterdir():
-        if _is_project_dll(_path):
-            add_dll_reference(_path)
+    add_dll_reference("System.Runtime")
+    add_dll_reference("System")
+    add_dll_reference("System.Net")
+
+    sys.path.append(os.getenv("DATALAB_DLL_DIR"))
+
+    DLLs = list(Path(os.getenv("DATALAB_DLL_DIR")).rglob("*.dll"))
+    composable_DLLs = [dll for dll in DLLs if dll.name.startswith("CompAnalytics")]
+    for dll in composable_DLLs:
+        add_dll_reference(str(dll))
 
 
 if __name__ == "__main__":

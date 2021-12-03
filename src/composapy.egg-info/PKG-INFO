@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: composapy
-Version: 0.0.41
+Version: 0.1.1
 Summary: ComposableAnalytics csharp binding for python
 Home-page: https://github.com/ComposableAnalytics/ComposaPy
 Author: michael surdouski

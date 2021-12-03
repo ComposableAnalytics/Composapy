@@ -1,5 +1,10 @@
+from typing import Optional
+
 import System
 import pandas as pd
+
+from .session import Session
+from CompAnalytics import Contracts
 
 
 class ObjectSetMixin:
@@ -29,9 +34,9 @@ class ObjectSetMixin:
         example: modules.filter(name=module_name)
         """
         return tuple(
-            n
-            for n in self._target
-            if all(getattr(n, k) == v for k, v in kwargs.items())
+            item
+            for item in self._target
+            if all(getattr(item, key) == val for key, val in kwargs.items())
         )
 
 
@@ -69,8 +74,11 @@ class PandasMixin:
     }
     session = None
 
-    def convert_table_to_df(self, table):
-        table_results = self.session.services["TableService"].GetResultFromTable(
+    def convert_table_to_dataframe(self, table) -> Optional[pd.DataFrame]:
+        if not self.session:
+            return
+
+        table_results = self.session.table_service.GetResultFromTable(
             table, 0, 0x7FFFFFFF
         )
         headers = table_results.Headers
@@ -101,3 +109,23 @@ class PandasMixin:
                 column_def.Type
             ]
         return dtypes_dict
+
+
+class SessionObjectMixin:
+    """For classes that require a session to function."""
+
+    session = None
+
+    def __init__(self, session: Session = None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.session = session
+
+
+# class ValueObjectMixin:
+#     """Used for interacting with and displaying module inputs and outputs."""
+#
+#     contract: Contracts.ModuleInput | Contracts.ModuleOutput
+#
+#     @property
+#     def value_object(self) -> any:
+#         return self.contract.ValueObj
