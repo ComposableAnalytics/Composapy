@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: composapy
-Version: 0.1.1
+Version: 0.2.0
 Summary: ComposableAnalytics csharp binding for python
 Home-page: https://github.com/ComposableAnalytics/ComposaPy
 Author: michael surdouski
@@ -15,8 +15,6 @@ Requires-Python: >=3.7.1
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
-Composable's API binding for python.
-
-README to be expanded as development continues.
+[composapy-readme.ipynb](composapy-readme.ipynb)
 
 

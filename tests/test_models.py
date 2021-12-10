@@ -1,6 +1,10 @@
 import pytest
+import os
 
-from src.composapy.dataflow.models import DataFlowObject
+if os.getenv("IS_UNPACKAGED"):
+    from src.composapy.dataflow.models import DataFlowObject
+else:
+    from composapy.dataflow.models import DataFlowObject
 
 
 @pytest.mark.parametrize("dataflow_object", ["table_module_input.json"], indirect=True)

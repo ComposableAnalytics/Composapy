@@ -42,7 +42,7 @@ class Input(PandasMixin, SessionObjectMixin):
             return self.convert_table_to_dataframe(self.contract.ValueObj)._repr_html_()
 
     @property
-    def value_obj(self) -> any:
+    def value(self) -> any:
         """Returns the contract member, ValueObj (value)."""
         return self.contract.ValueObj
 
@@ -67,7 +67,7 @@ class Result(PandasMixin, SessionObjectMixin):
             return self.convert_table_to_dataframe(self.contract.ValueObj)._repr_html_()
 
     @property
-    def value_obj(self) -> any:
+    def value(self) -> any:
         """Returns the contract member, ValueObj (value)."""
         return self.contract.ValueObj
 

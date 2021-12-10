@@ -9,6 +9,7 @@ __pycache__/
 #environment specific settings
 *.local.env
 *.test.env
+*.setup.env
 
 #binding config file, doesn't belong in project directory
 python.exe.config
