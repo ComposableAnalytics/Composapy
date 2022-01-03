@@ -118,7 +118,7 @@ class Module(SessionObjectMixin):
         """Maps each module input, by name, to a corresponding Input object."""
         return InputSet(
             tuple(
-                Input(self.contract.ModuleInputs.GetItemForKey(name), self.session)
+                Input(self.contract.ModuleInputs[name], self.session)
                 for name in self.contract.ModuleInputs.Indexes.Keys
             )
         )
@@ -128,7 +128,7 @@ class Module(SessionObjectMixin):
         """Maps each module result, by name, to a corresponding Result object."""
         return ResultSet(
             tuple(
-                Result(self.contract.ModuleOutputs.GetItemForKey(name), self.session)
+                Result(self.contract.ModuleOutputs[name], self.session)
                 for name in self.contract.ModuleOutputs.Indexes.Keys
             )
         )
@@ -264,9 +264,9 @@ class DataFlowObject(SessionObjectMixin):
 def _overwrite_module_inputs(
     external_inputs: Dict[str, any], module: Contracts.Module
 ) -> None:
-    module_input = module.ModuleInputs.GetItemForKey("Name")
+    module_input = module.ModuleInputs["Name"]
     if module_input.ValueObj in external_inputs.keys():
-        cache_input = module.ModuleInputs.GetItemForKey("Input")
+        cache_input = module.ModuleInputs["Input"]
         module.ModuleInputs.Remove("Input")
         cache_input.ValueObj = external_inputs[module_input.ValueObj]
         module.ModuleInputs.Add(cache_input)

@@ -15,5 +15,5 @@ __pycache__/
 python.exe.config
 
 #build artifacts
-src/composapy.egg-info/PKG-INFO
+*.egg-info/
 dist/*

@@ -16,7 +16,7 @@ def add_dll_reference(path: str) -> None:
 
 
 def load_init(environment_variables: Dict = None) -> None:
-    """Either get environment variable "ROOT_PATH_COMPOSABLE", or attempt to load into
+    """Either get environment variable "DATALAB_DLL_DIR", or attempt to load into
     environment variables using dotenv (for testing or custom load strategy). Afterward, uses root
     path to find and load needed dll's to use a session.
     """

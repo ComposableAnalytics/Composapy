@@ -38,24 +38,24 @@ class Session:
             self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Form
             self.connection_settings.FormCredential = form_credential
 
-            self.ResourceManager = IServices.Deploy.ResourceManager(
-                self.connection_settings
-            )
+        self.ResourceManager = IServices.Deploy.ResourceManager(
+            self.connection_settings
+        )
 
-            self.services = {}
-            for method in self.ResourceManager.AvailableServices():
-                method_name = self.get_method_name(method)
-                try:
-                    self.services[method_name] = self.ResourceManager.CreateAuthChannel[
-                        method
-                    ](method_name)
+        self.services = {}
+        for method in self.ResourceManager.AvailableServices():
+            method_name = self.get_method_name(method)
+            try:
+                self.services[method_name] = self.ResourceManager.CreateAuthChannel[
+                    method
+                ](method_name)
 
-                except:
-                    self.services[
-                        method_name
-                    ] = self.ResourceManager.CreateAuthChannelNoWebScripting[method](
-                        method_name
-                    )
+            except:
+                self.services[
+                    method_name
+                ] = self.ResourceManager.CreateAuthChannelNoWebScripting[method](
+                    method_name
+                )
 
     @staticmethod
     def get_method_name(method):

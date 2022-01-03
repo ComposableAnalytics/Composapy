@@ -4,7 +4,6 @@ import System
 import pandas as pd
 
 from .session import Session
-from CompAnalytics import Contracts
 
 
 class ObjectSetMixin:
@@ -83,8 +82,7 @@ class PandasMixin:
         )
         headers = table_results.Headers
         results = table_results.Results
-        df = pd.DataFrame(results)
-        df.columns = headers
+        df = pd.DataFrame(results, columns=headers)
 
         dtypes_dict = self._make_pandas_dtypes_dict(table.Columns)
         for key in dtypes_dict.keys():
@@ -119,13 +117,3 @@ class SessionObjectMixin:
     def __init__(self, session: Session = None, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.session = session
-
-
-# class ValueObjectMixin:
-#     """Used for interacting with and displaying module inputs and outputs."""
-#
-#     contract: Contracts.ModuleInput | Contracts.ModuleOutput
-#
-#     @property
-#     def value_object(self) -> any:
-#         return self.contract.ValueObj
