@@ -1,6 +1,7 @@
 auto_mix_prep==0.2.0
-clr==1.0.3
-numpy==1.20.2
-pandas==1.2.4
+pythonnet==3.0.0a1
+clr-loader==0.1.7
+numpy
+pandas
 python-dotenv==0.19.2
-pythonnet==2.5.2
+pytest

@@ -1,15 +1,9 @@
 from __future__ import annotations
 import pytest
 import pandas as pd
-import os
 
-if os.getenv("IS_UNPACKAGED"):
-    from src.composapy.dataflow.api import DataFlow
-    from src.composapy.dataflow.models import DataFlowObject
-
-else:
-    from composapy.dataflow.api import DataFlow
-    from composapy.dataflow.models import DataFlowObject
+from composapy.dataflow.api import DataFlow
+from composapy.dataflow.models import DataFlowObject
 
 
 @pytest.mark.parametrize("dataflow_object", ["calculator_test.json"], indirect=True)
