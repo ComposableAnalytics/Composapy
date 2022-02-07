@@ -36,10 +36,18 @@ C:\> python --version
 
 In the root composapy directory, update or create the file `.test.env` with your local settings. 
 There may be more than three values in this file, but only the following need to be updated. 
-`TEST_API_KEY` can be from any composable web user, such as unittest or unittestadmin.
+
+- `TEST_API_KEY` can be from any composable web user, such as unittest or unittestadmin.
+- `tf.exe` can be found by hitting windows key, searching for "Developer Command Prompt for VS 
+  20XX" and running the command `where tf.exe` (note: when copy-pasting, back-slashes need to be 
+  changed to forward-slashes).
+  - The location of the tf.exe is different depending on a multitude of variables. If anyone has 
+    a script that can be run, which is guaranteed to find the tf.exe, please update to remove 
+    this environment variables and call/use that script within `tox-hook.exe`. 
 ```
 TEST_API_KEY="yourApiKeyHere"
 ROOT_PATH_COMPOSABLE="C:/Path/To/Composable Analytics"
+TF_EXE_PATH="C:/Path/To/tf.exe"
 ```
 
 
