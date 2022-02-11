@@ -25,15 +25,14 @@ class Session:
         user_or_token: str,
         password: str = None,
     ):
+        self.connection_settings = IServices.Deploy.ConnectionSettings()
         if not password:
-            self.connection_settings = IServices.Deploy.ConnectionSettings()
             self.connection_settings.Uri = Uri("http://localhost/CompApp/")
             self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Api
             self.connection_settings.ApiKey = user_or_token
 
         else:
             form_credential = System.Net.NetworkCredential(user_or_token, password)
-            self.connection_settings = IServices.Deploy.ConnectionSettings()
             self.connection_settings.Uri = Uri("http://localhost/CompApp/")
             self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Form
             self.connection_settings.FormCredential = form_credential
