@@ -16,11 +16,11 @@ def grant_permissions(path: Path) -> None:
     )
 
 
-def add_to_tfs(path: Path, recursive: bool = False) -> None:
+def tfs_command(path: Path, command: str, recursive: bool = False) -> None:
     subprocess.check_output(
         [
             f"{tf_exe_path}",
-            "add",
+            command,
             f"{path}",
             f"{'/recursive' if recursive else ''}",
         ],
@@ -69,7 +69,7 @@ wheel_dest = datalabservice_static_dir.joinpath("wheels")
 
 try:
     old_wheel = sorted(wheel_dest.glob("composapy-*.whl"))[0]
-    os.remove(old_wheel)
+    os.remove(Path(old_wheel))
 except IndexError:
     print(
         "Could not find old version of composapy... updating with newly built composapy wheel."
@@ -84,21 +84,14 @@ except Exception:
     )
 
 
-add_to_tfs(datalabservice_static_dir.joinpath("*"), recursive=True)  #  static/*
-add_to_tfs(tests_dest.joinpath("test_*.py"))  #  tests/test_*.py
-add_to_tfs(tests_dest.joinpath("conftest.py"))  #  tests/conftest.py
-add_to_tfs(tests_dest.joinpath("__init__.py"))  #  tests/__init__.py
-add_to_tfs(tests_dest.joinpath(".test.env"))  #  tests/.test.env
-add_to_tfs(tests_dest.joinpath("TestFiles"), recursive=True)  #  tests/TestFiles/*
-
+tfs_command(datalabservice_static_dir.joinpath("*"), "add", recursive=True)  #  static/*
+tfs_command(tests_dest.joinpath("test_*.py"), "add")  #  tests/test_*.py
+tfs_command(tests_dest.joinpath("conftest.py"), "add")  #  tests/conftest.py
+tfs_command(tests_dest.joinpath("__init__.py"), "add")  #  tests/__init__.py
+tfs_command(tests_dest.joinpath(".test.env"), "add")  #  tests/.test.env
+tfs_command(
+    tests_dest.joinpath("TestFiles"), "add", recursive=True
+)  #  tests/TestFiles/*
 
 ## cleanup unwanted directory
-subprocess.check_output(
-    [
-        f"{tf_exe_path}",
-        "undo",
-        f"{tests_dest.joinpath('TestFiles', '.pytest_cache')}",
-        "/recursive",
-    ],
-    stderr=subprocess.STDOUT,
-)
+tfs_command(tests_dest.joinpath("TestFiles", ".pytest_cache"), "undo", recursive=True)
