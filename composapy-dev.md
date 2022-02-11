@@ -46,42 +46,48 @@ There may be more than three values in this file, but only the following need to
     this environment variables and call/use that script within `tox-hook.exe`. 
 ```
 TEST_API_KEY="yourApiKeyHere"
-ROOT_PATH_COMPOSABLE="C:/Path/To/Composable Analytics"
 TF_EXE_PATH="C:/Path/To/tf.exe"
 ```
 
 
 #### Run tox
+
 ```
-C:\> python -m tox 
+C:\> python -m tox -e build
 ```
+
 Tox will automatically do the following setup for you:
-- Create a new directory, `.tox`.
-- Create a virtualenv for python39.
-- Install packages from requirements.txt.
-- Run the tests.
-- Build a source tar.gz.
+- Create a virtualenv for python39, in which it...
+  - Installs the packages from requirements.txt.
+  - Runs black (auto-linting)
+  - Runs the tests.
+  - Builds a wheel (`.whl`) distribution.
 
 When installing a new package, make sure to update the requirements.txt. Whenever the 
 requirements.txt or any configuration files (other than `tox.ini`), you will need to do a `tox 
--r` to run tox with updated requirements.
+-r -e [build/test/black]` to run tox with updated requirements.
 
-To build a wheel (`.whl`) instead of source (`.tar.gz`), run `tox --wheel`. Once built, these 
-files can be found at `/.tox/dist/`.
+- `build` does everything needed for you to build inside your composable analytics solution, 
+  including creating a wheel and adding all the necessary files to the project components.
+- `test` uses a virtual env to run your tests inside, but does not create a new wheel.  
+- `black` is for formatting your code without having to run tests or build.
 
-## Post-Tox Step
+
+## Launch Your IDE
 
 After you have done the previous steps, you can now open the project in your IDE.
 
 #### PyCharm
 - Go to `settings -> tools -> terminal -> application settings` and make sure 
 that the `Activate Virtualenv` checkbox is selected.
-- Set your python interpreter to the python executable located at `/.tox/Scripts/python.exe`.
 
 #### VSCode
-- For VSCode, the virtual environment should automatically be detected.
-- Set your python interpreter to the python executable located at `/.tox/Scripts/python.exe` 
-  (un-tested in VSCode).
+- The virtual environment should automatically be detected.
+
+Set your python interpreter to the python executable located at `/.tox/build/Scripts/python.exe` 
+(un-tested in VSCode), now giving you the ability to run commands inside your interpreter 
+without prefixing with python module; `tox -e build/test/black`.
+
 
 ## PyPI
 

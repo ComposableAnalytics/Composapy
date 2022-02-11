@@ -24,21 +24,22 @@ def load_init(environment_variables: Dict = None) -> None:
         for key, val in environment_variables.items():
             os.environ[key] = val
 
-    if not os.getenv("DATALAB_DLL_DIR"):
-        try:
-            from dotenv import load_dotenv
-
-            load_dotenv("../../.local.env")
-        except Exception:
-            logging.warning(f"failed to load_dotenv with local environment settings")
+    #  assume dev environment if datalab environment variable has not been set
+    DATALAB_DLL_DIR = (
+        Path(os.getenv("DATALAB_DLL_DIR"))
+        if os.getenv("DATALAB_DLL_DIR")
+        else Path(__file__).parent.parent.parent.parent.joinpath(
+            "Product", "CompAnalytics.DataLabService", "bin", "Debug"
+        )
+    )
 
     add_dll_reference("System.Runtime")
     add_dll_reference("System")
     add_dll_reference("System.Net")
 
-    sys.path.append(os.getenv("DATALAB_DLL_DIR"))
+    sys.path.append(str(DATALAB_DLL_DIR))
 
-    DLLs = list(Path(os.getenv("DATALAB_DLL_DIR")).rglob("*.dll"))
+    DLLs = list(DATALAB_DLL_DIR.rglob("*.dll"))
     composable_DLLs = [dll for dll in DLLs if dll.name.startswith("CompAnalytics")]
     for dll in composable_DLLs:
         add_dll_reference(str(dll))
