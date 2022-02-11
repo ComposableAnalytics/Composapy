@@ -3,28 +3,17 @@ import pytest
 from pathlib import Path
 
 from dotenv import load_dotenv
+from composapy.loader import load_init
 
-load_dotenv(".test.env")
+test_env = sorted(Path().rglob(".test.env"))[0]
+load_dotenv(test_env)
 
-if os.getenv("IS_UNPACKAGED"):
-    from src.composapy.loader import load_init
+load_init()
 
-    load_init()
-
-    from src.composapy.dataflow.api import DataFlow
-    from src.composapy.dataflow.models import DataFlowObject
-    from src.composapy.queryview.api import QueryView
-    from src.composapy.session import Session
-
-else:
-    from composapy.loader import load_init
-
-    load_init()
-
-    from composapy.dataflow.api import DataFlow
-    from composapy.dataflow.models import DataFlowObject
-    from composapy.queryview.api import QueryView
-    from composapy.session import Session
+from composapy.dataflow.api import DataFlow
+from composapy.dataflow.models import DataFlowObject
+from composapy.queryview.api import QueryView
+from composapy.session import Session
 
 
 @pytest.fixture
