@@ -16,11 +16,7 @@ use of a virtualenv.
 #### Install and upgrade pip/build/twine/tox/tox-wheel.
 All of these should be installed BEFORE starting up a virtual environment with tox. 
 ```
-C:\> python -m pip install --upgrade pip
-C:\> python -m pip install --upgrade build
-C:\> python -m pip install --upgrade twine
-C:\> python -m pip install --upgrade tox
-C:\> python -m pip install --upgrade tox-wheel
+C:\> python -m pip install --upgrade pip build twine tox tox-wheel
 ```
 
 ## Set up virtualenv with tox
@@ -69,6 +65,9 @@ requirements.txt or any configuration files (other than `tox.ini`), you will nee
 
 - `build` does everything needed for you to build inside your composable analytics solution, 
   including creating a wheel and adding all the necessary files to the project components.
+  - note: after running tox build, you may need to rebuild datalabservice (and possibly unittest)
+    in the composable analytics project. otherwise, visual studio may "forget" to copy the new 
+    wheels to the output directory
 - `test` uses a virtual env to run your tests inside, but does not create a new wheel.  
 - `black` is for formatting your code without having to run tests or build.
 

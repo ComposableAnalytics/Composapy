@@ -2,7 +2,7 @@ from typing import Optional, Dict
 
 import System
 import System.Net
-from CompAnalytics import Contracts, IServices
+from CompAnalytics import Contracts
 from CompAnalytics.Contracts import *
 from CompAnalytics.IServices import *
 
@@ -17,7 +17,7 @@ class DataFlow(PandasMixin, ComposableApi):
     def get(self, dataflow_id: int) -> DataFlowObject:
         """Returns wrapped dataflow contract inside a dataflow object."""
         dataflow = self.session.app_service.GetApplication(dataflow_id)
-        return DataFlowObject(dataflow, self.session)
+        return DataFlowObject(dataflow, session=self.session)
 
     def create(self, json: str = None, file_path: str = None) -> DataFlowObject:
         """Takes a json formatted string or a local file path containing a valid json. Imports
@@ -33,19 +33,19 @@ class DataFlow(PandasMixin, ComposableApi):
             json = System.IO.File.ReadAllText(file_path)
 
         app = self.session.app_service.ImportApplicationFromString(json)
-        return DataFlowObject(app, self.session)
+        return DataFlowObject(app, session=self.session)
 
     def get_run(self, run_id: int) -> DataFlowRun:
         """Returns wrapped dataflow contract inside of a DataFlowRun object."""
         execution_state = self.session.app_service.GetRun(run_id)
-        return DataFlowRun(execution_state, self.session)
+        return DataFlowRun(execution_state, session=self.session)
 
     def get_runs(self, dataflow_id) -> DataFlowRunSet:
         """Returns a DataFlowRunSet -- a wrapped set of DataFlowRun."""
         execution_states = self.session.app_service.GetAppRuns(dataflow_id)
         return DataFlowRunSet(
             tuple(
-                DataFlowRun(execution_state, self.session)
+                DataFlowRun(execution_state, session=self.session)
                 for execution_state in execution_states
             )
         )
@@ -53,23 +53,24 @@ class DataFlow(PandasMixin, ComposableApi):
     def run(
         self, dataflow_id: int, external_inputs: Dict[str, any] = None
     ) -> Optional[DataFlowRun]:
-        """
-        Runs a dataflow from the dataflow id (an invalid id will cause this method to return None).
+        """Runs a dataflow from the dataflow id (an invalid id will cause this method to return None).
         Any external modules (external int, table, file) that require outside input to run can be
         added using a dictionary with the module input's name and corresponding contract.
         """
-
         dataflow = self.session.app_service.GetApplication(dataflow_id)
         if not dataflow:
             return None
 
-        dataflow_object = DataFlowObject(dataflow, self.session)
+        dataflow_object = DataFlowObject(dataflow, session=self.session)
         dataflow_run = dataflow_object.run(external_inputs=external_inputs)
         return dataflow_run
 
     def run_status(self, run_id: int):
-        """ """
+        """Retrieves run status.
 
+        Parameters
+        (int) run_id: id of the run
+        """
         run = self.session.app_service.GetRun(run_id)
         return System.Enum.GetNames(Contracts.ExecutionStatus)[run.Status]
 
@@ -83,7 +84,6 @@ class DataFlow(PandasMixin, ComposableApi):
         Return
         (dict[str, int]) execution_status: status of the execution
         """
-
         run = self.session.app_service.GetRun(run_id)
         if run.Status == Contracts.ExecutionStatus.Running:
             self.session.app_service.WaitForExecutionContext(run.Handle)

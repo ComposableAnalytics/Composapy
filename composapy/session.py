@@ -1,8 +1,15 @@
-import System
-import System.Net
+import os
 from System import Uri
 from CompAnalytics import IServices
 from CompAnalytics.IServices import *
+
+
+class SessionException(Exception):
+    pass
+
+
+class UriNotConfiguredError(SessionException):
+    pass
 
 
 class Session:
@@ -20,22 +27,29 @@ class Session:
         """A composable analytics csharp binding to the IServices.ITableService object."""
         return self.services["TableService"]
 
-    def __init__(
-        self,
-        user_or_token: str,
-        password: str = None,
-    ):
-        self.connection_settings = IServices.Deploy.ConnectionSettings()
-        if not password:
-            self.connection_settings.Uri = Uri("http://localhost/CompApp/")
-            self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Api
-            self.connection_settings.ApiKey = user_or_token
+    @property
+    def api_token(self) -> str:
+        return self._api_token
 
-        else:
-            form_credential = System.Net.NetworkCredential(user_or_token, password)
-            self.connection_settings.Uri = Uri("http://localhost/CompApp/")
-            self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Form
-            self.connection_settings.FormCredential = form_credential
+    @property
+    def uri(self) -> str:
+        return str(self.connection_settings.Uri)
+
+    def __init__(self, api_token: str, uri: str = None):
+        if uri is None and os.environ.get("APPLICATION_URI") is None:
+            raise UriNotConfiguredError(
+                "A uri must be configured by either setting an "
+                "environment variable named APPLICATION_URI, "
+                "or by passing it in through the Session "
+                "initialization parameters."
+            )
+        uri = uri if uri is not None else os.getenv("APPLICATION_URI")
+
+        self.connection_settings = IServices.Deploy.ConnectionSettings()
+        self.connection_settings.Uri = Uri(uri)
+        self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Api
+        self.connection_settings.ApiKey = api_token
+        self._api_token = api_token
 
         self.ResourceManager = IServices.Deploy.ResourceManager(
             self.connection_settings

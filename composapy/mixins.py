@@ -1,9 +1,26 @@
+import os
+from pathlib import Path
 from typing import Optional
-
-import System
 import pandas as pd
+import requests
+from .session import Session, SessionException
+import System
+from CompAnalytics import Contracts
+from CompAnalytics.Utils import StandardPaths
 
-from .session import Session
+from .utils import urljoin
+
+
+class ObjectSetMixinException(Exception):
+    pass
+
+
+class NoneFoundError(ObjectSetMixinException):
+    pass
+
+
+class FoundMultipleError(ObjectSetMixinException):
+    pass
 
 
 class ObjectSetMixin:
@@ -37,6 +54,20 @@ class ObjectSetMixin:
             for item in self._target
             if all(getattr(item, key) == val for key, val in kwargs.items())
         )
+
+    def get(self, **kwargs):
+        """Searches based on module field value, such as name. Throws exception if there is
+        either more than one result or zero results."""
+        results = tuple(
+            item
+            for item in self._target
+            if all(getattr(item, key) == val for key, val in kwargs.items())
+        )
+        if len(results) == 0:
+            raise NoneFoundError()
+        elif len(results) > 1:
+            raise FoundMultipleError()
+        return results[0]
 
 
 class PandasMixin:
@@ -109,11 +140,89 @@ class PandasMixin:
         return dtypes_dict
 
 
+class SessionKwargsRequiredError(SessionException, ObjectSetMixinException):
+    pass
+
+
 class SessionObjectMixin:
     """For classes that require a session to function."""
 
-    session = None
+    session: Session
 
-    def __init__(self, session: Session = None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
+        self.session = kwargs.pop("session")
+        if not self.session:
+            raise SessionKwargsRequiredError(
+                "Must include Session in **kwargs when using the SessionObjectMixin."
+            )
         super().__init__(*args, **kwargs)
-        self.session = session
+
+
+class FileReferenceException(Exception):
+    pass
+
+
+class SessionPropertyRequiredError(FileReferenceException):
+    pass
+
+
+class ContractPropertyRequiredError(FileReferenceException):
+    pass
+
+
+class InvalidOperationError(FileReferenceException):
+    pass
+
+
+class FileReferenceMixin:
+    """For use in managing classes with underlying contract type FileReference."""
+
+    session: Session
+    contract: Contracts
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if not self.session:
+            raise SessionPropertyRequiredError(
+                "Must include session property for FileReferenceMixin."
+            )
+        if not self.contract:
+            raise ContractPropertyRequiredError(
+                "Must include contract property for FileReferenceMixin."
+            )
+
+    def to_file(self, save_dir: Path, file_name: str = None) -> Contracts.FileReference:
+        """Downloads a run file by calling module.result.to_file().
+
+        Parameters:
+        (Path) save_dir: the directory to save the downloaded file to
+        (str) file_name:
+            The name of the newly saved file (default is None). If None is provided,
+            uses the original filename from URI.
+        """
+        if not isinstance(self.contract.ValueObj, Contracts.FileReference):
+            raise InvalidOperationError(
+                f"{self.contract.Name} is not a file reference."
+            )
+
+        file_ref_uri = str(self.contract.ValueObj.Uri)
+        if not file_name:
+            file_name = file_ref_uri[file_ref_uri.rindex("/") :].strip("/")
+
+        file_ref_relative_uri = self._parse_uri(file_ref_uri)
+        url = urljoin(self.session.uri, file_ref_relative_uri)
+        response = requests.get(url, headers={"Authorization": self.session.api_token})
+
+        Path.mkdir(save_dir, parents=True, exist_ok=True)
+        file_path = save_dir.joinpath(file_name)
+        with open(file_path, "w+b") as _local_file:
+            _local_file.write(response.content)
+
+        self.contract.ValueObj = Contracts.FileReference.Create[
+            self.contract.ValueObj.GetType()
+        ](str(file_path), StandardPaths.CreateSiteRelativePath(System.Uri(url)))
+
+        return self.contract.ValueObj
+
+    def _parse_uri(self, file_ref_uri):
+        return "/".join(list(filter(None, file_ref_uri.split("/")))[1:])

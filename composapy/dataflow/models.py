@@ -3,78 +3,66 @@ from typing import Optional, Tuple, Dict
 
 from CompAnalytics import Contracts
 
-from ..mixins import ObjectSetMixin, SessionObjectMixin, PandasMixin
+from .const import ExternalInput
+from .web import upload_file_to_runs_dir
+from ..mixins import ObjectSetMixin, SessionObjectMixin, PandasMixin, FileReferenceMixin
 
 
-class ModuleResultError(Exception):
-    pass
+class ModuleMemberBase(FileReferenceMixin, PandasMixin, SessionObjectMixin):
+    """Used as a base class for Input and Result."""
+
+    contract = None  # ModuleInput | ModuleOutput    => union typing issues, leave as is
+
+    def __init__(self, contract, *args, **kwargs):
+        self.contract = contract
+        super().__init__(*args, **kwargs)
+
+    def _repr_html_(self):
+        """Used to display table contracts as pandas dataframes inside of notebooks."""
+        if isinstance(self.contract.ValueObj, Contracts.Tables.Table):
+            return self.convert_table_to_dataframe(self.contract.ValueObj)._repr_html_()
+
+    @property
+    def type(self) -> any:
+        """Returns the contract member, ArgumentType."""
+        return self.contract.ArgumentType
+
+    @property
+    def type_str(self) -> str:
+        """Returns the contract member, ArgumentTypeFriendlyName."""
+        return self.contract.ArgumentTypeFriendlyName
+
+    @property
+    def value(self) -> any:
+        """Returns the contract member, ValueObj."""
+        return self.contract.ValueObj
+
+    @value.setter
+    def value(self, val):
+        self.contract.ValueObj = val
+
+    @property
+    def name(self) -> str:
+        """Returns the contract member, Name."""
+        return self.contract.Name
 
 
-EXTERNAL_INPUT_NAMES = (
-    "External String Input",
-    "External Line Input",
-    "External Private Input",
-    "External Int Input",
-    "External Double Input",
-    "External Table Input",
-    "External Image Input",
-    "External Object Input",
-    "External Object List Input",
-    "External Bool Input",
-    "External DateTime Input",
-    "External Date Input",
-    "External Error Input",
-)
-
-
-class Input(PandasMixin, SessionObjectMixin):
+class Input(ModuleMemberBase):
     """Wraps ModuleIn contract for a simplified textual user interface."""
 
     contract: Contracts.ModuleInput
 
-    def __init__(self, contract: Contracts.ModuleInput, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.contract = contract
-
-    def _repr_html_(self):
-        """Used to display table contracts as pandas dataframes inside of notebooks."""
-        if isinstance(self.contract.ValueObj, Contracts.Tables.Table):
-            return self.convert_table_to_dataframe(self.contract.ValueObj)._repr_html_()
-
-    @property
-    def value(self) -> any:
-        """Returns the contract member, ValueObj (value)."""
-        return self.contract.ValueObj
-
-    @property
-    def name(self) -> str:
-        """Returns the contract member's (ValueObj's) Name."""
-        return self.contract.Name
+    def __repr__(self):
+        return f"<Input::{self.name}, <{self.type_str}::{self.value}>>"
 
 
-class Result(PandasMixin, SessionObjectMixin):
+class Result(ModuleMemberBase):
     """Wraps ModuleOut contract for a simplified textual user interface."""
 
     contract: Contracts.ModuleOutput
 
-    def __init__(self, contract: Contracts.ModuleOutput, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.contract = contract
-
-    def _repr_html_(self):
-        """Used to display table contracts as pandas dataframes inside of notebooks."""
-        if isinstance(self.contract.ValueObj, Contracts.Tables.Table):
-            return self.convert_table_to_dataframe(self.contract.ValueObj)._repr_html_()
-
-    @property
-    def value(self) -> any:
-        """Returns the contract member, ValueObj (value)."""
-        return self.contract.ValueObj
-
-    @property
-    def name(self) -> str:
-        """Returns the contract member's (ValueObj's) Name."""
-        return self.contract.Name
+    def __repr__(self):
+        return f"<Result::{self.name}, <{self.type_str}::{self.value}>>"
 
 
 class InputSet(ObjectSetMixin):
@@ -84,7 +72,7 @@ class InputSet(ObjectSetMixin):
 
     _target: Tuple[Input]
 
-    def __init__(self, inputs: Tuple[Input]) -> None:
+    def __init__(self, inputs: Tuple[Input]):
         self._target = inputs
 
 
@@ -95,8 +83,12 @@ class ResultSet(ObjectSetMixin):
 
     _target: Tuple[Result]
 
-    def __init__(self, results: Tuple[Result]) -> None:
+    def __init__(self, results: Tuple[Result]):
         self._target = results
+
+
+class ModuleResultException(Exception):
+    pass
 
 
 class Module(SessionObjectMixin):
@@ -105,12 +97,20 @@ class Module(SessionObjectMixin):
     contract: Contracts.Module
 
     def __init__(self, contract: Contracts.Module, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.contract = contract
+        super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return f"<Module::{self.name}>"
+
+    @property
+    def type(self) -> str:
+        """Returns the contract member, ModuleType.Name."""
+        return self.contract.ModuleType.Name
 
     @property
     def name(self) -> str:
-        """Returns the module name."""
+        """Returns the contract member, Name."""
         return self.contract.Name
 
     @property
@@ -118,7 +118,7 @@ class Module(SessionObjectMixin):
         """Maps each module input, by name, to a corresponding Input object."""
         return InputSet(
             tuple(
-                Input(self.contract.ModuleInputs[name], self.session)
+                Input(self.contract.ModuleInputs[name], session=self.session)
                 for name in self.contract.ModuleInputs.Indexes.Keys
             )
         )
@@ -128,7 +128,7 @@ class Module(SessionObjectMixin):
         """Maps each module result, by name, to a corresponding Result object."""
         return ResultSet(
             tuple(
-                Result(self.contract.ModuleOutputs[name], self.session)
+                Result(self.contract.ModuleOutputs[name], session=self.session)
                 for name in self.contract.ModuleOutputs.Indexes.Keys
             )
         )
@@ -139,7 +139,7 @@ class Module(SessionObjectMixin):
         Cannot be used if there is more than one result.
         """
         if len(self.results) > 1:
-            raise ModuleResultError(
+            raise ModuleResultException(
                 "Unable to retrieve singular result, multiple results exist. "
                 "For modules that contain multiple results, please use "
                 "results instead of result."
@@ -174,6 +174,9 @@ class DataFlowRun(SessionObjectMixin):
         super().__init__(*args, **kwargs)
         self.contract = execution_state
 
+    def __repr__(self):
+        return f"<DataFlowRun::Id::{self.id}>"
+
     @property
     def id(self) -> int:
         """Returns the id of dataflow run. Every DataFlowRun is guaranteed to have an id with a
@@ -193,7 +196,7 @@ class DataFlowRun(SessionObjectMixin):
         """A ModuleSet made up of ResultModule's."""
         return ModuleSet(
             tuple(
-                Module(_module, self.session)
+                Module(_module, session=self.session)
                 for _module in self.contract.Application.Modules
             )
         )
@@ -216,8 +219,11 @@ class DataFlowObject(SessionObjectMixin):
     contract: Contracts.Application
 
     def __init__(self, contract: Contracts.Application, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         self.contract = contract
+        super().__init__(*args, **kwargs)
+
+    def __repr__(self):
+        return f"<DataFlowObject::Id::{self.id}>"
 
     @property
     def id(self) -> Optional[int]:
@@ -228,14 +234,19 @@ class DataFlowObject(SessionObjectMixin):
     def modules(self) -> ModuleSet:
         """A ModuleSet made up of Module's."""
         return ModuleSet(
-            tuple(Module(_module, self.session) for _module in self.contract.Modules)
+            tuple(
+                Module(_module, session=self.session)
+                for _module in self.contract.Modules
+            )
         )
 
     def save(self) -> DataFlowObject:
         """Saves the contract representation of DataFlowObject, uses server response as the newly
         updated contract object (for instance, saving an unsaved contract will give it an id).
         """
-        self.contract = self.session.app_service.SaveApplication(self.contract)
+        self.contract: Contracts.Application = self.session.app_service.SaveApplication(
+            self.contract
+        )
         return self
 
     def run(self, external_inputs: Dict[str, any] = None) -> DataFlowRun:
@@ -245,28 +256,53 @@ class DataFlowObject(SessionObjectMixin):
         """
         for module in self.modules:
             module.contract.RequestingExecution = True
-            if (
-                external_inputs
-                and module.contract.ModuleType.Name in EXTERNAL_INPUT_NAMES
-            ):
-                _overwrite_module_inputs(external_inputs, module.contract)
 
-        execution_handle = self.session.app_service.CreateExecutionContext(
-            self.contract, Contracts.ExecutionContextOptions()
+        self._write_external_inputs(external_inputs)
+
+        execution_handle: Contracts.ExecutionHandle = (
+            self.session.app_service.CreateExecutionContext(
+                self.contract, Contracts.ExecutionContextOptions()
+            )
         )
-        self.session.app_service.RunExecutionContext(execution_handle)
-        execution_state = self.session.app_service.GetRun(execution_handle.Id)
+        pre_run_execution_state: Contracts.ExecutionState = (
+            self.session.app_service.GetRun(execution_handle.Id)
+        )
+        self._post_context_setup_steps(external_inputs, pre_run_execution_state)
 
-        dataflow_run = DataFlowRun(execution_state, self.session)
+        self.session.app_service.RunExecutionContext(execution_handle)
+        post_run_execution_state: Contracts.ExecutionState = (
+            self.session.app_service.GetRun(execution_handle.Id)
+        )
+
+        dataflow_run = DataFlowRun(post_run_execution_state, session=self.session)
         return dataflow_run
 
+    def _write_external_inputs(self, external_inputs: dict):
+        """Update any module inputs with required external inputs. It is important that this
+        function set each piece of the module input, contract, and ValueObj separately; combining
+        any of these steps will result in a failure to save the csharp contract objects correctly."""
+        if not external_inputs:
+            return
 
-def _overwrite_module_inputs(
-    external_inputs: Dict[str, any], module: Contracts.Module
-) -> None:
-    module_input = module.ModuleInputs["Name"]
-    if module_input.ValueObj in external_inputs.keys():
-        cache_input = module.ModuleInputs["Input"]
-        module.ModuleInputs.Remove("Input")
-        cache_input.ValueObj = external_inputs[module_input.ValueObj]
-        module.ModuleInputs.Add(cache_input)
+        for module in self.modules:
+            if module.type != ExternalInput.FILE and module.type in ExternalInput.ALL:
+                module_input = module.contract.ModuleInputs["Name"]
+                if module_input.ValueObj in external_inputs.keys():
+                    cache_input = module.contract.ModuleInputs["Input"]
+                    module.contract.ModuleInputs.Remove("Input")
+                    cache_input.ValueObj = external_inputs[module_input.ValueObj]
+                    module.contract.ModuleInputs.Add(cache_input)
+
+    def _post_context_setup_steps(
+        self, external_inputs: dict, execution_state: Contracts.ExecutionState
+    ):
+        """Updates necessary post-context setup item for each individual module, such as
+        uploading any needed files before running the execution context."""
+        if not external_inputs:
+            return
+
+        for module in self.modules:
+            if module.contract.ModuleType.Name == ExternalInput.FILE:
+                upload_file_to_runs_dir(
+                    self.session, execution_state, module, external_inputs
+                )

@@ -1,97 +1,67 @@
-import os
-from dotenv import dotenv_values
+import sys
+import jupytext
 from pathlib import Path
-import shutil
-import subprocess
-
-
-class CopyFileToSolutionException(Exception):
-    pass
-
-
-def grant_permissions(path: Path) -> None:
-    subprocess.check_output(
-        ["icacls", f"{path}", "/grant", "Everyone:F", "/t"],
-        stderr=subprocess.STDOUT,
-    )
-
-
-def tfs_command(path: Path, command: str, recursive: bool = False) -> None:
-    subprocess.check_output(
-        [
-            f"{tf_exe_path}",
-            command,
-            f"{path}",
-            f"{'/recursive' if recursive else ''}",
-        ],
-        stderr=subprocess.STDOUT,
-    )
-
-
-composapy_root_dir = Path(__file__).parent
-composable_analytics_product_dir = composapy_root_dir.parent.parent.joinpath("Product")
-
-datalabservice_static_dir = composable_analytics_product_dir.joinpath(
-    "CompAnalytics.DataLabService", "static"
+from tfs_utils import (
+    update_composapy_wheel,
+    update_composapy_tests,
+    update_composapy_readme_artifacts,
+    update_static_wheel_deps,
 )
-tf_exe_path = Path(dotenv_values(".local.env").get("TF_EXE_PATH"))
 
 
-print("Copying composapy-readme.ipynb...")
-notebook_src = composapy_root_dir.joinpath("composapy-readme.ipynb")
-notebook_dest = datalabservice_static_dir.joinpath(notebook_src.name)
-try:
-    shutil.copy(notebook_src, notebook_dest)
-except Exception:
-    raise CopyFileToSolutionException(
-        f"Failed to copy composapy-readme.ipynb from {notebook_src} to {notebook_dest}."
-    )
-grant_permissions(notebook_dest)
+COMPOSAPY_ROOT_DIR = Path(__file__).parent
+COMPOSAPY_README_IPYNB = COMPOSAPY_ROOT_DIR.joinpath("docs", "composapy-readme.ipynb")
 
 
-print("Copying tests...")
-tests_src = composapy_root_dir.joinpath("tests")
-tests_dest = composable_analytics_product_dir.joinpath(
-    "UnitTests", "TestData", "composapy"
-)
-try:
-    shutil.copytree(tests_src, tests_dest, dirs_exist_ok=True)
-except Exception:
-    raise CopyFileToSolutionException(
-        f"Failed to copy tests from {tests_src} to {tests_dest}."
-    )
-grant_permissions(tests_dest)
+def build():
+    print("Copying composapy resource to local save_dir and adding to tfs...")
+    readme_artifacts = [
+        COMPOSAPY_README_IPYNB,
+        COMPOSAPY_ROOT_DIR.joinpath("docs", "simple-dataflow.json"),
+    ]
+    update_composapy_readme_artifacts(readme_artifacts)
 
+    _update_readme()
 
-print("Copying wheel...")
-wheel_src = sorted(composapy_root_dir.joinpath(".tox", "dist").glob("*.whl"))[0]
-wheel_dest = datalabservice_static_dir.joinpath("wheels")
+    print("Copying composapy wheel to local save_dir and adding to tfs...")
+    wheel = sorted(COMPOSAPY_ROOT_DIR.joinpath(".tox", "dist").glob("*.whl"))[0]
+    update_composapy_wheel(wheel)
 
-try:
-    old_wheel = sorted(wheel_dest.glob("composapy-*.whl"))[0]
-    os.remove(Path(old_wheel))
-except IndexError:
+    # Goes through all wheels in ComposableAnalytics.DataLabService\static\wheels save_dir and
+    # attempts to add them to tfs tracking source. This will pick up any manually added wheels
+    # and fail silently with a return code of 1 if they already exist.
     print(
-        "Could not find old version of composapy... updating with newly built composapy wheel."
+        "Adding any wheels in wheel save_dir that are not currently being tracked by tfs..."
     )
+    update_static_wheel_deps()
 
-try:
-    shutil.copy(wheel_src, wheel_dest)
-    grant_permissions(wheel_dest)
-except Exception:
-    raise CopyFileToSolutionException(
-        f"Failed to copy wheel from {wheel_src} to {wheel_dest}."
-    )
+    print("Copying composapy test files to local save_dir and adding to tfs...")
+    tests = COMPOSAPY_ROOT_DIR.joinpath("tests")
+    update_composapy_tests(tests)
 
 
-tfs_command(datalabservice_static_dir.joinpath("*"), "add", recursive=True)  #  static/*
-tfs_command(tests_dest.joinpath("test_*.py"), "add")  #  tests/test_*.py
-tfs_command(tests_dest.joinpath("conftest.py"), "add")  #  tests/conftest.py
-tfs_command(tests_dest.joinpath("__init__.py"), "add")  #  tests/__init__.py
-tfs_command(tests_dest.joinpath(".test.env"), "add")  #  tests/.test.env
-tfs_command(
-    tests_dest.joinpath("TestFiles"), "add", recursive=True
-)  #  tests/TestFiles/*
+def docs():
+    nb = jupytext.read(COMPOSAPY_README_IPYNB)
+    jupytext.write(nb, "README.md")
 
-## cleanup unwanted directory
-tfs_command(tests_dest.joinpath("TestFiles", ".pytest_cache"), "undo", recursive=True)
+
+def _update_readme():
+    nb = jupytext.read(COMPOSAPY_README_IPYNB)
+    jupytext.write(nb, "README.md")
+
+
+if __name__ == "__main__":
+    OPTIONS = ["-build", "-docs"]
+
+    if len(sys.argv) == 1:
+        raise Exception("Must include command arg (build, docs, etc.).")
+
+    arg = sys.argv[1]
+    if "options" in arg:
+        print(", ".join(OPTIONS))
+    elif "build" in arg:
+        build()
+    elif "docs" in arg:
+        docs()
+    else:
+        print(f"{arg} is not a valid option.")

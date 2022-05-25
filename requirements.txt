@@ -6,3 +6,5 @@ pandas
 python-dotenv==0.19.2
 pytest
 black
+papermill
+jupytext
