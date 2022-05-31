@@ -72,11 +72,10 @@ new_dataflow_object = dataflow_api.create(file_path="simple-dataflow.json")
 print(new_dataflow_object)
 ```
 
-<!-- #region -->
-```python
+```shell
 DataFlowObject(id=None)
 ```
-<!-- #endregion -->
+
 
 Notice that simple_dataflow_object does not have an id. In order to set the id, you can call `DataFlowObject`'s save method. Note, you do **not** need to save a `DataFlowObject` to call it's run method.
 
@@ -87,11 +86,10 @@ dataflow_id = saved_dataflow_object.id  # for tutorial convenience
 print(saved_dataflow_object)
 ```
 
-<!-- #region -->
-```python
+```shell
 DataFlowObject(id=206777)  # your id will be different
 ```
-<!-- #endregion -->
+
 
 ### DataFlowObject
 
@@ -110,15 +108,13 @@ for module in dataflow_object.modules:
     print(module)
 ```
 
-<!-- #region -->
-```python
+```shell
 Module(name='Calculator', type=Calculator)
 Module(name='Calculator', type=Calculator)
 Module(name='String Input', type=String Input)
 Module(name='String Formatter', type=String Formatter)
 Module(name='String Formatter 2', type=String Formatter)
 ```
-<!-- #endregion -->
 
 ```python
 for module in dataflow_object.modules:
