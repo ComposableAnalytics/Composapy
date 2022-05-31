@@ -7,7 +7,7 @@ from composapy.session import Session
 from composapy.dataflow.api import DataFlow
 
 
-def test_session_with_username_password(session_with_token: Session):
+def test_session_with_token(session_with_token: Session):
     dataflow = DataFlow(session_with_token)
     dataflow.create(
         file_path=str(

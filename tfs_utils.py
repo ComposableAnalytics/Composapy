@@ -2,7 +2,6 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
-
 from dotenv import dotenv_values
 
 COMPOSAPY_ROOT_DIR = Path(__file__).parent
@@ -67,11 +66,21 @@ def update_composapy_wheel(wheel: Path) -> None:
 
     # remove old composapy wheels from tfs tracking and local save_dir after new wheel was
     # successfully loaded
+    # ...
+    # ...
+    # ... tfs is dumb
     for old_wheel in old_wheels:
         if old_wheel.name != wheel.name:
-            tfs_command(wheel_dest, "delete", old_wheel.name)
             try:
-                os.remove(Path(old_wheel))  # sometimes tfs fails to remove the file
+                tfs_command(wheel_dest, "delete", old_wheel.name)
+            except Exception:
+                pass
+            try:
+                tfs_command(wheel_dest, "undo", old_wheel.name)
+            except Exception:
+                pass
+            try:
+                os.remove(Path(old_wheel))
             except Exception:
                 pass  #  if tfs did not fail to remove the file, this is expected
 

@@ -1,14 +1,14 @@
-import os
-from pathlib import Path
 from typing import Optional
+from pathlib import Path
 import pandas as pd
 import requests
-from .session import Session, SessionException
+
+from composapy.session import Session, SessionException
+from composapy.utils import urljoin
+
 import System
 from CompAnalytics import Contracts
 from CompAnalytics.Utils import StandardPaths
-
-from .utils import urljoin
 
 
 class ObjectSetMixinException(Exception):
@@ -102,7 +102,13 @@ class PandasMixin:
         "OBJECT": "object",
         "GUID": "object",
     }
-    session = None
+
+    session: Session
+    contract: Contracts
+
+    def to_pandas(self):
+        if isinstance(self.contract.ValueObj, Contracts.Tables.Table):
+            return self.convert_table_to_dataframe(self.contract.ValueObj)
 
     def convert_table_to_dataframe(self, table) -> Optional[pd.DataFrame]:
         if not self.session:
@@ -206,10 +212,11 @@ class FileReferenceMixin:
             )
 
         file_ref_uri = str(self.contract.ValueObj.Uri)
+        file_ref_relative_uri = self._parse_uri(file_ref_uri)
+
         if not file_name:
             file_name = file_ref_uri[file_ref_uri.rindex("/") :].strip("/")
 
-        file_ref_relative_uri = self._parse_uri(file_ref_uri)
         url = urljoin(self.session.uri, file_ref_relative_uri)
         response = requests.get(url, headers={"Authorization": self.session.api_token})
 

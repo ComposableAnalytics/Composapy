@@ -3,14 +3,10 @@ import papermill as pm
 import nbformat
 from pathlib import Path
 
-from composapy.loader import load_init
+#  from papermill import utils as pm_utils
 
-load_init()
-
-from CompAnalytics.Contracts import *
-from CompAnalytics.IServices import *
-from CompAnalytics.Core import ContractSerializer
 from System import Object
+from CompAnalytics.Core import ContractSerializer
 from System.Collections.Generic import List, KeyValuePair
 
 
@@ -59,14 +55,32 @@ def _inject_notebook(
 
 
 def _inject_package_loading(nb: nbformat.NotebookNode):
-    code = f"""\
-from composapy.loader import load_init
-load_init()
-from CompAnalytics.Core import ContractSerializer\
-"""
+    code = "import composapy"
 
     new_cell = nbformat.v4.new_code_cell(source=code)
     nb.cells.insert(0, new_cell)
+
+
+# def _inject_file_reference_patching(nb: nbformat.NotebookNode):
+#     injected_cell_index = next(
+#         (
+#             idx
+#             for idx, cell in enumerate(nb.cells)
+#             if "injected-parameters" in cell.metadata.tags
+#         ),
+#         None,
+#     )
+#     if not injected_cell_index:
+#         return
+#
+#     code = f"""\
+# import papermill
+# papermill.utils.any_tagged_cell
+# from CompAnalytics.Contracts import FileRefPickleObject"""
+#
+#     before = nb.cells[:injected_cell_index]
+#     after = nb.cells[injected_cell_index + 1 :]
+#     nb.cells = before + [newcell] + after
 
 
 def _inject_return_values_serialization(
@@ -76,6 +90,8 @@ def _inject_return_values_serialization(
 import System
 from System import Object
 from System.Collections.Generic import List, KeyValuePair
+from CompAnalytics.Core import ContractSerializer
+#  from CompAnalytics.Contracts import FileReference
 
 class TypeNotSupportedError(Exception):
     pass
@@ -83,22 +99,35 @@ class TypeNotSupportedError(Exception):
 SUPPORTED_TYPES = (
     str,
     int,
+#      FileReference,
 )
 
-def _marshall_object(python_object):
-    if type(python_object) is str:
-        return System.String(python_object)
-    elif type(python_object) is int:
-        return System.Int32(python_object)
-    elif type(python_object) is None:
-        return None
+def is_string(python_object):
+    return System.String(python_object)
+
+def is_int(python_object):
+    return System.Int32(python_object)
+
+def is_none(python_object):
+    return None
+
+#  def is_file_ref(python_object):
+#      return python_object
+
+#  marshall_actions = {{
+#      str: is_string,
+#      int: is_int,
+#      None: is_none,
+#      FileReference: is_file_ref,
+#  }}
 
 clr_return_values = List[KeyValuePair[str, Object]]()
 for n, (k, v) in enumerate({RETURN_VALUES}.items()):
     if v is not None and type(v) not in SUPPORTED_TYPES:
         raise TypeNotSupportedError(f"{{type(v)}} is not currently supported.")
-
-    clr_value = _marshall_object(v)    
+    
+    clr_value = marshall_actions(type(v))
+    # clr_value = _marshall_object(v)    
     clr_return_values.Add(KeyValuePair[str, Object](k, clr_value))
 
 ContractSerializer.SerializeToFile(clr_return_values, '{serialized_return_values_path.as_posix()}')"""

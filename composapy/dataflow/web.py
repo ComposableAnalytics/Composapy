@@ -1,18 +1,18 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import requests
+
+from composapy.utils import urljoin
 
 if TYPE_CHECKING:
     from composapy.dataflow.models import Module
     from composapy.session import Session
-    from CompAnalytics.Contracts import ExecutionState
-
-import requests
-from composapy.utils import urljoin
+    from CompAnalytics.Contracts import ExecutionHandle
 
 
 def upload_file_to_runs_dir(
     session: Session,
-    execution_state: ExecutionState,
+    execution_handle: ExecutionHandle,
     module: Module,
     external_inputs: dict,
 ):
@@ -34,8 +34,8 @@ def upload_file_to_runs_dir(
                 "Services/FileUploadService.svc/UploadFile",
             ),
             params={
-                "HandleId": execution_state.Handle.HandleId,
-                "Id": execution_state.Handle.Id,
+                "HandleId": execution_handle.HandleId,
+                "Id": execution_handle.Id,
                 "ModuleHandleId": module.contract.UiHandle,
                 "ModuleInputHandleId": module_input.UiHandle,
             },

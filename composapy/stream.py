@@ -1,6 +1,6 @@
 import io
+
 from System import Byte, Array
-from CompAnalytics.IServices import *
 
 
 class CsStream(io.RawIOBase):

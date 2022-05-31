@@ -1,23 +1,19 @@
 import os
 import pytest
 from pathlib import Path
-
 from dotenv import load_dotenv
-from composapy.loader import load_init
-
-# does not override environment variables, this is essentially a failsafe for local dev environment
-for env_file in sorted(Path().rglob(".test*.env")):
-    load_dotenv(env_file)
-
-load_init()
-
-from CompAnalytics import Contracts
-from System import Uri
 
 from composapy.dataflow.api import DataFlow
 from composapy.dataflow.models import DataFlowObject
 from composapy.queryview.api import QueryView
 from composapy.session import Session
+
+from CompAnalytics import Contracts
+from System import Uri
+
+# does not override environment variables, this is essentially a failsafe for local dev environment
+for env_file in sorted(Path().rglob(".test*.env")):
+    load_dotenv(env_file)
 
 
 @pytest.fixture

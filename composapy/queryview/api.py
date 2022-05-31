@@ -1,11 +1,11 @@
 import numpy as np
 import pandas as pd
 
-from CompAnalytics.IServices import *
+from composapy.api import ComposableApi
+from composapy.mixins import PandasMixin
+from composapy.stream import CsStream
 
-from ..api import ComposableApi
-from ..mixins import PandasMixin
-from ..stream import CsStream
+# from CompAnalytics.IServices import *
 
 
 class QueryView(PandasMixin, ComposableApi):

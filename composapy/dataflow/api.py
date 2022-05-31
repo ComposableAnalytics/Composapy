@@ -1,14 +1,11 @@
 from typing import Optional, Dict
 
-import System
-import System.Net
-from CompAnalytics import Contracts
-from CompAnalytics.Contracts import *
-from CompAnalytics.IServices import *
+from composapy.dataflow.models import DataFlowObject, DataFlowRun, DataFlowRunSet
+from composapy.api import ComposableApi
+from composapy.mixins import PandasMixin
 
-from .models import DataFlowObject, DataFlowRun, DataFlowRunSet
-from ..api import ComposableApi
-from ..mixins import PandasMixin
+import System
+from CompAnalytics import Contracts
 
 
 class DataFlow(PandasMixin, ComposableApi):

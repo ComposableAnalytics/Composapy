@@ -1,3 +1,6 @@
 from .dataflow import *
 from .queryview import *
-from .notebook.nb_wrap import execute_notebook
+
+from .loader import load_init
+
+load_init()

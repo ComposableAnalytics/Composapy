@@ -1,3 +1,4 @@
+import os
 import sys
 import jupytext
 from pathlib import Path
@@ -43,11 +44,14 @@ def build():
 def docs():
     nb = jupytext.read(COMPOSAPY_README_IPYNB)
     jupytext.write(nb, "README.md")
+    # with open("README.md", "r+") as readme_file:
+    #     lines = readme_file.readlines()
+    #     readme_file.seek(0)
+    #     readme_file.truncate()
 
 
 def _update_readme():
-    nb = jupytext.read(COMPOSAPY_README_IPYNB)
-    jupytext.write(nb, "README.md")
+    docs()
 
 
 if __name__ == "__main__":

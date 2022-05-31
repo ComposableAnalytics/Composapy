@@ -1,7 +1,7 @@
 import os
+
 from System import Uri
 from CompAnalytics import IServices
-from CompAnalytics.IServices import *
 
 
 class SessionException(Exception):

@@ -1,8 +1,8 @@
+from typing import Dict
 import sys
 import os
 import logging
 from pathlib import Path
-from typing import Dict
 
 
 def add_dll_reference(path: str) -> None:
