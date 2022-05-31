@@ -72,10 +72,12 @@ new_dataflow_object = dataflow_api.create(file_path="simple-dataflow.json")
 print(new_dataflow_object)
 ```
 
-```shell
+<!-- #region -->
+```python
+#output:
 DataFlowObject(id=None)
 ```
-
+<!-- #endregion -->
 
 Notice that simple_dataflow_object does not have an id. In order to set the id, you can call `DataFlowObject`'s save method. Note, you do **not** need to save a `DataFlowObject` to call it's run method.
 
@@ -86,10 +88,12 @@ dataflow_id = saved_dataflow_object.id  # for tutorial convenience
 print(saved_dataflow_object)
 ```
 
-```shell
+<!-- #region -->
+```python
+#output:
 DataFlowObject(id=206777)  # your id will be different
 ```
-
+<!-- #endregion -->
 
 ### DataFlowObject
 
@@ -108,13 +112,16 @@ for module in dataflow_object.modules:
     print(module)
 ```
 
-```shell
+<!-- #region -->
+```python
+# output
 Module(name='Calculator', type=Calculator)
 Module(name='Calculator', type=Calculator)
 Module(name='String Input', type=String Input)
 Module(name='String Formatter', type=String Formatter)
 Module(name='String Formatter 2', type=String Formatter)
 ```
+<!-- #endregion -->
 
 ```python
 for module in dataflow_object.modules:
@@ -124,6 +131,7 @@ for module in dataflow_object.modules:
 
 <!-- #region -->
 ```python
+#output:
 Input(name=Param1, type=Double, value=1.0)
 Input(name=Operator, type=String, value='+')
 Input(name=Param2, type=Double, value=2.0)
@@ -155,6 +163,7 @@ for module in dataflow_run.modules:
 
 <!-- #region -->
 ```python
+#output
 Result(name='Result', type=Double, value=3.0)
 Result(name='Result', type=Double, value=5.0)
 Result(name='Result', type=String, value='This is a test string')
@@ -180,6 +189,7 @@ for module in dataflow_run.modules:
 
 <!-- #region -->
 ```python
+#output:
 Result(name='Result', type=Double, value=3.0)
 Result(name='Result', type=Double, value=5.0)
 Result(name='Result', type=String, value='This is a test string')
@@ -240,6 +250,7 @@ for module in calculator_modules:
 
 <!-- #region -->
 ```python
+#output:
 Module(name='Calculator', type=Calculator)
 Module(name='Calculator', type=Calculator)
 ```
@@ -263,6 +274,7 @@ dataflow_run.modules.get(name="String Input")
 
 <!-- #region -->
 ```python
+#output:
 Module(name='String Input', type=String Input)
 ```
 <!-- #endregion -->
@@ -273,6 +285,7 @@ dataflow_run.modules.get(name="String Input").results.get(value="This is a test 
 
 <!-- #region -->
 ```python
+#output:
 Result(name='Result', type=String, value='This is a test string')
 ```
 <!-- #endregion -->
@@ -293,6 +306,7 @@ dataflow_run.modules[3]
 
 <!-- #region -->
 ```python
+#output:
 Module(name='String Formatter', type=String Formatter)
 ```
 <!-- #endregion -->
@@ -313,6 +327,7 @@ dataflow_run.modules.first()
 
 <!-- #region -->
 ```python
+#output:
 Module(name='Calculator', type=Calculator)
 ```
 <!-- #endregion -->
@@ -333,6 +348,7 @@ dataflow_run.modules.get(name="String Formatter").result
 
 <!-- #region -->
 ```python
+#output:
 Result(name='Result', type=String, value='This is a test format')
 ```
 <!-- #endregion -->
@@ -347,6 +363,7 @@ dataflow_run.modules.get(name="String Formatter").results.first().value
 
 <!-- #region -->
 ```python
+#output:
 'This is a test format'
 ```
 <!-- #endregion -->
@@ -362,6 +379,7 @@ type(dataflow_run.contract)
 
 <!-- #region -->
 ```python
+#output:
 CompAnalytics.Contracts.ExecutionState
 ```
 <!-- #endregion -->
@@ -372,6 +390,7 @@ type(dataflow_run.modules.get(name="String Formatter")).contract
 
 <!-- #region -->
 ```python
+#output:
 CompAnalytics.Contracts.Module
 ```
 <!-- #endregion -->
@@ -382,6 +401,7 @@ type(dataflow_run.modules.get(name="String Formatter")).results.first().contract
 
 <!-- #region -->
 ```python
+#output:
 CompAnalytics.Contracts.ModuleOutput
 ```
 <!-- #endregion -->
@@ -402,6 +422,7 @@ table_run.modules.first().result
 ```
 
 ```python vscode={"languageId": "plaintext"}
+#output:
 +----+-----+-----+-----+
 |    | a   | o   | e   |
 +====+=====+=====+=====+
@@ -422,6 +443,7 @@ print(isinstance(df, pd.DataFrame))
 
 <!-- #region -->
 ```python
+#output:
 True
 ```
 <!-- #endregion -->
@@ -433,6 +455,7 @@ print(isinstance(result_value, pd.DataFrame))
 
 <!-- #region -->
 ```python
+#output:
 False
 ```
 <!-- #endregion -->
@@ -443,6 +466,7 @@ print(isinstance(result_value, Table))
 
 <!-- #region -->
 ```python
+#output:
 True
 ```
 <!-- #endregion -->
