@@ -2,18 +2,78 @@
 # [readme] composapy
 <!-- #endregion -->
 
-DataLabs comes pre-installed with composapy, a python package that integrates and binds with the c# project.
+Composapy comes packaged with DataLabs. Composapy binds features, such as DataFlow's, of other Composable products for use in a python environment.
+
+- [#Quick-Start](#quick-start) : some simple use-cases and examples
+- [#Reference](#reference) : more details about the components
+- [#Additional-Information](#additional-information) : some other links to information outside of this repo
 
 
-## Setup
+## Quick-Start
 
+
+### Create a Session / Create a DataFlow (API)
+
+<!-- #region pycharm={"name": "#%% md\n"} -->
+Composapy looks for the environment variable `APPLICATION_URI` by default (set by DataLabs). If you are using Composapy outside of the datalabs environment and the `APPLICATION_URI`
+environment variable is not set, you can set it with keyword argument `uri`.
+<!-- #endregion -->
 
 ```python
 from composapy.session import Session
 from composapy.dataflow.api import DataFlow
+
+session = Session("<your-api-token-here>")  # session = Session("<your-api-token-here>", uri="http://localhost/CompAnalytics/")
+dataflow_api = DataFlow(session)
 ```
 
-### Start a session
+### Create/Save a DataFlow
+
+
+[DataFlowObject's](#dataflowobject) can be initialized with the [DataFlow API](#dataflow) method - [create](#create). It takes either a json string (_kwarg_ `json`) or path to a json file (_kwarg_ `file_path`) as parameters. Call the `save` method on an unsaved `DataFlowObject` to save it in the Composable database. Saving it will make give it an `id`, making it available for use in the [Composable Designer](https://github.com/ComposableAnalytics/Docs/blob/master/docs/DataFlows/02.Composable-Designer.md).
+
+```python
+dataflow_object = dataflow_api.create(file_path="simple-dataflow.json")         # DataFlowObject(id=None)
+dataflow_object = dataflow_api.create(file_path="simple-dataflow.json").save()  # DataFlowObject(id=123456)
+```
+
+### Run a DataFlow
+
+
+To run a saved dataflow, you can retrieve the `appId` in the dataflow's url.
+
+```python
+dataflow_run = dataflow_api.run(444333)  # DataFlowRun(id=444333)
+```
+
+To run a dataflow that has external input modules, use the `external_inputs` kwarg, which is a dictionary of with key equal to the external modules name field and the value equal to what you want to pass in.
+
+```python
+dataflow_run = dataflow_api.run(444333, external_inputs={"a_string_external_input": "foo string"})   # DataFlowRun(id=444333)
+```
+
+### DataFlowObject/DataFlowRun Modules
+
+```python
+dataflow_run.modules[0]  # Module(name='Calculator', type=Calculator)
+```
+
+### DataFlowObject/DataFlowRun Input
+
+```python
+dataflow_object.modules.filter(name="calc module name")[0].inputs.first()  # Input(name=Param1, type=Double, value=1.0)
+```
+
+### DataFlowRun Result
+
+```python
+dataflow_run.modules.get(name="string module name").result           # Result(name='foo name', type=String, value='foo value')
+```
+
+## Reference
+
+
+### Session
 
 <!-- #region -->
 ```python
@@ -21,392 +81,315 @@ class Session(api_token: str, uri: str = None)
 ```
 <!-- #endregion -->
 
-<!-- #region pycharm={"name": "#%% md\n"} -->
-Composapy looks for the environment variable `APPLICATION_URI` by default (set by DataLabs).
-<!-- #endregion -->
-
 ```python
 session = Session("<your-api-token-here>")
+# session = Session("<your-api-token-here>", uri="http://localhost/CompAnalytics/")
 ```
 
-<!-- #region pycharm={"name": "#%% md\n"} -->
-If you are using Composapy outside of the datalabs environment and the `APPLICATION_URI`
-environment variable is not set, you can set it with keyword argument `uri`.
-<!-- #endregion -->
+### DataFlow
 
-```python pycharm={"name": "#%%\n"}
-session = Session("<your-api-token-here>", uri="http://localhost/CompAnalytics/")
-```
 
-### DataFlow API
+#### \_\_init\_\_
 
-<!-- #region -->
-```python
-class DataFlow(session: Session)
-```
-<!-- #endregion -->
+
+- DataFlow(session: Session)
 
 ```python
 dataflow_api = DataFlow(session)
 ```
 
-Also, if you want to interface with <a href="https://github.com/pythonnet/pythonnet" target="_blank">pythonnet</a> more closely -- you can find our csharp documentation <a href="https://dev.composable.ai/api/CompAnalytics.Contracts.html" target="_blank">here</a>.
+#### get
 
 
-## Run a DataFlow (Example)
+- get(id: int) -> DataFlowObject
+
+```python
+dataflow_api.get(123456)  # DataFlowObject(id=123456)
+```
+
+#### get_run
 
 
-_simple-dataflow.json_
+- get_run(id: int) -> DataFlowRun
 
-![simple-dataflow.json](https://raw.githubusercontent.com/ComposableAnalytics/Docs/master/docs/DataLabs/img/DataLabs_Readme_Example_Dataflow.png)
+```python
+dataflow_api.get_run(654321)  # DataFlowRun(id=654321)
+```
 
 <!-- #region pycharm={"name": "#%% md\n"} -->
-### Setup
+#### create
 <!-- #endregion -->
 
-Create a new DataFlowObject with dataflow_api.
+- create(json: str = None, file_path: str = None) -> DataFlowObject
+
+
+json **or** file_path. Supplying arguments to both will raise exception.
 
 ```python
-new_dataflow_object = dataflow_api.create(file_path="simple-dataflow.json")
-
-print(new_dataflow_object)
+dataflow_api.create(file_path="simple-dataflow.json")  # DataFlowObject(id=None)
 ```
 
-<!-- #region -->
+#### run
+
+
+If there are any external inputs in the dataflow, you can supply them with (_kwarg_ `external_inputs`). It takes the external input name as a key and the external input value as value. You can find more about external input modules [here](https://github.com/ComposableAnalytics/Docs/blob/master/docs/DataFlows/06.DataFlow-Reuse.md#creation).
+
+
+- run(id: int) -> DataFlowRun
+
 ```python
-#output:
-DataFlowObject(id=None)
-```
-<!-- #endregion -->
-
-Notice that simple_dataflow_object does not have an id. In order to set the id, you can call `DataFlowObject`'s save method. Note, you do **not** need to save a `DataFlowObject` to call it's run method.
-
-```python pycharm={"name": "#%%\n"}
-saved_dataflow_object = new_dataflow_object.save()
-dataflow_id = saved_dataflow_object.id  # for tutorial convenience
-
-print(saved_dataflow_object)
+dataflow_api.run(123456)  # DataFlowRun(id=234567)
 ```
 
-<!-- #region -->
+- run(id: int, external_inputs: Dict[str, any]) -> DataFlowRun
+
 ```python
-#output:
-DataFlowObject(id=206777)  # your id will be different
+dataflow_api.run(123456, external_inputs={"external_int_input_name": 3})  # DataFlowRun(id=333222)
 ```
-<!-- #endregion -->
 
 ### DataFlowObject
 
-You can retrieve a `DataFlowObject` by using the `DataFlow` api to retrieve a saved dataflow.
 
-<!-- #region -->
-```python
-$ dataflow_api.get(id: int) -> DataFlowObject
-```
-<!-- #endregion -->
+#### contract -> CompAnalytics.Contracts.Application
 
-```python
-dataflow_object = dataflow_api.get(dataflow_id)
 
-for module in dataflow_object.modules:
-    print(module)
-```
+**Note:** DataFlowObject ID's are unique and different from DataFlowRun ID's.
 
-<!-- #region -->
-```python
-# output
-Module(name='Calculator', type=Calculator)
-Module(name='Calculator', type=Calculator)
-Module(name='String Input', type=String Input)
-Module(name='String Formatter', type=String Formatter)
-Module(name='String Formatter 2', type=String Formatter)
-```
-<!-- #endregion -->
+Using the [DataFlow](#dataflow) api, you can retrieve saved _dataflows_ as `DataFlowObject`'s.
 
 ```python
-for module in dataflow_object.modules:
-    for module_input in module.inputs:
-        print(module_input)
+dataflow_object = dataflow_api.get(123456)  # DataFlowObject(id=123456)
 ```
 
-<!-- #region -->
-```python
-#output:
-Input(name=Param1, type=Double, value=1.0)
-Input(name=Operator, type=String, value='+')
-Input(name=Param2, type=Double, value=2.0)
-Input(name=Param1, type=Double, value=0.0)
-Input(name=Operator, type=String, value='+')
-Input(name=Param2, type=Double, value=2.0)
-Input(name=Input, type=String, value='This is a test string')
-Input(name=Format, type=String, value='This is a test format')
-Input(name=Parameters, type=List<Object>, value=None)
-Input(name=Format, type=String, value='This is a bad format')
-Input(name=Parameters, type=List<Object>, value=None)
-```
-<!-- #endregion -->
+#### save
 
-<!-- #region tags=[] -->
-### Run DataFlowObject
-```python
-$ dataflow_object.run() -> DataFlowRun
-```
-<!-- #endregion -->
+
+- save() -> DataFlowObject
 
 ```python
-dataflow_run = dataflow_object.run()
-
-for module in dataflow_run.modules:
-    for module_result in module.results:
-        print(module_result)
+dataflow_object = dataflow_api.create(file_path="dataflow.json")  # DataFlowObject(id=None)
+dataflow_object.save()                                            # DataFlowObject(id=123456)
 ```
 
-<!-- #region -->
-```python
-#output
-Result(name='Result', type=Double, value=3.0)
-Result(name='Result', type=Double, value=5.0)
-Result(name='Result', type=String, value='This is a test string')
-Result(name='Result', type=String, value='This is a test format')
-Result(name='Result', type=String, value='This is a bad format')
-```
-<!-- #endregion -->
+#### run
 
-<!-- #region -->
-Instead of retrieving a `DataFlowObject` and calling it's run method, you can instead run a saved dataflow using the `DataFlow` api.
-```python
-$ dataflow_api.run(id: int) -> DataFlowRun
-```
-<!-- #endregion -->
+
+- run() -> DataFlowRun
 
 ```python
-dataflow_run = dataflow_api.run(dataflow_id)
-
-for module in dataflow_run.modules:
-    for module_result in module.results:
-        print(module_result)
+dataflow_run = dataflow_object.run()  # DataFlowRun(id=234567)
 ```
 
-<!-- #region -->
+#### Properties
+
+
+##### id -> int
+
+
+##### module -> Module
+
+
+##### modules -> ModuleSet
+
+
+### DataFlowRun
+
+
+#### contract -> CompAnalytics.Contracts.ExecutionState
+
+
+#### Properties
+
+
+##### id -> int
+
+
+##### app_id -> int
+
+
+Refers to the application id this run is a part of. This can be None if it was run with an unsaved dataflow.
+
+
+##### module -> Module
+
+
+##### modules -> ModuleSet
+
+
+### Module
+
+
+#### contract -> CompAnalytics.Contracts.Module
+
+
+#### name -> str
+
+
+#### type -> any
+
+
+#### inputs -> InputSet
+
+
+#### input -> Input
+
+
+#### results -> ResultSet
+
+
+#### result -> Result
+
+
+### Input
+
+
+#### contract -> CompAnalytics.Contracts.ModuleInput
+
+
+#### to_pandas
+
+
+Will raise exception if value is not of type `CompAnalytics.Contracts.Tables.Table`. More information about the Composable Table to Pandas DataFrame conversion can be found [here](#tables).
+
+
+- to_pandas() -> pandas.DataFrame
+
 ```python
-#output:
-Result(name='Result', type=Double, value=3.0)
-Result(name='Result', type=Double, value=5.0)
-Result(name='Result', type=String, value='This is a test string')
-Result(name='Result', type=String, value='This is a test format')
-Result(name='Result', type=String, value='This is a bad format')
+dataflow_object.modules[0].input.to_pandas()
 ```
-<!-- #endregion -->
 
-<!-- #region -->
-### External Inputs
+#### to_file
 
-[External module](https://github.com/ComposableAnalytics/Docs/blob/master/docs/DataFlows/06.DataFlow-Reuse.md#creation) inputs can be passed to your dataflow by using the `external_inputs` keyword argument in `run`.
+
+Downloads file to a local specified directory and returns a new `CompAnalytics.Contracts.FileReference` to that file. If no file name is supplied, will use the name from the original file. Will raise exception if value is not of type `CompAnalytics.Contracts.FileReference`. More information about file references can be found [here](#file-references).
+
+
+- to_file(save_dir: pathlib.Path, file_name: str = None) -> CompAnalytics.Contracts.FileReference
 
 ```python
-$ dataflow_api.run(id: int, external_inputs: Dict[str, any]) -> DataFlowRun
+dataflow_object.modules[0].input.to_file(save_dir=".", file_name="optional_file_name")
 ```
-<!-- #endregion -->
+
+#### name -> str
+
+
+#### type -> any
+
+
+#### value -> any
+
+
+### Result
+
+
+#### contract -> CompAnalytics.Contracts.ModuleOutput
+
+
+#### to_pandas
+
+
+Will raise exception if value is not of type `CompAnalytics.Contracts.Tables.Table`. More information about the Composable Table to Pandas DataFrame conversion can be found [here](#tables).
+
+
+- to_pandas() -> pandas.DataFrame
 
 ```python
-dataflow_api.run(123456, parameters={
-    "external_string_input_name": "string",
-    "external_int_input_name": 3
-})
+dataflow_object.modules[0].result.to_pandas()
 ```
 
-## Filtering/Retrieving
+#### to_file
+
+
+Downloads file to a local specified directory and returns a new `CompAnalytics.Contracts.FileReference` to that file. If no file name is supplied, will use the name from the original file. Will raise exception if value is not of type `CompAnalytics.Contracts.FileReference`. More information about file references can be found [here](#file-references).
+
+
+- to_file(save_dir: pathlib.Path, file_name: str = None) -> CompAnalytics.Contracts.FileReference
+
+```python
+dataflow_object.modules[0].result.to_file(save_dir=".", file_name="optional_file_name")
+```
+
+#### name -> str
+
+
+#### type -> any
+
+
+#### value -> any
+
+
+### Filtering/Retrieving for ModuleSet, ResultSet, InputSet
 
 ```python
 from composapy.dataflow.models import ModuleSet, InputSet, ResultSet
 ```
 
-<!-- #region -->
-```python
-$ dataflow_object.modules -> ModuleSet
-$ dataflow_run.modules -> ModuleSet
-$ modules.inputs -> InputSet
-$ modules.results -> ResultSet
-```
-<!-- #endregion -->
+- dataflow_object.modules -> ModuleSet
+- dataflow_run.modules -> ModuleSet
+- modules.inputs -> InputSet
+- modules.results -> ResultSet
+
 
 Set objects (`ModuleSet`/`InputSet`/`ResultSet`) all have the following available behaviors.
 
-<!-- #region -->
-```python
-x.filter(key=value)
-```
 
----
+#### filter
+
+- x.filter(key=value) -> SetType
 
 Return all keys with value as a set.
-<!-- #endregion -->
 
 ```python
 calculator_modules = dataflow_run.modules.filter(name="Calculator")
 for module in calculator_modules:
     print(module)
+
+# Module(name='Calculator', type=Calculator)
+# Module(name='Calculator', type=Calculator)
 ```
 
-<!-- #region -->
-```python
-#output:
-Module(name='Calculator', type=Calculator)
-Module(name='Calculator', type=Calculator)
-```
-<!-- #endregion -->
+#### get
 
-<!-- #region -->
-```python
-x.get(key=value)
-```
-
----
+- x.get(key=value) -> SingularType
 
 Return expects exactly one key with result, otherwise will raise exception.
 - `FoundMultipleError`
 - `NoneFoundError`
-<!-- #endregion -->
 
 ```python
-dataflow_run.modules.get(name="String Input")
+dataflow_run.modules.get(name="String Input")  # Module(name='String Input', type=String Input)
+dataflow_run.modules.get(name="String Input").results.get(value="This is a test string")  # Result(name='Result', type=String, value='This is a test string')
 ```
 
-<!-- #region -->
-```python
-#output:
-Module(name='String Input', type=String Input)
-```
-<!-- #endregion -->
+#### index
 
-```python
-dataflow_run.modules.get(name="String Input").results.get(value="This is a test string")
-```
-
-<!-- #region -->
-```python
-#output:
-Result(name='Result', type=String, value='This is a test string')
-```
-<!-- #endregion -->
-
-<!-- #region -->
-```python
-x[index]
-```
-
----
+- x\[index\] -> SingularType
 
 Indexing works as you would expect it to.
-<!-- #endregion -->
 
 ```python
-dataflow_run.modules[3]
+dataflow_run.modules[3]  # Module(name='String Formatter', type=String Formatter)
 ```
 
-<!-- #region -->
-```python
-#output:
-Module(name='String Formatter', type=String Formatter)
-```
-<!-- #endregion -->
+#### first
 
-<!-- #region -->
-```python
-x.first()
-```
-
----
+- x.first() -> SingularType
 
 For convenience, instead of accessing with an index, you can also get the first result of any set with the first method.
-<!-- #endregion -->
 
 ```python
-dataflow_run.modules.first()
+dataflow_run.modules.first()  # Module(name='Calculator', type=Calculator)
 ```
 
-<!-- #region -->
-```python
-#output:
-Module(name='Calculator', type=Calculator)
-```
-<!-- #endregion -->
-
-<!-- #region -->
-```python
-dataflow_object.module, module.result, module.input  # singular nouns
-```
-
----
+#### dataflow_object.module, module.result, module.input (singular nouns)
 
 Instead of accessing `results` and using `first()` or `[0]`, you can instead use `result`. This works for `module`, `result` and `input`. Attempts to use these when there are more than one will raise an exception.
-<!-- #endregion -->
 
 ```python
-dataflow_run.modules.get(name="String Formatter").result
+dataflow_run.modules.get(name="String Formatter").result  # Result(name='Result', type=String, value='This is a test format')
 ```
 
-<!-- #region -->
-```python
-#output:
-Result(name='Result', type=String, value='This is a test format')
-```
-<!-- #endregion -->
-
-## Object Members/Properties
-
-Most commonly used member properties (`name`/`type`/`value`) can be accessed as python object properties.
-
-```python
-dataflow_run.modules.get(name="String Formatter").results.first().value
-```
-
-<!-- #region -->
-```python
-#output:
-'This is a test format'
-```
-<!-- #endregion -->
-
-### Contract
-
-
-If you need to interact more closely with Composable object types, the c#/python binding contracts can be accessed on composapy objects thru the `contract` member.
-
-```python
-type(dataflow_run.contract)
-```
-
-<!-- #region -->
-```python
-#output:
-CompAnalytics.Contracts.ExecutionState
-```
-<!-- #endregion -->
-
-```python
-type(dataflow_run.modules.get(name="String Formatter")).contract
-```
-
-<!-- #region -->
-```python
-#output:
-CompAnalytics.Contracts.Module
-```
-<!-- #endregion -->
-
-```python
-type(dataflow_run.modules.get(name="String Formatter")).results.first().contract
-```
-
-<!-- #region -->
-```python
-#output:
-CompAnalytics.Contracts.ModuleOutput
-```
-<!-- #endregion -->
-
-## Tables
+### Tables
 
 ```python
 import pandas as pd
@@ -417,75 +400,59 @@ For convenience, `Result` objects that contain Composable tables are displayed a
 
 ```python
 table_run = dataflow_api.get_run(138123)
-
 table_run.modules.first().result
-```
 
-```python vscode={"languageId": "plaintext"}
-#output:
-+----+-----+-----+-----+
-|    | a   | o   | e   |
-+====+=====+=====+=====+
-|  0 | a   | o   | e   |
-+----+-----+-----+-----+
-|  1 | e   |     |     |
-+----+-----+-----+-----+
-|  2 | e   |     |     |
-+----+-----+-----+-----+
+# .to_markdown() was used for markdown presentation purposes
+# 
+# +----+-----+-----+-----+
+# |    | a   | o   | e   |
+# +====+=====+=====+=====+
+# |  0 | a   | o   | e   |
+# +----+-----+-----+-----+
+# |  1 | e   |     |     |
+# +----+-----+-----+-----+
+# |  2 | e   |     |     |
+# +----+-----+-----+-----+
 ```
 
 To get the pandas dataframe `Result` of a Composable Table, use `result.to_pandas()`.
 
 ```python
-result_df = table_run.modules.first().result.to_pandas()
-print(isinstance(df, pd.DataFrame))
+result_df = table_run.modules.first().result.to_pandas()  # pd.DataFrame
 ```
-
-<!-- #region -->
-```python
-#output:
-True
-```
-<!-- #endregion -->
 
 ```python
-result_value = table_run.modules.first().result.value
-print(isinstance(result_value, pd.DataFrame))
+result_value = table_run.modules.first().result.value  # CompAnalytics.Contracts.Table
 ```
 
-<!-- #region -->
-```python
-#output:
-False
-```
-<!-- #endregion -->
+### File References
 
-```python
-print(isinstance(result_value, Table))
-```
-
-<!-- #region -->
-```python
-#output:
-True
-```
-<!-- #endregion -->
-
-## File References
-
-```python
-from composapy.helper import file_ref
-```
 
 For dataflows that contain values of type `Contracts.FileReference`, the result value gives you the object with some information needed to retrieve the information of your file. Instead of accessing the `value` property, you can use the `to_file` method to download the file to your local workspace.
 
-<!-- #region -->
+
+#### \_\_init\_\_
+
+
+- FileRef(path_like: str | pathlib.Path) -> CompAnalytics.Contracts.FileReference
+
 ```python
-$ x.result.to_file(save_dir: str, file_name: str = None)
+from composapy.helper import file_ref
+
+_ref = file_ref("path/to/file.txt")  # CompAnalytics.Contracts.FileReference
 ```
-<!-- #endregion -->
+
+#### to_file
+
+
+- result.to_file(save_dir: str, file_name: str = None) -> CompAnalytics.Contracts.FileReference
 
 ```python
 run = dataflow_api.get_run(654321)
 run.modules.first().result.to_file("relative/path/to/dir", file_name="optional_name.txt")  # file_name uses original file name if kwargs are not specified
 ```
+
+## Additional Information
+
+
+Also, if you want to interface with <a href="https://github.com/pythonnet/pythonnet" target="_blank">pythonnet</a> more closely -- you can find our csharp documentation <a href="https://dev.composable.ai/api/CompAnalytics.Contracts.html" target="_blank">here</a>.

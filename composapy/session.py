@@ -1,5 +1,7 @@
 import os
 
+#  from enum import Enum
+
 from System import Uri
 from CompAnalytics import IServices
 
@@ -14,6 +16,10 @@ class UriNotConfiguredError(SessionException):
 
 class Session:
     """Holds connection and binding state for composapy api usage."""
+
+    # class AuthMode(Enum):
+    #     TOKEN = "Token"
+    #     WINDOWS = "Windows"
 
     @property
     def app_service(self) -> IServices.IApplicationService:
@@ -35,7 +41,16 @@ class Session:
     def uri(self) -> str:
         return str(self.connection_settings.Uri)
 
-    def __init__(self, api_token: str, uri: str = None):
+    # @property
+    # def auth_mode(self) -> AuthMode:
+    #     return self._auth_mode
+
+    def __init__(
+        self,
+        api_token: str,
+        uri: str = None,
+        # auth_mode: AuthMode = AuthMode.TOKEN
+    ):
         if uri is None and os.environ.get("APPLICATION_URI") is None:
             raise UriNotConfiguredError(
                 "A uri must be configured by either setting an "
@@ -47,9 +62,14 @@ class Session:
 
         self.connection_settings = IServices.Deploy.ConnectionSettings()
         self.connection_settings.Uri = Uri(uri)
+
+        # if auth_mode == Session.AuthMode.TOKEN:
         self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Api
         self.connection_settings.ApiKey = api_token
         self._api_token = api_token
+
+        # if auth_mode == Session.AuthMode.WINDOWS:
+        #     self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Windows
 
         self.ResourceManager = IServices.Deploy.ResourceManager(
             self.connection_settings
