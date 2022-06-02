@@ -2,9 +2,9 @@
 # [readme] composapy
 <!-- #endregion -->
 
-Composapy comes packaged with DataLabs. Composapy binds features, such as DataFlow's, of other Composable products for use in a python environment.
+Composapy comes packaged with DataLabs. Composapy binds features such as DataFlows or other Composable products for use in a Python environment.
 
-- [#Quick-Start](#quick-start) : some simple use-cases and examples
+- [#Quick-Start](#quick-start) : some simple use cases and examples
 - [#Reference](#reference) : more details about the components
 - [#Additional-Information](#additional-information) : some other links to information outside of this repo
 
@@ -40,13 +40,13 @@ dataflow_object = dataflow_api.create(file_path="simple-dataflow.json").save()  
 ### Run a DataFlow
 
 
-To run a saved dataflow, you can retrieve the `appId` in the dataflow's url.
+To run a saved DataFlow, you can retrieve the `appId` in the DataFlow's URL.
 
 ```python
 dataflow_run = dataflow_api.run(444333)  # DataFlowRun(id=444333)
 ```
 
-To run a dataflow that has external input modules, use the `external_inputs` kwarg, which is a dictionary of with key equal to the external modules name field and the value equal to what you want to pass in.
+To run a DataFlow that has external input modules, use the `external_inputs` kwarg, which is a dictionary with key equal to the external modules name field and the value equal to what you want to pass in.
 
 ```python
 dataflow_run = dataflow_api.run(444333, external_inputs={"a_string_external_input": "foo string"})   # DataFlowRun(id=444333)
@@ -132,7 +132,7 @@ dataflow_api.create(file_path="simple-dataflow.json")  # DataFlowObject(id=None)
 #### run
 
 
-If there are any external inputs in the dataflow, you can supply them with (_kwarg_ `external_inputs`). It takes the external input name as a key and the external input value as value. You can find more about external input modules [here](https://github.com/ComposableAnalytics/Docs/blob/master/docs/DataFlows/06.DataFlow-Reuse.md#creation).
+If there are any external inputs in the DataFlow, you can supply them with (_kwarg_ `external_inputs`). It takes the external input name as a key and the external input value as value. You can find more about external input modules [here](https://github.com/ComposableAnalytics/Docs/blob/master/docs/DataFlows/06.DataFlow-Reuse.md#creation).
 
 
 - run(id: int) -> DataFlowRun
@@ -207,7 +207,7 @@ dataflow_run = dataflow_object.run()  # DataFlowRun(id=234567)
 ##### app_id -> int
 
 
-Refers to the application id this run is a part of. This can be None if it was run with an unsaved dataflow.
+Refers to the application id this run is a part of. This can be None if it was run with an unsaved DataFlow.
 
 
 ##### module -> Module
@@ -288,7 +288,7 @@ dataflow_object.modules[0].input.to_file(save_dir=".", file_name="optional_file_
 #### to_pandas
 
 
-Will raise exception if value is not of type `CompAnalytics.Contracts.Tables.Table`. More information about the Composable Table to Pandas DataFrame conversion can be found [here](#tables).
+Will raise exception if value is not of type `CompAnalytics.Contracts.Tables.Table`. More information about the Composable Table to pandas DataFrame conversion can be found [here](#tables).
 
 
 - to_pandas() -> pandas.DataFrame
@@ -396,7 +396,7 @@ import pandas as pd
 from CompAnalytics.Contracts.Tables import Table
 ```
 
-For convenience, `Result` objects that contain Composable tables are displayed as a Pandas dataframe inside of notebooks (the object is still a `Result` object, and the member `value` will still be a `Table` contract).
+For convenience, `Result` objects that contain Composable Tables are displayed as a pandas DataFrame inside of notebooks (the object is still a `Result` object, and the member `value` will still be a `Table` contract).
 
 ```python
 table_run = dataflow_api.get_run(138123)
@@ -415,7 +415,7 @@ table_run.modules.first().result
 # +----+-----+-----+-----+
 ```
 
-To get the pandas dataframe `Result` of a Composable Table, use `result.to_pandas()`.
+To get the pandas DataFrame `Result` of a Composable Table, use `result.to_pandas()`.
 
 ```python
 result_df = table_run.modules.first().result.to_pandas()  # pd.DataFrame
@@ -428,7 +428,7 @@ result_value = table_run.modules.first().result.value  # CompAnalytics.Contracts
 ### File References
 
 
-For dataflows that contain values of type `Contracts.FileReference`, the result value gives you the object with some information needed to retrieve the information of your file. Instead of accessing the `value` property, you can use the `to_file` method to download the file to your local workspace.
+For DataFlows that contain values of type `Contracts.FileReference`, the result value gives you the object with some information needed to retrieve the information of your file. Instead of accessing the `value` property, you can use the `to_file` method to download the file to your local workspace.
 
 
 #### \_\_init\_\_
