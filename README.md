@@ -75,11 +75,11 @@ dataflow_run.modules.get(name="string module name").result           # Result(na
 
 ### Session
 
-<!-- #region -->
-```python
-class Session(api_token: str, uri: str = None)
-```
-<!-- #endregion -->
+
+#### \_\_init\_\_
+
+
+- Session(api_token: str, uri: str = None)
 
 ```python
 session = Session("<your-api-token-here>")
