@@ -20,3 +20,6 @@ composapy.egg-info/*
 dist/*
 .tox/*
 build/*
+
+#test artifacts
+tests/.local_files
