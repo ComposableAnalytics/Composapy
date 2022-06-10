@@ -1,14 +1,14 @@
 from typing import Optional
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 import pandas as pd
-import requests
 
 from composapy.session import Session, SessionException
 from composapy.utils import urljoin
 
 import System
+from System.IO import File, SeekOrigin
 from CompAnalytics import Contracts
-from CompAnalytics.Utils import StandardPaths
+from CompAnalytics.Utils import StandardPaths, FileUtils
 
 
 class ObjectSetMixinException(Exception):
@@ -39,16 +39,19 @@ class ObjectSetMixin:
 
     def first(self):
         """Returns first module in self._target."""
+
         return next(iter(self._target))
 
     def first_with_name(self, name):
         """Matches by first in self._target with given name."""
+
         return next(item for item in self._target if item.name == name)
 
     def filter(self, **kwargs):
         """Filters based on a module field value, such as name.
         example: modules.filter(name=module_name)
         """
+
         return tuple(
             item
             for item in self._target
@@ -58,6 +61,7 @@ class ObjectSetMixin:
     def get(self, **kwargs):
         """Searches based on module field value, such as name. Throws exception if there is
         either more than one result or zero results."""
+
         results = tuple(
             item
             for item in self._target
@@ -206,6 +210,7 @@ class FileReferenceMixin:
             The name of the newly saved file (default is None). If None is provided,
             uses the original filename from URI.
         """
+
         if not isinstance(self.contract.ValueObj, Contracts.FileReference):
             raise InvalidOperationError(
                 f"{self.contract.Name} is not a file reference."
@@ -217,17 +222,29 @@ class FileReferenceMixin:
         if not file_name:
             file_name = file_ref_uri[file_ref_uri.rindex("/") :].strip("/")
 
-        url = urljoin(self.session.uri, file_ref_relative_uri)
-        response = requests.get(url, headers={"Authorization": self.session.api_token})
+        virtual_path = urljoin(self.session.uri, file_ref_relative_uri)
+        windows_path: PureWindowsPath = PureWindowsPath(save_dir.joinpath(file_name))
 
         Path.mkdir(save_dir, parents=True, exist_ok=True)
-        file_path = save_dir.joinpath(file_name)
-        with open(file_path, "w+b") as _local_file:
-            _local_file.write(response.content)
+        file_path: Path = save_dir.joinpath(file_name)
+
+        _input_stream = self.session.file_upload_service.StreamFile(virtual_path)
+        input_stream = FileUtils.GetEntireFileStream(_input_stream)  # fix seek issues
+
+        output_stream = File.Create(str(windows_path))
+
+        input_stream.Seek(0, SeekOrigin.Begin)
+        input_stream.CopyTo(output_stream)
+
+        output_stream.Close()
+        input_stream.Close()
 
         self.contract.ValueObj = Contracts.FileReference.Create[
             self.contract.ValueObj.GetType()
-        ](str(file_path), StandardPaths.CreateSiteRelativePath(System.Uri(url)))
+        ](
+            str(file_path),
+            StandardPaths.CreateSiteRelativePath(System.Uri(virtual_path)),
+        )
 
         return self.contract.ValueObj
 

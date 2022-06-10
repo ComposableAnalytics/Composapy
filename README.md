@@ -16,14 +16,18 @@ Composapy comes packaged with DataLabs. Composapy binds features such as DataFlo
 
 <!-- #region pycharm={"name": "#%% md\n"} -->
 Composapy looks for the environment variable `APPLICATION_URI` by default (set by DataLabs). If you are using Composapy outside of the datalabs environment and the `APPLICATION_URI`
-environment variable is not set, you can set it with keyword argument `uri`.
+environment variable is not set, you can set it with keyword argument `uri`. You can create a session with Windows Authentication (if you are in DataLab, this will be the same as the 
+key on the DataLab edit screen), [`string`] API Token (can be generated on the composable website), or with a [`tuple[str, str]`] username/password combination.
 <!-- #endregion -->
 
 ```python
 from composapy.session import Session
 from composapy.dataflow.api import DataFlow
 
-session = Session("<your-api-token-here>")  # session = Session("<your-api-token-here>", uri="http://localhost/CompAnalytics/")
+session = Session(auth_mode=Session.AuthMode.WINDOWS)  # Windows Auth
+session = Session(auth_mode=Session.AuthMode.TOKEN, uri="http://localhost/CompAnalytics/", credentials="<your-api-token-here>")  # Token  (uri is required in DataLabs by default)
+session = Session(auth_mode=Session.AuthMode.FORM, ("username", "password"))  # Form
+
 dataflow_api = DataFlow(session)
 ```
 
@@ -76,14 +80,23 @@ dataflow_run.modules.get(name="string module name").result           # Result(na
 ### Session
 
 
+#### AuthMode
+
+
+- WINDOWS
+- TOKEN
+- FORM
+
+
 #### \_\_init\_\_
 
 
-- Session(api_token: str, uri: str = None)
+- Session(auth_mode: AuthMode = Session.AuthMode.WINDOWS, uri: str = None, credentials: Optional[str | tuple[str, str]] = None)
 
 ```python
-session = Session("<your-api-token-here>")
-# session = Session("<your-api-token-here>", uri="http://localhost/CompAnalytics/")
+session = Session(auth_mode=Session.AuthMode.WINDOWS)  # Windows Auth
+session = Session(auth_mode=Session.AuthMode.TOKEN, credentials="<your-api-token-here>")  # Token
+session = Session(auth_mode=Session.AuthMode.FORM, uri="http://localhost/CompAnalytics/", credentials=("username", "password"))  # Form
 ```
 
 ### DataFlow

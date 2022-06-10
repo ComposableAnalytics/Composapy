@@ -11,6 +11,9 @@ from CompAnalytics import Contracts
 class DataFlow(PandasMixin, ComposableApi):
     """A wrapper class for dataflow service-level operations."""
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def get(self, dataflow_id: int) -> DataFlowObject:
         """Returns wrapped dataflow contract inside a dataflow object."""
         dataflow = self.session.app_service.GetApplication(dataflow_id)
@@ -21,6 +24,7 @@ class DataFlow(PandasMixin, ComposableApi):
         the dataflow using the dataflow service binding, and returns a DataFlowObject.
         Note that creating does not save the dataflow, the .save() method must be called on
         DataFlowObject to save it in your composable database."""
+
         if json and file_path:
             raise ValueError(
                 "Cannot use both json and file_name arguments, please choose one."
@@ -54,6 +58,7 @@ class DataFlow(PandasMixin, ComposableApi):
         Any external modules (external int, table, file) that require outside input to run can be
         added using a dictionary with the module input's name and corresponding contract.
         """
+
         dataflow = self.session.app_service.GetApplication(dataflow_id)
         if not dataflow:
             return None
@@ -68,6 +73,7 @@ class DataFlow(PandasMixin, ComposableApi):
         Parameters
         (int) run_id: id of the run
         """
+
         run = self.session.app_service.GetRun(run_id)
         return System.Enum.GetNames(Contracts.ExecutionStatus)[run.Status]
 
@@ -81,6 +87,7 @@ class DataFlow(PandasMixin, ComposableApi):
         Return
         (dict[str, int]) execution_status: status of the execution
         """
+
         run = self.session.app_service.GetRun(run_id)
         if run.Status == Contracts.ExecutionStatus.Running:
             self.session.app_service.WaitForExecutionContext(run.Handle)

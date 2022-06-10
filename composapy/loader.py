@@ -3,13 +3,13 @@ import sys
 import os
 import logging
 from pathlib import Path
+import clr
 
 
 def add_dll_reference(path: str) -> None:
     """Attempts to connect to csharp language runtime library at specified path."""
-    try:
-        import clr
 
+    try:
         clr.AddReference(path)
     except:
         logging.warning(f"Failed to load .dll : {path}.")
@@ -20,6 +20,7 @@ def load_init(environment_variables: Dict = None) -> None:
     environment variables using dotenv (for testing or custom load strategy). Afterward, uses root
     path to find and load needed dll's to use a session.
     """
+
     if environment_variables:
         for key, val in environment_variables.items():
             os.environ[key] = val
@@ -33,10 +34,12 @@ def load_init(environment_variables: Dict = None) -> None:
         )
     )
 
+    # necessary non-composable dll's
     add_dll_reference("System.Runtime")
     add_dll_reference("System")
     add_dll_reference("System.Net")
 
+    # by adding to sys.path, ensure directory will be available for all users
     sys.path.append(str(DATALAB_DLL_DIR))
 
     DLLs = list(DATALAB_DLL_DIR.rglob("*.dll"))

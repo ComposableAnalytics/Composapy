@@ -1,65 +1,143 @@
 import os
 import pytest
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 from dotenv import load_dotenv
+import warnings
+from urllib.parse import urlparse
 
 from composapy.dataflow.api import DataFlow
-from composapy.dataflow.models import DataFlowObject
 from composapy.queryview.api import QueryView
 from composapy.session import Session
 
 from CompAnalytics import Contracts
 from System import Uri
+from CompAnalytics.Utils import WinAuthUtils
 
 # does not override environment variables, this is essentially a failsafe for local dev environment
 for env_file in sorted(Path().rglob(".test*.env")):
     load_dotenv(env_file)
 
 
-@pytest.fixture
-def session():
+class TestSetupException(Exception):
+    pass
+
+
+class InvalidTestConfigError(TestSetupException):
+    pass
+
+
+def create_token_auth_session() -> Session:
     if os.getenv("TEST_API_KEY"):
-        api_key = os.getenv("TEST_API_KEY")
-    else:
-        from CompAnalytics import IServices
-        from System import Net, Uri, DateTime, TimeSpan
-
-        connection_settings = IServices.Deploy.ConnectionSettings()
-        form_credential = Net.NetworkCredential(
-            os.getenv("TEST_USERNAME"), os.getenv("TEST_PASSWORD")
+        return Session(
+            auth_mode=Session.AuthMode.TOKEN, credentials=os.getenv("TEST_API_KEY")
         )
-        connection_settings.Uri = Uri(os.getenv("APPLICATION_URI"))
-        connection_settings.AuthMode = IServices.Deploy.AuthMode.Form
-        connection_settings.FormCredential = form_credential
 
-        resource_manager = IServices.Deploy.ResourceManager(connection_settings)
-        user_service = resource_manager.CreateAuthChannel[IServices.IUserService](
-            "UserService"
+    if not os.getenv("TEST_USERNAME") or not os.getenv("TEST_PASSWORD"):
+        raise InvalidTestConfigError(
+            "TEST_API_KEY was not supplied and TEST_USERNAME and/or TEST_PASSWORD in test "
+            "configuration files were not found, but are needed to generate a new API token."
         )
-        user = user_service.GetCurrentUser()
-        token_expiration_date = DateTime.UtcNow + TimeSpan.FromDays(3)
-        api_key = user_service.GenerateUserToken(
-            user.Id, user.UserName, token_expiration_date
-        )
-        os.environ["TEST_API_KEY"] = api_key
-    return Session(api_key)
 
-
-@pytest.fixture
-def session_with_token():
-    return Session(api_token=os.getenv("TEST_API_KEY"))
-
-
-@pytest.fixture
-def dataflow(session: Session) -> DataFlow:
-    return DataFlow(session=session)
-
-
-@pytest.fixture
-def dataflow_object(dataflow: DataFlow, request) -> DataFlowObject:
-    return dataflow.create(
-        file_path=str(Path(os.path.dirname(Path(__file__)), "TestFiles", request.param))
+    warnings.warn(
+        "TEST_API_KEY is not setup inside of your .test.env file. A temporary api key will "
+        "be created with your (TEST_USERNAME, TEST_PASSWORD) for this test run, but will not be "
+        "set in your .local.env file. To remove this warning -- add a valid TEST_API_KEY to your "
+        ".local.env config file."
     )
+
+    from CompAnalytics import IServices
+    from System import Net, Uri, DateTime, TimeSpan
+
+    connection_settings = IServices.Deploy.ConnectionSettings()
+    connection_settings.Uri = Uri(os.getenv("APPLICATION_URI"))
+    connection_settings.AuthMode = IServices.Deploy.AuthMode.Form
+    connection_settings.FormCredential = Net.NetworkCredential(
+        os.getenv("TEST_USERNAME"), os.getenv("TEST_PASSWORD")
+    )
+
+    resource_manager = IServices.Deploy.ResourceManager(connection_settings)
+    user_service = resource_manager.CreateAuthChannel[IServices.IUserService](
+        "UserService"
+    )
+    user = user_service.GetCurrentUser()
+    token_expiration_date = DateTime.UtcNow + TimeSpan.FromDays(3)
+    api_key = user_service.GenerateUserToken(
+        user.Id, user.UserName, token_expiration_date
+    )
+    os.environ["TEST_API_KEY"] = api_key
+    return Session(auth_mode=Session.AuthMode.TOKEN, credentials=api_key)
+
+
+def create_windows_auth_session():
+    return Session(auth_mode=Session.AuthMode.WINDOWS)
+
+
+def create_form_auth_session() -> Session:
+    if not os.getenv("TEST_USERNAME") or not os.getenv("TEST_PASSWORD"):
+        raise InvalidTestConfigError(
+            "TEST_USERNAME and/or TEST_PASSWORD in test configuration files were not found, but "
+            "are needed for creating a session with auth mode Form."
+        )
+
+    return Session(
+        auth_mode=Session.AuthMode.FORM,
+        credentials=(os.getenv("TEST_USERNAME"), os.getenv("TEST_PASSWORD")),
+    )
+
+
+def enable_windows_auth():
+    uri = os.getenv("APPLICATION_URI")
+    virtual_path = urlparse(uri).path.removesuffix("/")
+    WinAuthUtils.EnableWindowsAuth(True, virtual_path)
+
+
+def disable_windows_auth():
+    uri = os.getenv("APPLICATION_URI")
+    virtual_path = urlparse(uri).path.removesuffix("/")
+    WinAuthUtils.EnableWindowsAuth(False, virtual_path)
+
+
+@pytest.fixture
+def session(request):
+    if request.param == "Windows":
+        enable_windows_auth()
+        yield create_windows_auth_session()
+        disable_windows_auth()
+    elif request.param == "Form":
+        yield create_form_auth_session()
+    elif request.param == "Token":
+        yield create_token_auth_session()
+
+
+@pytest.fixture
+def dataflow_object(request):
+    if request.param[0] == "Windows":
+        try:
+            enable_windows_auth()
+            session = create_windows_auth_session()
+
+            yield DataFlow(session=session).create(
+                file_path=str(
+                    Path(os.path.dirname(Path(__file__)), "TestFiles", request.param[1])
+                )
+            )
+        finally:
+            disable_windows_auth()
+
+    elif request.param[0] == "Form":
+        session = create_form_auth_session()
+        yield DataFlow(session=session).create(
+            file_path=str(
+                Path(os.path.dirname(Path(__file__)), "TestFiles", request.param[1])
+            )
+        )
+    elif request.param[0] == "Token":
+        session = create_token_auth_session()
+        yield DataFlow(session=session).create(
+            file_path=str(
+                Path(os.path.dirname(Path(__file__)), "TestFiles", request.param[1])
+            )
+        )
 
 
 # used when a fixture needs another copy of parameterized fixture
@@ -77,13 +155,13 @@ def clean_file_path(request) -> Path:
 
 
 @pytest.fixture
-def file_path_object(request) -> Path:
-    return FIXTURE_DIR.joinpath("TestFiles", request.param)
+def file_path_object(request) -> PureWindowsPath:
+    return PureWindowsPath(FIXTURE_DIR.joinpath("TestFiles", request.param))
 
 
 @pytest.fixture
 def file_path_string(request) -> str:
-    return str(FIXTURE_DIR.joinpath("TestFiles", request.param))
+    return str(PureWindowsPath(FIXTURE_DIR.joinpath("TestFiles", request.param)))
 
 
 @pytest.fixture
@@ -96,5 +174,5 @@ def file_ref(request) -> Contracts.FileReference:
 
 
 @pytest.fixture
-def queryview(session: Session) -> QueryView:
-    return queryview(session=session)
+def queryview(session_token_auth: Session) -> QueryView:
+    return queryview(session=session_token_auth)

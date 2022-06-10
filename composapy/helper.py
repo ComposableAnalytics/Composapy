@@ -1,12 +1,12 @@
 from __future__ import annotations
-from pathlib import Path
+from pathlib import Path, PureWindowsPath
 
 from System import Uri
 from CompAnalytics.Contracts import FileReference
 
 
 def file_ref(path_like: str | Path) -> FileReference:
-    if isinstance(path_like, Path):
+    if isinstance(path_like, PureWindowsPath) or isinstance(path_like, Path):
         path_like = str(path_like)
 
     uri = Uri(path_like)

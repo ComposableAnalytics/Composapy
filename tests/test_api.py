@@ -3,11 +3,18 @@ from pathlib import Path
 import pytest
 import pandas as pd
 
-from composapy.dataflow.api import DataFlow
 from composapy.dataflow.models import DataFlowObject
 
 
-@pytest.mark.parametrize("dataflow_object", ["calculator_test.json"], indirect=True)
+@pytest.mark.parametrize(
+    "dataflow_object",
+    [
+        ("Form", "calculator_test.json"),
+        ("Token", "calculator_test.json"),
+        ("Windows", "calculator_test.json"),
+    ],
+    indirect=True,
+)
 def test_run_dataflow_get_output(dataflow_object: DataFlowObject):
     dataflow_run = dataflow_object.run()
 
@@ -21,48 +28,66 @@ def test_run_dataflow_get_output(dataflow_object: DataFlowObject):
     )
 
 
-@pytest.mark.parametrize("dataflow_object", ["tablecreator.json"], indirect=True)
-def test_convert_table_to_pandas(dataflow_object: DataFlowObject, dataflow: DataFlow):
+@pytest.mark.parametrize(
+    "dataflow_object",
+    [
+        ("Form", "tablecreator.json"),
+        ("Token", "tablecreator.json"),
+        ("Windows", "tablecreator.json"),
+    ],
+    indirect=True,
+)
+def test_convert_table_to_pandas(dataflow_object: DataFlowObject):
     dataflow_run = dataflow_object.run()
 
-    table = dataflow_run.modules.first_with_name("Table Creator").result.value
-    df = dataflow.convert_table_to_dataframe(table)
+    df = dataflow_run.modules.first_with_name("Table Creator").result.to_pandas()
 
     assert type(df) == type(pd.DataFrame())
 
 
 @pytest.mark.parametrize(
-    "dataflow_object", ["datetimeoffset_table_column_dtypes.json"], indirect=True
+    "dataflow_object",
+    [("Token", "datetimeoffset_table_column_dtypes.json")],
+    indirect=True,
 )
-def test_convert_table_to_pandas_dtypes(
-    dataflow_object: DataFlowObject, dataflow: DataFlow
-):
+def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject):
     dataflow_run = dataflow_object.run()
 
     modules = dataflow_run.modules
-    table = modules.first_with_name("Column Type Converter").result.value
-    df = dataflow.convert_table_to_dataframe(table)
+    df = modules.first_with_name("Column Type Converter").result.to_pandas()
 
     assert type(df) == type(pd.DataFrame())
     assert str(df.dtypes["DATETIMEOFFSETCOLUMN"]) == "datetime64[ns]"
 
 
 @pytest.mark.parametrize(
-    "dataflow_object", ["external_input_table.json"], indirect=True
-)
-@pytest.mark.parametrize(
-    "dataflow_object_extra", ["datetimeoffset_table_column_dtypes.json"], indirect=True
+    "dataflow_object,dataflow_object_extra",
+    [
+        (
+            ("Token", "external_input_table.json"),
+            ("Token", "datetimeoffset_table_column_dtypes.json"),
+        ),
+        (
+            ("Form", "external_input_table.json"),
+            ("Form", "datetimeoffset_table_column_dtypes.json"),
+        ),
+        (
+            ("Windows", "external_input_table.json"),
+            ("Windows", "datetimeoffset_table_column_dtypes.json"),
+        ),
+    ],
+    indirect=True,
 )
 def test_external_input_table(
-    dataflow_object: DataFlowObject, dataflow_object_extra: DataFlowObject
+    dataflow_object: DataFlowObject,
+    dataflow_object_extra: DataFlowObject,
 ):
     # lazily create a new table contract by running a dataflow that has a table result
     table = (
         dataflow_object_extra.run()
-        .modules.first_with_name("Column Type Converter")
+        .modules.get(name="Column Type Converter")
         .result.value
     )
-
     dataflow_run = dataflow_object.run(external_inputs={"TableInput": table})
 
     assert list(dataflow_run.modules.first().result.value.Headers) == list(
@@ -73,7 +98,7 @@ def test_external_input_table(
 
 @pytest.mark.parametrize(
     "dataflow_object,file_path_object",
-    [("external_file_input.json", "external_input_file.txt")],
+    [(("Form", "external_file_input.json"), "external_input_file.txt")],
     indirect=True,
 )
 def test_external_input_file_using_path_object(
@@ -86,14 +111,17 @@ def test_external_input_file_using_path_object(
     assert str(run.modules.get(name="File Reader").result.value) == "success\r\n"
 
 
+@pytest.mark.parametrize("file_path_string", ["external_input_file.txt"], indirect=True)
 @pytest.mark.parametrize(
-    "dataflow_object,file_path_string",
-    [("external_file_input.json", "external_input_file.txt")],
+    "dataflow_object",
+    [
+        ("Form", "external_file_input.json"),
+        ("Token", "external_file_input.json"),
+        ("Windows", "external_file_input.json"),
+    ],
     indirect=True,
 )
-def test_external_input_file_using_path_string(
-    dataflow_object: DataFlowObject, file_path_string: str
-):
+def test_external_input_file(dataflow_object: DataFlowObject, file_path_string: str):
     run = dataflow_object.run(
         external_inputs={"my external file input": file_path_string}
     )

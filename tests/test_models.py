@@ -8,22 +8,30 @@ from System import Uri
 from CompAnalytics import Contracts
 
 
-@pytest.mark.parametrize("dataflow_object", ["tablecreator.json"], indirect=True)
+@pytest.mark.parametrize(
+    "dataflow_object", [("Token", "tablecreator.json")], indirect=True
+)
 def test_singular_noun_retrieval_module(dataflow_object: DataFlowObject):
     assert isinstance(dataflow_object.module.contract, Contracts.Module)
 
 
-@pytest.mark.parametrize("dataflow_object", ["file_input.json"], indirect=True)
+@pytest.mark.parametrize(
+    "dataflow_object", [("Token", "file_input.json")], indirect=True
+)
 def test_singular_noun_retrieval_result(dataflow_object: DataFlowObject):
     assert isinstance(dataflow_object.module.input.contract, Contracts.ModuleInput)
 
 
-@pytest.mark.parametrize("dataflow_object", ["tablecreator.json"], indirect=True)
+@pytest.mark.parametrize(
+    "dataflow_object", [("Token", "tablecreator.json")], indirect=True
+)
 def test_singular_noun_retrieval_result(dataflow_object: DataFlowObject):
     assert isinstance(dataflow_object.module.result.contract, Contracts.ModuleOutput)
 
 
-@pytest.mark.parametrize("dataflow_object", ["tablecreator.json"], indirect=True)
+@pytest.mark.parametrize(
+    "dataflow_object", [("Token", "tablecreator.json")], indirect=True
+)
 def test_dataflow_object_repr_html_(dataflow_object: DataFlowObject):
     dataflow = dataflow_object.run()
     dataflow_module_result = dataflow.modules.first().result
@@ -31,7 +39,15 @@ def test_dataflow_object_repr_html_(dataflow_object: DataFlowObject):
     assert isinstance(dataflow_module_result._repr_html_(), str)
 
 
-@pytest.mark.parametrize("dataflow_object", ["tablecreator.json"], indirect=True)
+@pytest.mark.parametrize(
+    "dataflow_object",
+    [
+        ("Token", "tablecreator.json"),
+        ("Form", "tablecreator.json"),
+        ("Windows", "tablecreator.json"),
+    ],
+    indirect=True,
+)
 def test_dataflow_object_to_pandas(dataflow_object: DataFlowObject):
     dataflow = dataflow_object.run()
     df = dataflow.modules.first().result.to_pandas()
@@ -41,11 +57,16 @@ def test_dataflow_object_to_pandas(dataflow_object: DataFlowObject):
 
 
 @pytest.mark.parametrize(
-    "dataflow_object,clean_file_path",
+    "clean_file_path",
+    ["text-test.txt", "xlsx-test.xlsx", "csv-test.csv"],
+    indirect=True,
+)
+@pytest.mark.parametrize(
+    "dataflow_object",
     [
-        ("file_writer.json", "text-test.txt"),
-        ("xlsx_writer.json", "xlsx-test.xlsx"),
-        ("csv_writer.json", "csv-test.csv"),
+        ("Token", "file_writer.json"),
+        ("Form", "xlsx_writer.json"),
+        ("Windows", "csv_writer.json"),
     ],
     indirect=True,
 )

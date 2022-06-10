@@ -3,15 +3,18 @@ from __future__ import annotations
 import os
 from pathlib import Path
 
+import pytest
+
 from composapy.session import Session
 from composapy.dataflow.api import DataFlow
 
 
-def test_session_with_token(session_with_token: Session):
-    dataflow = DataFlow(session_with_token)
+@pytest.mark.parametrize("session", ["Token", "Form", "Windows"], indirect=True)
+def test_session(session: Session):
+    dataflow = DataFlow(session=session)
     dataflow.create(
         file_path=str(
             Path(os.path.dirname(Path(__file__)), "TestFiles", "calculator_test.json")
         )
-    )  # dataflow.create() will throw an error if session authentication with token failed
+    )  # dataflow.create() will throw an error if session authentication failed
     assert True
