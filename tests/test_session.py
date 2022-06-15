@@ -9,7 +9,7 @@ from composapy.session import Session
 from composapy.dataflow.api import DataFlow
 
 
-@pytest.mark.parametrize("session", ["Token", "Form", "Windows"], indirect=True)
+@pytest.mark.parametrize("session", ["Token", "Form"], indirect=True)
 def test_session(session: Session):
     dataflow = DataFlow(session=session)
     dataflow.create(

@@ -8,6 +8,7 @@ from urllib.parse import urlparse
 from composapy.dataflow.api import DataFlow
 from composapy.queryview.api import QueryView
 from composapy.session import Session
+from composapy.utils import remove_suffix
 
 from CompAnalytics import Contracts
 from System import Uri
@@ -86,15 +87,19 @@ def create_form_auth_session() -> Session:
 
 
 def enable_windows_auth():
-    uri = os.getenv("APPLICATION_URI")
-    virtual_path = urlparse(uri).path.removesuffix("/")
-    WinAuthUtils.EnableWindowsAuth(True, virtual_path)
+    """Csharp DataLabs tests are expected to manage windows authorization configuration."""
+    if not os.getenv("JUPYTER_ENVIRONMENT_FLAG"):
+        uri = os.getenv("APPLICATION_URI")
+        virtual_path = remove_suffix(urlparse(uri).path, "/")
+        WinAuthUtils.EnableWindowsAuth(True, virtual_path)
 
 
 def disable_windows_auth():
-    uri = os.getenv("APPLICATION_URI")
-    virtual_path = urlparse(uri).path.removesuffix("/")
-    WinAuthUtils.EnableWindowsAuth(False, virtual_path)
+    """Csharp DataLabs tests are expected to manage windows authorization configuration."""
+    if not os.getenv("JUPYTER_ENVIRONMENT_FLAG"):
+        uri = os.getenv("APPLICATION_URI")
+        virtual_path = remove_suffix(urlparse(uri).path, "/")
+        WinAuthUtils.EnableWindowsAuth(False, virtual_path)
 
 
 @pytest.fixture

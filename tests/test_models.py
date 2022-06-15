@@ -44,7 +44,6 @@ def test_dataflow_object_repr_html_(dataflow_object: DataFlowObject):
     [
         ("Token", "tablecreator.json"),
         ("Form", "tablecreator.json"),
-        ("Windows", "tablecreator.json"),
     ],
     indirect=True,
 )
@@ -66,7 +65,6 @@ def test_dataflow_object_to_pandas(dataflow_object: DataFlowObject):
     [
         ("Token", "file_writer.json"),
         ("Form", "xlsx_writer.json"),
-        ("Windows", "csv_writer.json"),
     ],
     indirect=True,
 )

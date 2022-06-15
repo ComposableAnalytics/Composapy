@@ -11,7 +11,6 @@ from composapy.dataflow.models import DataFlowObject
     [
         ("Form", "calculator_test.json"),
         ("Token", "calculator_test.json"),
-        ("Windows", "calculator_test.json"),
     ],
     indirect=True,
 )
@@ -33,7 +32,6 @@ def test_run_dataflow_get_output(dataflow_object: DataFlowObject):
     [
         ("Form", "tablecreator.json"),
         ("Token", "tablecreator.json"),
-        ("Windows", "tablecreator.json"),
     ],
     indirect=True,
 )
@@ -70,10 +68,6 @@ def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject):
         (
             ("Form", "external_input_table.json"),
             ("Form", "datetimeoffset_table_column_dtypes.json"),
-        ),
-        (
-            ("Windows", "external_input_table.json"),
-            ("Windows", "datetimeoffset_table_column_dtypes.json"),
         ),
     ],
     indirect=True,
@@ -117,7 +111,6 @@ def test_external_input_file_using_path_object(
     [
         ("Form", "external_file_input.json"),
         ("Token", "external_file_input.json"),
-        ("Windows", "external_file_input.json"),
     ],
     indirect=True,
 )
