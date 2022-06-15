@@ -2,7 +2,9 @@
 # [readme] composapy
 <!-- #endregion -->
 
-Composapy comes packaged with DataLabs. Composapy binds features such as DataFlows or other Composable products for use in a Python environment.
+DataLabs comes pre-installed with Composapy, a python package that makes it easy to
+programmatically interface with Composable. Composapy allows you to interactively author, execute
+and retrieve results from DataFlows (Directed Acyclic Graphs, DAGs).
 
 - [#Quick-Start](#quick-start) : some simple use cases and examples
 - [#Reference](#reference) : more details about the components
