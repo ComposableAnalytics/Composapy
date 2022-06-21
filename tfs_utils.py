@@ -1,14 +1,23 @@
 import os
 import shutil
 import subprocess
-from pathlib import Path
+from pathlib import Path, WindowsPath
 from dotenv import dotenv_values
+from typing import List
+import xml.etree.ElementTree as et
+
 
 COMPOSAPY_ROOT_DIR = Path(__file__).parent
 COMP_APP_PROD_DIR = COMPOSAPY_ROOT_DIR.parent.parent.joinpath("Product")
-DATALAB_SERVICE_STATIC_DIR = COMP_APP_PROD_DIR.joinpath(
-    "CompAnalytics.DataLabService", "static"
+
+DATALAB_SERVICE_DIR = COMP_APP_PROD_DIR.joinpath("CompAnalytics.DataLabService")
+DATALAB_SERVICE_STATIC_DIR = DATALAB_SERVICE_DIR.joinpath("static")
+DATALAB_SERVICE_CSPROJ = DATALAB_SERVICE_DIR.joinpath(
+    "CompAnalytics.DataLabService.csproj"
 )
+XML_NAMESPACE = "http://schemas.microsoft.com/developer/msbuild/2003"  # for xml nodes
+et.register_namespace("", XML_NAMESPACE)
+
 TF_EXE_PATH = Path(dotenv_values(".local.env").get("TF_EXE_PATH"))
 
 
@@ -38,7 +47,7 @@ def tfs_command(cwd: Path, *args) -> None:
         )
 
 
-def update_composapy_readme_artifacts(readme_artifacts: list[Path]) -> None:
+def update_composapy_readme_artifacts(readme_artifacts: List[Path]) -> None:
     for artifact in readme_artifacts:
         destination_path = DATALAB_SERVICE_STATIC_DIR.joinpath(artifact.name)
         shutil.copy(artifact, destination_path)
@@ -61,14 +70,15 @@ def update_composapy_wheel(wheel: Path) -> None:
     # add new composapy wheel to tfs tracking
     tfs_command(wheel_dest, "add", wheel.name)
 
+    # add new composapy wheel to csproj
+    add_to_csproj(wheel.name)
+
+    # return if there are no wheels to remove from tfs and the csproj
     if len(old_wheels) == 0:
         return
 
-    # remove old composapy wheels from tfs tracking and local save_dir after new wheel was
-    # successfully loaded
-    # ...
-    # ...
-    # ... tfs is dumb
+    # it is easier and faster to try deleting and undoing the file in tfs than it is to check for
+    # what state the file is in and doing the appropriate action.
     for old_wheel in old_wheels:
         if old_wheel.name != wheel.name:
             try:
@@ -80,6 +90,7 @@ def update_composapy_wheel(wheel: Path) -> None:
             except Exception:
                 pass
             try:
+                remove_from_csproj(old_wheel.name)
                 os.remove(Path(old_wheel))
             except Exception:
                 pass  #  if tfs did not fail to remove the file, this is expected
@@ -110,3 +121,56 @@ def update_composapy_tests(tests: Path) -> None:
 
     ## cleanup unwanted cache from previous command
     tfs_command(tests_dest.joinpath("TestFiles"), "undo", ".pytest_cache", "/recursive")
+
+
+def add_to_csproj(wheel: str) -> None:
+    tree = et.parse(DATALAB_SERVICE_CSPROJ)
+    root = tree.getroot()
+
+    # this selects the ItemGroup element with sub-element None that has attribute Include
+    item_group = root.find(
+        f".//{{{XML_NAMESPACE}}}ItemGroup/{{{XML_NAMESPACE}}}None[@Include]/.."
+    )
+
+    # add a new None element with an Include attribute equal to the relative wheel path
+    relative_wheel_path = str(WindowsPath(f"static/wheels/{wheel}"))
+    wheel_element = item_group.find(
+        f".//{{{XML_NAMESPACE}}}None[@Include='{relative_wheel_path}']"
+    )
+    # return if element already exists, no need to add it again. be sure to check for None,
+    # __bool__() checks the length of contained nodes to discern true/false
+    if wheel_element is not None:
+        return
+
+    new_wheel_element = et.Element(f"{{{XML_NAMESPACE}}}None")
+    new_wheel_element.set("Include", relative_wheel_path)
+
+    # add the None element to the appropriate ItemGroup element
+    item_group.append(new_wheel_element)
+
+    # update the csproj with changes
+    tree.write(DATALAB_SERVICE_CSPROJ)
+
+
+def remove_from_csproj(wheel: str) -> None:
+    tree = et.parse(DATALAB_SERVICE_CSPROJ)
+    root = tree.getroot()
+
+    # this selects the ItemGroup element with sub-element None that has attribute Include
+    item_group = root.find(
+        f".//{{{XML_NAMESPACE}}}ItemGroup/{{{XML_NAMESPACE}}}None[@Include]/.."
+    )
+
+    # this selects the None element with Include attribute equal to relative wheel path
+    relative_wheel_path = str(WindowsPath(f"static/wheels/{wheel}"))
+    wheel_element = item_group.find(
+        f".//{{{XML_NAMESPACE}}}None[@Include='{relative_wheel_path}']"
+    )
+
+    # check element exists before removing. be sure to check for None, __bool__() checks the
+    # length of contained nodes to discern true/false
+    if wheel_element is not None:
+        item_group.remove(wheel_element)
+
+    # update the csproj with changes
+    tree.write(DATALAB_SERVICE_CSPROJ)
