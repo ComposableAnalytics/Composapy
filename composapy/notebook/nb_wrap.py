@@ -114,20 +114,20 @@ def is_none(python_object):
 #  def is_file_ref(python_object):
 #      return python_object
 
-#  marshall_actions = {{
-#      str: is_string,
-#      int: is_int,
-#      None: is_none,
-#      FileReference: is_file_ref,
-#  }}
+marshall_actions = {{
+    str: is_string,
+    int: is_int,
+    None: is_none,
+#   FileReference: is_file_ref,
+  }}
 
 clr_return_values = List[KeyValuePair[str, Object]]()
 for n, (k, v) in enumerate({RETURN_VALUES}.items()):
     if v is not None and type(v) not in SUPPORTED_TYPES:
         raise TypeNotSupportedError(f"{{type(v)}} is not currently supported.")
     
-    clr_value = marshall_actions(type(v))
-    # clr_value = _marshall_object(v)    
+    type_value = v if v is None else type(v) 
+    clr_value = marshall_actions[type_value](v)
     clr_return_values.Add(KeyValuePair[str, Object](k, clr_value))
 
 ContractSerializer.SerializeToFile(clr_return_values, '{serialized_return_values_path.as_posix()}')"""

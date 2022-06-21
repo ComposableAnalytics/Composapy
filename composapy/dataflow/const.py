@@ -14,5 +14,7 @@ class ExternalInput:
         "External DateTime Input",
         "External Date Input",
         "External Error Input",
+        "External Choice Input",
+        "External Range Input",
         FILE,
     )

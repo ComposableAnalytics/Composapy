@@ -41,15 +41,15 @@ class DataFlow(PandasMixin, ComposableApi):
         execution_state = self.session.app_service.GetRun(run_id)
         return DataFlowRun(execution_state, session=self.session)
 
-    def get_runs(self, dataflow_id) -> DataFlowRunSet:
-        """Returns a DataFlowRunSet -- a wrapped set of DataFlowRun."""
-        execution_states = self.session.app_service.GetAppRuns(dataflow_id)
-        return DataFlowRunSet(
-            tuple(
-                DataFlowRun(execution_state, session=self.session)
-                for execution_state in execution_states
-            )
-        )
+    # def get_runs(self, dataflow_id) -> DataFlowRunSet:
+    #     """Returns a DataFlowRunSet -- a wrapped set of DataFlowRun."""
+    #     execution_states = self.session.app_service.GetAppRuns(dataflow_id)
+    #     return DataFlowRunSet(
+    #         tuple(
+    #             DataFlowRun(execution_state, session=self.session)
+    #             for execution_state in execution_states
+    #         )
+    #     )
 
     def run(
         self, dataflow_id: int, external_inputs: Dict[str, any] = None
