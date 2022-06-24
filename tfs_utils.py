@@ -82,11 +82,11 @@ def update_composapy_wheel(wheel: Path) -> None:
     for old_wheel in old_wheels:
         if old_wheel.name != wheel.name:
             try:
-                tfs_command(wheel_dest, "delete", old_wheel.name)
+                tfs_command(wheel_dest, "undo", old_wheel.name)
             except Exception:
                 pass
             try:
-                tfs_command(wheel_dest, "undo", old_wheel.name)
+                tfs_command(wheel_dest, "delete", old_wheel.name)
             except Exception:
                 pass
             try:

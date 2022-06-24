@@ -4,8 +4,9 @@
     - [Pip install](#pip-install)
   - [Composapy](#composapy)
     - [Update local .env files](#update-local-env-files)
-    - [Run Tests](#run-tests)
-    - [Build](#build)
+    - [Tox](#tox)
+      - [Build](#build)
+      - [Run Tests](#run-tests)
   - [IDE](#ide)
     - [VSCode](#vscode)
     - [PyCharm](#pycharm)
@@ -49,12 +50,11 @@ C:\> python -m pip install --upgrade pip build twine tox tox-wheel
 
 ### Update local .env files
 
-In the Composapy directory, update or create the file `.test.env` with your local settings. 
-There may be more than three values in this file, but only the following need to be updated. 
+In the Composapy directory, update or create the file `.test.env` (in the same directory as `pyproject.toml`) with your local settings. Include the following in your file:
 
-- `TEST_API_KEY` can be from any composable web user, such as unittest or unittestadmin.
+1. `TEST_API_KEY` : After logging into your development `unittestadmin` on your development instance of Composable, you can generate an api key for the account by going to the unittestadmin [profile](http://localhost/CompApp/UserView.aspx#/?userName=unittestadmin) page and using the `Generate API Token` button to get a new api token.
 
-- `tf.exe` can be found by hitting windows key, searching for "Developer Command Prompt for VS 
+2. `tf.exe` can be found by hitting windows key, searching for "Developer Command Prompt for VS 
   20XX" and running the command `where tf.exe` (note: when copy-pasting, back-slashes need to be 
   changed to forward-slashes).
 
@@ -69,19 +69,12 @@ TF_EXE_PATH="C:/Path/To/tf.exe"
 ```
 
 
-### Run Tests
+### Tox
 
-```
-C:\> tox -e test
-```
-
-Composapy uses [tox](https://tox.wiki/en/latest/) for the management of it's testing and other build needs. Tox creates a virtual environment around your tests/builds, separating out any required python versions and environment variables.
-
-_Make sure all tests are passing before following along further._
+Composapy uses [tox](https://tox.wiki/en/latest/) for the management of it's build/testing/deployment needs. Tox creates a virtual environment around your tests/builds, separating out any required python versions and environment variables.
 
 
-
-### Build
+#### Build
 
 ```
 C:\> tox -e build
@@ -107,6 +100,15 @@ C:\> tox -r -e build  //you can use the -r flag with any of the commands (test/b
 ```
 
 
+#### Run Tests
+
+```
+C:\> tox -e test
+```
+
+_Make sure all tests are passing before doing any development on Composapy._
+
+
 ## IDE 
 
 Do not do your Python development inside of visual studio! You can use one of the following recommendations instead.
@@ -116,16 +118,21 @@ Do not do your Python development inside of visual studio! You can use one of th
 
 [VSCode](https://code.visualstudio.com/) is the free option.
 
-1. The virtual environment should be automatically detected.
+1. `file` -> `preferences` -> `settings` -> search for `default interpreter path` -> use the absolute path to the `python.exe` from the relative Composapy root `.tox\build\Scripts\python.exe`.
+
+2. Click on `Extensions` in the side panel and search/install extension `python-tox`.
+   - You can use this extension by doing the VSCode command palette `ctrl-shift-p`, entering `tox` and selecting `select and run tox environment`, then selecting the command you want from the drop down options.
+
+3. Click on `Testing` in the side panel, select `python run configuration`, then choose pytest from the options that appear. This will display your project tests and enable running/debugging them in the UI.
+
 
 ### PyCharm
 
-[PyCharm](https://www.jetbrains.com/pycharm/) is the paid option; for those that happen to have a JetBrains license. _Note: PyCharm and IntelliJ IDEA are essentially the same thing._
+[PyCharm](https://www.jetbrains.com/pycharm/) is a paid option; for those that happen to have a JetBrains license. _Note: PyCharm and IntelliJ IDEA are essentially the same thing._
 
-1. Go to `settings -> tools -> terminal -> application settings` and make sure 
-that the `Activate Virtualenv` checkbox is selected.
+1. `file` -> `settings` -> `tools` -> `terminal` -> `application settings`; confirm the `Activate Virtualenv` is checked.
 
-Set your python interpreter to the python executable located at `/.tox/build/Scripts/python.exe` (un-tested in VSCode), now giving you the ability to run commands inside your interpreter without prefixing with python module; `tox -e build/test/black`.
+2. Set your python interpreter to the python executable located at `.tox\build\Scripts\python.exe`, now giving you the ability to run commands inside your interpreter without prefixing with python module (`python -m`) command.
 
 
 ## PyPI
