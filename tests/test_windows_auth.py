@@ -37,7 +37,7 @@ def test_run_dataflow_get_output(dataflow_object: DataFlowObject):
 def test_convert_table_to_pandas(dataflow_object: DataFlowObject):
     dataflow_run = dataflow_object.run()
 
-    df = dataflow_run.modules.first_with_name("Table Creator").result.to_pandas()
+    df = dataflow_run.modules.first_with_name("Table Creator").result.value.to_pandas()
 
     assert type(df) == type(pd.DataFrame())
 
@@ -91,7 +91,7 @@ def test_external_input_file(dataflow_object: DataFlowObject, file_path_string: 
 )
 def test_dataflow_object_to_pandas(dataflow_object: DataFlowObject):
     dataflow = dataflow_object.run()
-    df = dataflow.modules.first().result.to_pandas()
+    df = dataflow.modules.first().result.value.to_pandas()
 
     assert isinstance(df, pd.DataFrame)
     assert df["b"][1] == 3
@@ -109,21 +109,22 @@ def test_dataflow_object_to_pandas(dataflow_object: DataFlowObject):
 )
 def test_download_file_result(dataflow_object: DataFlowObject, clean_file_path: Path):
     dataflow_run = dataflow_object.run()
-    result = dataflow_run.modules.first().result
+    file_ref = dataflow_run.modules.first().result.value
 
-    assert isinstance(result.value, Contracts.FileReference)
-    assert result.value.LocalFile is None
+    assert isinstance(file_ref, Contracts.FileReference)
+    assert file_ref.LocalFile is None
 
-    result.to_file(clean_file_path.parent, file_name=clean_file_path.name)
+    new_file_ref = file_ref.to_file(
+        clean_file_path.parent, file_name=clean_file_path.name
+    )
 
-    assert result.value.LocalFile == str(clean_file_path)
+    assert new_file_ref.LocalFile == str(clean_file_path)
     assert clean_file_path.exists()
 
 
 @pytest.mark.parametrize("session", ["Windows"], indirect=True)
 def test_session(session: Session):
-    dataflow = DataFlow(session=session)
-    dataflow.create(
+    DataFlow.create(
         file_path=str(
             Path(os.path.dirname(Path(__file__)), "TestFiles", "calculator_test.json")
         )

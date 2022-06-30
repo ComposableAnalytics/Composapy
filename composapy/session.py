@@ -31,6 +31,10 @@ class InvalidAuthModeAction(SessionException):
     pass
 
 
+class SessionRegistrationException(SessionException):
+    pass
+
+
 class Session:
     """Holds connection and binding state for composapy api usage."""
 
@@ -145,7 +149,7 @@ class Session:
 
         self.services = {}
         for method in self.ResourceManager.AvailableServices():
-            method_name = self.get_method_name(method)
+            method_name = self._get_method_name(method)
             try:
                 self.services[method_name] = self.ResourceManager.CreateAuthChannel[
                     method
@@ -158,6 +162,33 @@ class Session:
                     method_name
                 )
 
+    @classmethod
+    def clear_registration(cls):
+        singleton = _SessionSingleton()
+        singleton.session = None
+
+    def register(self):
+        """Used to create a process-level instance of session that can be used
+        implicitly across composapy. Only one session can registered at a time."""
+        singleton = _SessionSingleton()
+        singleton.session = self
+
     @staticmethod
-    def get_method_name(method):
+    def _get_method_name(method):
         return str(method).split(".")[-1][1:]
+
+
+def get_session():
+    singleton = _SessionSingleton()
+    if singleton.session is None:
+        raise SessionRegistrationException("No session currently registered.")
+    return singleton.session
+
+
+class _SessionSingleton:
+    session = None
+
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super().__new__(cls)
+        return cls.instance

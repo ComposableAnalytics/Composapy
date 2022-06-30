@@ -4,9 +4,7 @@ import System
 from System import Object
 from System.Collections.Generic import List, KeyValuePair
 from CompAnalytics.Core import ContractSerializer
-
-
-#  from CompAnalytics.Contracts import FileReference
+from CompAnalytics.Contracts import FileReference
 
 
 class TypeNotSupportedError(Exception):
@@ -16,7 +14,7 @@ class TypeNotSupportedError(Exception):
 SUPPORTED_TYPES = (
     str,
     int,
-    # FileReference,
+    FileReference,
 )
 
 
@@ -32,14 +30,15 @@ def is_none(python_object):
     return None
 
 
-#  def is_file_ref(python_object):
-#      return python_object
+def is_file_ref(python_object):
+    return python_object
+
 
 marshall_actions = {
     str: is_string,
     int: is_int,
     None: is_none,
-    #   FileReference: is_file_ref,
+    FileReference: is_file_ref,
 }
 
 

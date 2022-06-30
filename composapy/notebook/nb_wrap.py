@@ -3,10 +3,11 @@ import papermill as pm
 import nbformat
 from pathlib import Path
 
-#  from papermill import utils as pm_utils
+from composapy.patch import *
 
 from System import Object
 from CompAnalytics.Core import ContractSerializer
+from CompAnalytics.Contracts import FileReference
 from System.Collections.Generic import List, KeyValuePair
 
 
@@ -29,20 +30,24 @@ def execute_notebook(
         serialized_json, List[KeyValuePair[str, Object]]
     )
 
-    parameters = dict()
+    parameters = {}
     for parameter in deserialized_list:
+        if isinstance(parameter.Value, FileReference):  #  update pickling behavior
+            parameter.Value.__class__ = FileReferencePickleBehavior
         parameters[parameter.Key] = parameter.Value
 
-    nb = nbformat.read(input_nb_path, as_version=4)
-
-    _inject_notebook(nb, serialized_return_values_path)
+    _nb = nbformat.read(input_nb_path, as_version=4)
+    _inject_notebook(_nb, serialized_return_values_path)
 
     # write temporary file to execute notebook
     with open(temp_nb_path, "w") as _file:
-        nbformat.write(nb, _file)
+        nbformat.write(_nb, _file)
 
     notebook = pm.execute_notebook(
-        temp_nb_path, result_nb_path, parameters=parameters, cwd=run_directory
+        temp_nb_path,
+        result_nb_path,
+        parameters=parameters,
+        cwd=run_directory,
     )
     return notebook
 
@@ -55,32 +60,14 @@ def _inject_notebook(
 
 
 def _inject_package_loading(nb: nbformat.NotebookNode):
-    code = "import composapy"
+    code = f"""\
+import composapy
+from CompAnalytics.Core import ContractSerializer
+from CompAnalytics.Contracts import FileReference
+"""
 
     new_cell = nbformat.v4.new_code_cell(source=code)
     nb.cells.insert(0, new_cell)
-
-
-# def _inject_file_reference_patching(nb: nbformat.NotebookNode):
-#     injected_cell_index = next(
-#         (
-#             idx
-#             for idx, cell in enumerate(nb.cells)
-#             if "injected-parameters" in cell.metadata.tags
-#         ),
-#         None,
-#     )
-#     if not injected_cell_index:
-#         return
-#
-#     code = f"""\
-# import papermill
-# papermill.utils.any_tagged_cell
-# from CompAnalytics.Contracts import FileRefPickleObject"""
-#
-#     before = nb.cells[:injected_cell_index]
-#     after = nb.cells[injected_cell_index + 1 :]
-#     nb.cells = before + [newcell] + after
 
 
 def _inject_return_values_serialization(

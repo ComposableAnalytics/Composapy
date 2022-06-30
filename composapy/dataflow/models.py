@@ -2,18 +2,17 @@ from __future__ import annotations
 from typing import Optional, Tuple, Dict
 
 from composapy.dataflow.const import ExternalInput
-from composapy.dataflow.web import upload_file_to_runs_dir
+from composapy.dataflow.io import upload_file_to_runs_dir
 from composapy.mixins import (
     ObjectSetMixin,
-    SessionObjectMixin,
-    PandasMixin,
-    FileReferenceMixin,
 )
 
 from CompAnalytics import Contracts
 
+from composapy.session import get_session
 
-class ModuleMemberBase(FileReferenceMixin, PandasMixin, SessionObjectMixin):
+
+class ModuleMemberBase:
     """Used as a base class for Input and Result."""
 
     contract = None  # ModuleInput | ModuleOutput    => union typing issues, leave as is
@@ -21,11 +20,6 @@ class ModuleMemberBase(FileReferenceMixin, PandasMixin, SessionObjectMixin):
     def __init__(self, contract, *args, **kwargs):
         self.contract = contract
         super().__init__(*args, **kwargs)
-
-    def _repr_html_(self):
-        """Used to display table contracts as pandas dataframes inside of notebooks."""
-        if isinstance(self.contract.ValueObj, Contracts.Tables.Table):
-            return self.convert_table_to_dataframe(self.contract.ValueObj)._repr_html_()
 
     @property
     def _type(self) -> any:
@@ -102,7 +96,7 @@ class ModuleResultException(Exception):
     pass
 
 
-class Module(SessionObjectMixin):
+class Module:
     """The object representation of a module inside a dataflow object."""
 
     contract: Contracts.Module
@@ -129,7 +123,7 @@ class Module(SessionObjectMixin):
         """Maps each module input, by name, to a corresponding Input object."""
         return InputSet(
             tuple(
-                Input(self.contract.ModuleInputs[name], session=self.session)
+                Input(self.contract.ModuleInputs[name])
                 for name in self.contract.ModuleInputs.Indexes.Keys
             )
         )
@@ -152,7 +146,7 @@ class Module(SessionObjectMixin):
         """Maps each module result, by name, to a corresponding Result object."""
         return ResultSet(
             tuple(
-                Result(self.contract.ModuleOutputs[name], session=self.session)
+                Result(self.contract.ModuleOutputs[name])
                 for name in self.contract.ModuleOutputs.Indexes.Keys
             )
         )
@@ -182,7 +176,7 @@ class ModuleSet(ObjectSetMixin):
         self._target = modules
 
 
-class DataFlowRun(SessionObjectMixin):
+class DataFlowRun:
     """Similar to a DataFlowObject, with a couple of differences. The first difference is that
     every DataFlowRun has an id, where as a DataFlowObject only has an ID if it is saved. The second
     difference is that the modules property on a DataFlowRun returns ModuleSet<ResultModule>
@@ -219,10 +213,7 @@ class DataFlowRun(SessionObjectMixin):
     def modules(self) -> ModuleSet:
         """A ModuleSet made up of ResultModule's."""
         return ModuleSet(
-            tuple(
-                Module(_module, session=self.session)
-                for _module in self.contract.Application.Modules
-            )
+            tuple(Module(_module) for _module in self.contract.Application.Modules)
         )
 
     @property
@@ -248,7 +239,7 @@ class DataFlowRunSet(ObjectSetMixin):
         self._target = dataflow_runs
 
 
-class DataFlowObject(SessionObjectMixin):
+class DataFlowObject:
     """DataFlowObject can be used to both model and save dataflow configurations, both saved and
     before saving. Holds a reference to the service needed to carry out operations on it's behalf.
     """
@@ -270,12 +261,7 @@ class DataFlowObject(SessionObjectMixin):
     @property
     def modules(self) -> ModuleSet:
         """A ModuleSet made up of Module's."""
-        return ModuleSet(
-            tuple(
-                Module(_module, session=self.session)
-                for _module in self.contract.Modules
-            )
-        )
+        return ModuleSet(tuple(Module(_module) for _module in self.contract.Modules))
 
     @property
     def module(self) -> any:
@@ -294,8 +280,8 @@ class DataFlowObject(SessionObjectMixin):
         """Saves the contract representation of DataFlowObject, uses server response as the newly
         updated contract object (for instance, saving an unsaved contract will give it an id).
         """
-        self.contract: Contracts.Application = self.session.app_service.SaveApplication(
-            self.contract
+        self.contract: Contracts.Application = (
+            get_session().app_service.SaveApplication(self.contract)
         )
         return self
 
@@ -304,25 +290,27 @@ class DataFlowObject(SessionObjectMixin):
         (external int, table, file) that require outside input to run can be added using a
         dictionary with the module input's name and corresponding contract.
         """
+        session = get_session()
+
         for module in self.modules:
             module.contract.RequestingExecution = True
 
         self._write_external_inputs(external_inputs)
 
         execution_handle: Contracts.ExecutionHandle = (
-            self.session.app_service.CreateExecutionContext(
+            session.app_service.CreateExecutionContext(
                 self.contract, Contracts.ExecutionContextOptions()
             )
         )
 
         self._post_context_setup_steps(external_inputs, execution_handle)
 
-        self.session.app_service.RunExecutionContext(execution_handle)
-        post_run_execution_state: Contracts.ExecutionState = (
-            self.session.app_service.GetRun(execution_handle.Id)
+        session.app_service.RunExecutionContext(execution_handle)
+        post_run_execution_state: Contracts.ExecutionState = session.app_service.GetRun(
+            execution_handle.Id
         )
 
-        dataflow_run = DataFlowRun(post_run_execution_state, session=self.session)
+        dataflow_run = DataFlowRun(post_run_execution_state)
         return dataflow_run
 
     def _write_external_inputs(self, external_inputs: dict):
@@ -348,6 +336,4 @@ class DataFlowObject(SessionObjectMixin):
 
         for module in self.modules:
             if module.contract.ModuleType.Name == ExternalInput.FILE:
-                upload_file_to_runs_dir(
-                    self.session, execution_handle, module, external_inputs
-                )
+                upload_file_to_runs_dir(execution_handle, module, external_inputs)

@@ -29,9 +29,11 @@ class InvalidTestConfigError(TestSetupException):
 
 def create_token_auth_session() -> Session:
     if os.getenv("TEST_API_KEY"):
-        return Session(
+        session = Session(
             auth_mode=Session.AuthMode.TOKEN, credentials=os.getenv("TEST_API_KEY")
         )
+        session.register()
+        return session
 
     if not os.getenv("TEST_USERNAME") or not os.getenv("TEST_PASSWORD"):
         raise InvalidTestConfigError(
@@ -66,11 +68,16 @@ def create_token_auth_session() -> Session:
         user.Id, user.UserName, token_expiration_date
     )
     os.environ["TEST_API_KEY"] = api_key
-    return Session(auth_mode=Session.AuthMode.TOKEN, credentials=api_key)
+
+    session = Session(auth_mode=Session.AuthMode.TOKEN, credentials=api_key)
+    session.register()
+    return session
 
 
 def create_windows_auth_session():
-    return Session(auth_mode=Session.AuthMode.WINDOWS)
+    session = Session(auth_mode=Session.AuthMode.WINDOWS)
+    session.register()
+    return session
 
 
 def create_form_auth_session() -> Session:
@@ -80,10 +87,12 @@ def create_form_auth_session() -> Session:
             "are needed for creating a session with auth mode Form."
         )
 
-    return Session(
+    session = Session(
         auth_mode=Session.AuthMode.FORM,
         credentials=(os.getenv("TEST_USERNAME"), os.getenv("TEST_PASSWORD")),
     )
+    session.register()
+    return session
 
 
 def enable_windows_auth():
@@ -119,9 +128,9 @@ def dataflow_object(request):
     if request.param[0] == "Windows":
         try:
             enable_windows_auth()
-            session = create_windows_auth_session()
+            create_windows_auth_session()
 
-            yield DataFlow(session=session).create(
+            yield DataFlow.create(
                 file_path=str(
                     Path(os.path.dirname(Path(__file__)), "TestFiles", request.param[1])
                 )
@@ -130,15 +139,15 @@ def dataflow_object(request):
             disable_windows_auth()
 
     elif request.param[0] == "Form":
-        session = create_form_auth_session()
-        yield DataFlow(session=session).create(
+        create_form_auth_session()
+        yield DataFlow.create(
             file_path=str(
                 Path(os.path.dirname(Path(__file__)), "TestFiles", request.param[1])
             )
         )
     elif request.param[0] == "Token":
-        session = create_token_auth_session()
-        yield DataFlow(session=session).create(
+        create_token_auth_session()
+        yield DataFlow.create(
             file_path=str(
                 Path(os.path.dirname(Path(__file__)), "TestFiles", request.param[1])
             )
@@ -180,4 +189,4 @@ def file_ref(request) -> Contracts.FileReference:
 
 @pytest.fixture
 def queryview(session_token_auth: Session) -> QueryView:
-    return queryview(session=session_token_auth)
+    return queryview()

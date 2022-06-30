@@ -38,7 +38,7 @@ def test_run_dataflow_get_output(dataflow_object: DataFlowObject):
 def test_convert_table_to_pandas(dataflow_object: DataFlowObject):
     dataflow_run = dataflow_object.run()
 
-    df = dataflow_run.modules.first_with_name("Table Creator").result.to_pandas()
+    df = dataflow_run.modules.first_with_name("Table Creator").result.value.to_pandas()
 
     assert type(df) == type(pd.DataFrame())
 
@@ -52,7 +52,7 @@ def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject):
     dataflow_run = dataflow_object.run()
 
     modules = dataflow_run.modules
-    df = modules.first_with_name("Column Type Converter").result.to_pandas()
+    df = modules.first_with_name("Column Type Converter").result.value.to_pandas()
 
     assert type(df) == type(pd.DataFrame())
     assert str(df.dtypes["DATETIMEOFFSETCOLUMN"]) == "datetime64[ns]"

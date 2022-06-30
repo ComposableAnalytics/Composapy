@@ -5,6 +5,7 @@ import pandas as pd
 from composapy.dataflow.models import DataFlowObject
 
 from System import Uri
+
 from CompAnalytics import Contracts
 
 
@@ -36,7 +37,7 @@ def test_dataflow_object_repr_html_(dataflow_object: DataFlowObject):
     dataflow = dataflow_object.run()
     dataflow_module_result = dataflow.modules.first().result
 
-    assert isinstance(dataflow_module_result._repr_html_(), str)
+    assert isinstance(dataflow_module_result.value._repr_html_(), str)
 
 
 @pytest.mark.parametrize(
@@ -49,7 +50,7 @@ def test_dataflow_object_repr_html_(dataflow_object: DataFlowObject):
 )
 def test_dataflow_object_to_pandas(dataflow_object: DataFlowObject):
     dataflow = dataflow_object.run()
-    df = dataflow.modules.first().result.to_pandas()
+    df = dataflow.modules.first().result.value.to_pandas()
 
     assert isinstance(df, pd.DataFrame)
     assert df["b"][1] == 3
@@ -70,14 +71,16 @@ def test_dataflow_object_to_pandas(dataflow_object: DataFlowObject):
 )
 def test_download_file_result(dataflow_object: DataFlowObject, clean_file_path: Path):
     dataflow_run = dataflow_object.run()
-    result = dataflow_run.modules.first().result
+    file_ref = dataflow_run.modules.first().result.value
 
-    assert isinstance(result.value, Contracts.FileReference)
-    assert result.value.LocalFile is None
+    assert isinstance(file_ref, Contracts.FileReference)
+    assert file_ref.LocalFile is None
 
-    result.to_file(clean_file_path.parent, file_name=clean_file_path.name)
+    new_file_ref = file_ref.to_file(
+        clean_file_path.parent, file_name=clean_file_path.name
+    )
 
-    assert result.value.LocalFile == str(clean_file_path)
+    assert new_file_ref.LocalFile == str(clean_file_path)
     assert clean_file_path.exists()
 
 

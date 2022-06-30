@@ -2,17 +2,23 @@ import numpy as np
 import pandas as pd
 
 from composapy.api import ComposableApi
-from composapy.mixins import PandasMixin
+from composapy.patch.table import (
+    _make_pandas_dtypes_from_list_of_column_defs,
+    MAP_CS_TYPES_TO_PANDAS_TYPES,
+)
+from composapy.session import get_session
 from composapy.stream import CsStream
 
 # from CompAnalytics.IServices import *
 
 
-class QueryView(PandasMixin, ComposableApi):
+class QueryView(ComposableApi):
     """A wrapper class for dataflow operations."""
 
     def get_queryview(self, id: int) -> pd.DataFrame:
-        queryview_service = self.session.services["QueryViewService"]
+        session = get_session()
+
+        queryview_service = session.services["QueryViewService"]
         queryview = queryview_service.Get(id)
         queryview_data = queryview_service.RunQueryDynamic(queryview)
         column_names = []
@@ -21,7 +27,7 @@ class QueryView(PandasMixin, ComposableApi):
 
         df = pd.DataFrame(queryview_data.Data)
         df.columns = column_names
-        dtypes_dict = self._make_pandas_dtypes_from_list_of_column_defs(
+        dtypes_dict = _make_pandas_dtypes_from_list_of_column_defs(
             queryview_data.ColumnDefinitions
         )
 
@@ -44,11 +50,10 @@ class QueryView(PandasMixin, ComposableApi):
         Return
         (pd.DataFrame) df: DataFrame of Queryview.
         """
+        session = get_session()
 
-        queryview = self.session.services["QueryViewService"].Get(queryview_id)
-        queryview_data = self.session.services["QueryViewService"].RunQueryDynamic(
-            queryview
-        )
+        queryview = session.services["QueryViewService"].Get(queryview_id)
+        queryview_data = session.services["QueryViewService"].RunQueryDynamic(queryview)
         columns_definitions = queryview_data.ColumnDefinitions
         column_names = []
         column_dtypes = {}
@@ -56,9 +61,9 @@ class QueryView(PandasMixin, ComposableApi):
         for column_definition in columns_definitions:
             if not column_definition.Exclude:
                 column_names.append(column_definition.Name)
-                column_dtypes[
-                    column_definition.Name
-                ] = self.MAP_CS_TYPES_TO_PANDAS_TYPES[column_definition.Type]
+                column_dtypes[column_definition.Name] = MAP_CS_TYPES_TO_PANDAS_TYPES[
+                    column_definition.Type
+                ]
 
         data = queryview_data.Data
         df = pd.DataFrame(data)
@@ -78,15 +83,16 @@ class QueryView(PandasMixin, ComposableApi):
         Return
         (pd.DataFrame) df: DataFrame of Queryview.
         """
+        session = get_session()
 
-        queryview = self.session.services["QueryViewService"].Get(queryview_id)
+        queryview = session.services["QueryViewService"].Get(queryview_id)
         paging_options = queryview.PagingOptions
         # print(paging_options.PageNum)
         # print(paging_options.PageLimit)
         paging_options.PageNum = 1
         paging_options.PageLimit = 0x7FFFFFFF
         queryview.PagingOptions = paging_options
-        stream = self.session.services["QueryViewService"].GetQueryResultsDownloadWeb(
+        stream = session.services["QueryViewService"].GetQueryResultsDownloadWeb(
             queryview, "csv"
         )
         df = pd.read_csv(CsStream(stream))
