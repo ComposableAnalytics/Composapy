@@ -3,7 +3,7 @@ import papermill as pm
 import nbformat
 from pathlib import Path
 
-from composapy.patch import *
+from composapy import FileReferencePickleBehavior
 
 from System import Object
 from CompAnalytics.Core import ContractSerializer

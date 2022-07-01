@@ -61,7 +61,7 @@ class FileReferencePickleBehavior(FileReference):
 
 # patching for papermill translators - defining custom parameter rendering logic for FileReference
 # github docs : https://github.com/nteract/papermill/blob/main/papermill/translators.py
-# @classmethod
+@classmethod
 def translate_file_ref(cls, val):
     return cls.translate_raw_str(
         f"ContractSerializer.Deserialize[FileReference]('{val}')"
@@ -71,7 +71,7 @@ def translate_file_ref(cls, val):
 papermill.translators.PythonTranslator.translate_file_ref = translate_file_ref
 
 
-# @classmethod
+@classmethod
 def translate(cls, val):
     """Translate each of the standard json/yaml types to appropriate objects."""
 

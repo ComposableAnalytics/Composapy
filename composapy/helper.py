@@ -5,10 +5,10 @@ from System import Uri
 from CompAnalytics.Contracts import FileReference
 
 
-def file_ref(path_like: str | Path) -> FileReference:
-    if isinstance(path_like, PureWindowsPath) or isinstance(path_like, Path):
-        path_like = str(path_like)
+def file_ref(path: str | Path) -> FileReference:
+    if isinstance(path, str):
+        path = Path(path)
 
-    uri = Uri(path_like)
+    uri = Uri(str(path.absolute()))
     file_ref = FileReference.CreateWithAbsoluteUri(uri.LocalPath, uri)
     return file_ref

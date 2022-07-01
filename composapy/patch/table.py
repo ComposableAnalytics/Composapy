@@ -1,3 +1,4 @@
+from typing import Dict
 import pandas as pd
 
 import System
@@ -60,7 +61,7 @@ def _repr_html_(self):
     return self.to_pandas()._repr_html_()
 
 
-def _make_pandas_dtypes_dict(table_columns) -> dict[any, str]:
+def _make_pandas_dtypes_dict(table_columns) -> Dict[any, str]:
     dtypes_dict = dict()
     for key in table_columns.Dictionary.Keys:
         column = table_columns.Dictionary[key]
@@ -68,7 +69,7 @@ def _make_pandas_dtypes_dict(table_columns) -> dict[any, str]:
     return dtypes_dict
 
 
-def _make_pandas_dtypes_from_list_of_column_defs(list_of_column_defs) -> dict:
+def _make_pandas_dtypes_from_list_of_column_defs(list_of_column_defs) -> Dict:
     dtypes_dict = dict()
     for column_def in list_of_column_defs:
         dtypes_dict[column_def.Name] = MAP_CS_TYPES_TO_PANDAS_TYPES[column_def.Type]
