@@ -31,17 +31,28 @@ Navigate in command prompt or powershell to the Composapy project directory root
 
 ```
 C:\> cd /your/path/to/Composable Analytics/Composapy/Composapy
-C:\> python --version
+C:\..\composapy\composapy> python --version
 Python 3.9.X
 ```
 
 
-### Pip install
-
-Install the following before setting up a virtual environment.
+### Create/Activate Virtual Environment
 
 ```
-C:\> python -m pip install --upgrade pip build twine tox tox-wheel
+C:\..\composapy\composapy> python -m venv dev
+C:\..\composapy\composapy> .\dev\Scripts\activate
+```
+
+After activating, you should see the `(dev)` tag prefixing your console. When you want to deactivate
+your virtual environment, you can simply type `deactivate`.
+
+### Pip install
+
+Install the following after activating your virtual environment.
+
+```
+(dev) C:\..\composapy\composapy> pip install --upgrade pip build twine tox tox-wheel
+(dev) C:\..\composapy\composapy> pip install -r requirements.txt
 ```
 
 
@@ -77,7 +88,7 @@ Composapy uses [tox](https://tox.wiki/en/latest/) for the management of it's bui
 #### Build
 
 ```
-C:\> tox -e build
+(dev) C:\..\composapy\composapy> tox -e build
 ```
 
 The following steps are performed with the build command.
@@ -96,14 +107,14 @@ When installing a new package, make sure to update the requirements.txt. Wheneve
 requirements.txt or any configuration files (other than `tox.ini`), you will need to use the `-r` flag to indicate your dependencies have changed.
 
 ```
-C:\> tox -r -e build  //you can use the -r flag with any of the commands (test/build/etc)
+(dev) C:\..\composapy\composapy> tox -r -e build  //you can use the -r flag with any of the commands (test/build/etc)
 ```
 
 
 #### Run Tests
 
 ```
-C:\> tox -e test
+(dev) C:\..\composapy\composapy> tox -e test
 ```
 
 _Make sure all tests are passing before doing any development on Composapy._
@@ -139,7 +150,7 @@ Do not do your Python development inside of visual studio! You can use one of th
 
 _Upload archives under `/dist/*` to PyPI -- you will be prompted for credentials._
 ```
-C:\> python -m twine upload /.tox/dist/*
+(dev) C:\..\composapy\composapy> python -m twine upload /.tox/dist/*
 ```
 
 To upload the package on PyPI, you will need a user account for [PyPI](https://pypi.org/). You will also need to request permissions on the project index so that you can upload.
