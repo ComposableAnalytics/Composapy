@@ -129,7 +129,8 @@ Do not do your Python development inside of visual studio! You can use one of th
 
 [VSCode](https://code.visualstudio.com/) is the free option.
 
-1. `file` -> `preferences` -> `settings` -> search for `default interpreter path` -> use the absolute path to the `python.exe` from the relative Composapy root `.tox\build\Scripts\python.exe`.
+1. `file` -> `preferences` -> `settings` -> search for `default interpreter path` -> use the 
+   absolute path to the `python.exe` from the relative Composapy root `dev\Scripts\python.exe`.
 
 2. Click on `Extensions` in the side panel and search/install extension `python-tox`.
    - You can use this extension by doing the VSCode command palette `ctrl-shift-p`, entering `tox` and selecting `select and run tox environment`, then selecting the command you want from the drop down options.
@@ -143,7 +144,8 @@ Do not do your Python development inside of visual studio! You can use one of th
 
 1. `file` -> `settings` -> `tools` -> `terminal` -> `application settings`; confirm the `Activate Virtualenv` is checked.
 
-2. Set your python interpreter to the python executable located at `.tox\build\Scripts\python.exe`, now giving you the ability to run commands inside your interpreter without prefixing with python module (`python -m`) command.
+2. Set your python interpreter to the python executable located at `dev\Scripts\python.exe`, now 
+   giving you the ability to run commands inside your interpreter without prefixing with python module (`python -m`) command.
 
 
 ## PyPI
