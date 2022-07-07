@@ -1,4 +1,4 @@
-version: 2
+version: 3
 
 build:
   os: "ubuntu-20.04"
@@ -6,7 +6,7 @@ build:
     python: "3.9"
 
 sphinx:
-  configuration: docs/sphinx-docs/conf.py
+  configuration: docs/sphinx-docs/source/conf.py
   fail_on_warning: true
 
 python:
