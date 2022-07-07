@@ -7,47 +7,29 @@ from System import Uri, Net
 from CompAnalytics import IServices
 
 
-class SessionException(Exception):
-    pass
-
-
-class UriNotConfiguredError(SessionException):
-    pass
-
-
-class InvalidTokenConfigError(SessionException):
-    pass
-
-
-class InvalidFormConfigError(SessionException):
-    pass
-
-
-class InvalidWindowsConfigError(SessionException):
-    pass
-
-
-class InvalidAuthModeAction(SessionException):
-    pass
-
-
-class SessionRegistrationException(SessionException):
-    pass
-
-
 class Session:
-    """Holds connection and binding state for composapy api usage."""
+    """A valid, registered, session is required to access and use Composable resources.
+
+    .. highlight:: python
+    .. code-block:: python
+
+            from composapy.session import Session
+    """
 
     class AuthMode(Enum):
+        """
+        - TOKEN
+        - FORM
+        - WINDOWS
+        """
+
         TOKEN = "Token"
         FORM = "Form"
         WINDOWS = "Windows"
 
     @property
     def app_service(self) -> IServices.IApplicationService:
-        """A composable analytics csharp binding to the IServices.IApplicationService (otherwise
-        known as a dataflow service) object.
-        """
+        """A composable analytics csharp binding to the IServices.IApplicationService."""
         return self.services["ApplicationService"]
 
     @property
@@ -66,19 +48,13 @@ class Session:
         return self.ResourceManager
 
     @property
-    def api_token(self) -> str:
-        if self.auth_mode is not Session.AuthMode.TOKEN:
-            raise InvalidAuthModeAction(
-                f"Authentication type {self.auth_mode} does not use an api token."
-            )
-        return self._api_token
-
-    @property
     def uri(self) -> str:
+        """Sometimes referred to as 'application uri'."""
         return str(self.connection_settings.Uri)
 
     @property
     def auth_mode(self) -> AuthMode:
+        """The current auth mode associated with this Session object instance."""
         return self._auth_mode
 
     def __init__(
@@ -87,6 +63,33 @@ class Session:
         auth_mode: AuthMode = AuthMode.WINDOWS,
         credentials=None,
     ):
+        """Composapy looks for the environment variable `APPLICATION_URI` by default
+        (set by DataLabs). If you are using Composapy outside of the DataLabs environment and
+        the `APPLICATION_URI` environment variable is not set, you can set it with keyword
+        argument `uri`. You can create a session with Windows Authentication (if you are in a
+        DataLab, this will be the same as the key on the DataLab edit screen), a string API Token
+        (can be generated on the Composable website), or with a string tuple containing username
+        and password.
+
+        .. highlight:: python
+        .. code-block:: python
+
+            session = Session(auth_mode=Session.AuthMode.WINDOWS)                                                                           # Windows Auth
+            session = Session(auth_mode=Session.AuthMode.TOKEN, credentials="<your-api-token-here>", uri="http://localhost/CompAnalytics/") # Token
+            session = Session(auth_mode=Session.AuthMode.FORM, credentials=("username", "password"))                                        # Form
+
+            session.register()  # register your session so that composapy uses this
+
+        :param uri: The Composable application uri used to access your resources. If using
+            Composapy within DataLabs, uses the environment variable "APPLICATION_URI" that it sets
+            during DataLabs startup. Setting the uri kwarg will override the usage of this
+            environment variable.
+        :param auth_mode: options are - AuthMode.WINDOWS (default), AuthMode.FORM, AuthMode.TOKEN
+        :param credentials: The credentials for your specified auth_mode. WINDOWS uses the
+            DataLab user credentials automatically (will raise error if any credentials are given),
+            FORM takes a tuple of (username, password), and TOKEN takes a string token that can be
+            generated in the Composable application.
+        """
         if uri is None and os.environ.get("APPLICATION_URI") is None:
             raise UriNotConfiguredError(
                 "A uri must be configured by either setting an "
@@ -123,9 +126,6 @@ class Session:
 
         uri = uri if uri is not None else os.getenv("APPLICATION_URI")
         self._auth_mode = auth_mode
-        self._api_token = (
-            str(credentials) if auth_mode == Session.AuthMode.TOKEN else None
-        )
 
         self.connection_settings = IServices.Deploy.ConnectionSettings()
         self.connection_settings.Uri = Uri(uri)
@@ -163,13 +163,27 @@ class Session:
                 )
 
     @classmethod
-    def clear_registration(cls):
+    def clear_registration(cls) -> None:
+        """Used to unregister the currently registered session.
+
+        .. highlight:: python
+        .. code-block:: python
+
+            Session.clear_registration()
+        """
         singleton = _SessionSingleton()
         singleton.session = None
 
-    def register(self):
-        """Used to create a process-level instance of session that can be used
-        implicitly across composapy. Only one session can registered at a time."""
+    def register(self) -> None:
+        """Used to register a class instance of session that is used implicitly across the
+        kernel. Only one session can registered at a time.
+
+        .. highlight:: python
+        .. code-block:: python
+
+            session = Session(auth_mode=Session.AuthMode.WINDOWS)
+            session.register()
+        """
         singleton = _SessionSingleton()
         singleton.session = self
 
@@ -178,7 +192,18 @@ class Session:
         return str(method).split(".")[-1][1:]
 
 
-def get_session():
+def get_session() -> Session:
+    """Used to get the current registered Session object.
+
+    .. highlight:: python
+    .. code-block:: python
+
+        from composapy.session import Session, get_session
+        Session(auth_mode=Session.AuthMode.WINDOWS).register()
+        session = get_session()  # can use this anywhere on running kernel
+
+    :return: the currently registered session
+    """
     singleton = _SessionSingleton()
     if singleton.session is None:
         raise SessionRegistrationException("No session currently registered.")
@@ -192,3 +217,31 @@ class _SessionSingleton:
         if not hasattr(cls, "instance"):
             cls.instance = super().__new__(cls)
         return cls.instance
+
+
+class SessionException(Exception):
+    pass
+
+
+class UriNotConfiguredError(SessionException):
+    pass
+
+
+class InvalidTokenConfigError(SessionException):
+    pass
+
+
+class InvalidFormConfigError(SessionException):
+    pass
+
+
+class InvalidWindowsConfigError(SessionException):
+    pass
+
+
+class InvalidAuthModeAction(SessionException):
+    pass
+
+
+class SessionRegistrationException(SessionException):
+    pass

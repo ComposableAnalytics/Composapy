@@ -15,7 +15,7 @@ from CompAnalytics.Utils import FileUtils, StandardPaths
 
 
 from composapy.session import get_session
-from composapy.utils import urljoin
+from composapy.utils import _urljoin
 
 
 # patching json package using json-fix
@@ -124,7 +124,7 @@ def _file_ref_to_file(self, save_dir: Path | str = None, file_name: str = None):
     if not file_name:
         file_name = file_ref_uri[file_ref_uri.rindex("/") :].strip("/")
 
-    virtual_path = urljoin(session.uri, file_ref_relative_uri)
+    virtual_path = _urljoin(session.uri, file_ref_relative_uri)
     windows_path: PureWindowsPath = PureWindowsPath(save_dir.joinpath(file_name))
 
     Path.mkdir(save_dir, parents=True, exist_ok=True)

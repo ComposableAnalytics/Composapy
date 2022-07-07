@@ -6,7 +6,7 @@ from System import Uri
 from CompAnalytics.IServices import FileUploadClient
 
 from composapy.session import get_session
-from composapy.utils import urljoin
+from composapy.utils import _urljoin
 
 if TYPE_CHECKING:
     from composapy.dataflow.models import Module
@@ -31,7 +31,7 @@ def upload_file_to_runs_dir(
     module_name = module.contract.ModuleInputs["Name"]
     module_input = module.contract.ModuleInputs["Input"]
 
-    uri = Uri(urljoin(session.uri, "Services/FileUploadService.svc"))
+    uri = Uri(_urljoin(session.uri, "Services/FileUploadService.svc"))
 
     windows_path = PureWindowsPath(external_inputs[module_name.ValueObj])
 

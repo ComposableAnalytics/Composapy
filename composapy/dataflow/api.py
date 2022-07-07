@@ -9,21 +9,50 @@ from composapy.session import get_session
 
 
 class DataFlow:
-    """A wrapper class for dataflow service-level operations."""
+    """DataFlow static wrapper for the ApplicationService contract. It is used to
+    service user-level operations on an application-level library.
+
+    .. highlight:: python
+    .. code-block:: python
+
+        from composapy.dataflow.api import DataFlow
+
+    """
 
     @staticmethod
     def get(dataflow_id: int) -> DataFlowObject:
-        """Returns wrapped dataflow contract inside a dataflow object."""
+        """Returns the wrapped Application contract inside a DataFlowObject.
+
+        .. highlight:: python
+        .. code-block:: python
+
+            dataflow_object = DataFlow.get(123456)
+
+        :param dataflow_id: a valid(saved) composable dataflow id
+
+        :return: the Application contract wrapped in a DataFlowObject
+        """
         dataflow = get_session().app_service.GetApplication(dataflow_id)
         return DataFlowObject(dataflow)
 
     @staticmethod
     def create(json: str = None, file_path: str = None) -> DataFlowObject:
-        """Takes a json formatted string or a local file path containing a valid json. Imports
-        the dataflow using the dataflow service binding, and returns a DataFlowObject.
+        """Takes a json formatted string **or** a local file path containing a valid json
+        (supplying arguments to both will raise exception). Imports the dataflow using the
+        dataflow service binding, and returns a DataFlowObject.
         Note that creating does not save the dataflow, the .save() method must be called on
-        DataFlowObject to save it in your composable database."""
+        DataFlowObject to save it in your composable database.
 
+        .. highlight:: python
+        .. code-block:: python
+
+            dataflow_object = DataFlow.create(file_path="simple-dataflow.json")
+
+        :param json: a json-formatted string
+        :param file_path: path to json-formatted file
+
+        :return: the unsaved Application contract wrapped in a DataFlowObject
+        """
         if json and file_path:
             raise ValueError(
                 "Cannot use both json and file_name arguments, please choose one."
@@ -37,7 +66,16 @@ class DataFlow:
 
     @staticmethod
     def get_run(run_id: int) -> DataFlowRun:
-        """Returns wrapped dataflow contract inside of a DataFlowRun object."""
+        """
+        .. highlight:: python
+        .. code-block:: python
+
+            dataflow_object = DataFlow.get(file_path="simple-dataflow.json")
+
+        :param run_id: composable dataflow run id
+
+        :return: the wrapped ExecutionState contract inside a DataFlowRun
+        """
         execution_state = get_session().app_service.GetRun(run_id)
         return DataFlowRun(execution_state)
 
@@ -48,8 +86,21 @@ class DataFlow:
         """Runs a dataflow from the dataflow id (an invalid id will cause this method to return None).
         Any external modules (external int, table, file) that require outside input to run can be
         added using a dictionary with the module input's name and corresponding contract.
-        """
 
+        .. highlight:: python
+        .. code-block:: python
+
+            dataflow_object = DataFlow.run(123456)
+            dataflow_object = DataFlow.run(123456, external_inputs={"external_int_input_name": 3})
+
+        :param dataflow_id: a valid(saved) composable dataflow id
+        :param external_inputs: If there are any external inputs in the DataFlow, you can supply
+            them via `external_inputs["key"] = value`. It takes the external input name as a key and the
+            external input value as value. You can find more about external input modules
+            `here <https://docs.composable.ai/en/latest/DataFlows/06.DataFlow-Reuse/#creation>`_.
+
+        :return: the wrapped ExecutionState contract inside a DataFlowRun
+        """
         dataflow = get_session().app_service.GetApplication(dataflow_id)
         if not dataflow:
             return None
@@ -62,8 +113,7 @@ class DataFlow:
     def run_status(run_id: int):
         """Retrieves run status.
 
-        Parameters
-        (int) run_id: id of the run
+        :param run_id: composable dataflow run id
         """
 
         run = get_session().app_service.GetRun(run_id)
@@ -71,16 +121,13 @@ class DataFlow:
 
     @staticmethod
     def wait_for_run_execution(run_id: int) -> Dict[str, int]:
+        """Waits until run has finished. Returns a dict with keys "execution_status"
+        and "run_id".
+
+        :param run_id: composable dataflow run id
+
+        :return: status of the execution, ExecutionStatus
         """
-        Waits until run has finished.
-
-        Parameters
-        (int) run_id: id of the run
-
-        Return
-        (dict[str, int]) execution_status: status of the execution
-        """
-
         session = get_session()
 
         run = session.app_service.GetRun(run_id)

@@ -1,0 +1,81 @@
+filtering and retrieving object-sets
+====================================
+
+Set-objects (ModuleSet/InputSet/ResultSet) all have similar behaviors.
+
+.. code-block:: python
+
+    from composapy.dataflow.models import ModuleSet, InputSet, ResultSet
+
+**ModuleSet**
+
+- dataflow_object.modules -> ModuleSet
+
+- dataflow_run.modules -> ModuleSet
+
+**InputSet**
+
+- modules.inputs -> InputSet
+
+**ResultSet**
+
+- modules.results -> ResultSet
+
+filter
+------
+
+- x.filter(key=value) -> SetType
+
+Return all keys with value as a set.
+
+.. code-block:: python
+
+    calculator_modules = dataflow_run.modules.filter(name="Calculator")
+    for module in calculator_modules:
+        print(module)
+
+    # print -> Module(name='Calculator', type=Calculator)
+    # print -> Module(name='Calculator', type=Calculator)
+
+get
+---
+
+- x.get(key=value) -> SingularType
+
+Return expects exactly one key with result, otherwise will raise exception (FoundMultipleError /
+NoneFoundError).
+
+.. code-block:: python
+
+    dataflow_run.modules.get(name="String Input")                                             # Module(name='String Input', type=String Input)
+    dataflow_run.modules.get(name="String Input").results.get(value="This is a test string")  # Result(name='Result', type=String, value='This is a test string')
+
+index
+-----
+
+- x\[index\] -> SingularType
+
+Indexing works as you would expect it to.
+
+.. code-block:: python
+
+    dataflow_run.modules[3]  # Module(name='String Formatter', type=String Formatter)
+
+first
+-----
+
+- x.first() -> SingularType
+
+For convenience, instead of accessing with an index, you can also get the first result of any set with the first method.
+
+.. code-block:: python
+
+    dataflow_run.modules.first()  # Module(name='Calculator', type=Calculator)
+
+    ## dataflow_object.module, module.result, module.input (singular nouns)
+
+Instead of accessing `results` and using `first()` or `[0]`, you can instead use `result`. This works for `module`, `result` and `input`. Attempts to use these when there are more than one will raise an exception.
+
+.. code-block:: python
+
+    dataflow_run.modules.get(name="String Formatter").result  # Result(name='Result', type=String, value='This is a test format')

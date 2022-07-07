@@ -13,7 +13,7 @@ from composapy.session import get_session
 
 
 class ModuleMemberBase:
-    """Used as a base class for Input and Result."""
+    """Used as a base class for a for the Input and Result members of a Module object."""
 
     contract = None  # ModuleInput | ModuleOutput    => union typing issues, leave as is
 
@@ -240,8 +240,19 @@ class DataFlowRunSet(ObjectSetMixin):
 
 
 class DataFlowObject:
-    """DataFlowObject can be used to both model and save dataflow configurations, both saved and
-    before saving. Holds a reference to the service needed to carry out operations on it's behalf.
+    """A DataFlowObject is the controller for a Composable dataflow instance. A dataflow instance
+    can manage the saved, or unsaved, state of the underlying Application contract. Typically,
+    DataFlowObjects are created through the DataFlow class api, not manually instantiated by a
+    user with an Application contract.
+
+    **Note:** DataFlowObject ID's are unique and different from DataFlowRun ID's.
+
+    .. highlight:: python
+    .. code-block:: python
+
+            from composapy.dataflow.api
+            dataflow_object = DataFlow.get(123456)
+            dataflow_object = DataFlow.create(file_name="path/to/json/dataflow")
     """
 
     contract: Contracts.Application
@@ -279,6 +290,14 @@ class DataFlowObject:
     def save(self) -> DataFlowObject:
         """Saves the contract representation of DataFlowObject, uses server response as the newly
         updated contract object (for instance, saving an unsaved contract will give it an id).
+
+        .. highlight:: python
+        .. code-block:: python
+
+            dataflow_object = DataFlow.create(file_path="dataflow.json")
+            print(dataflow_object.id)  # returns -> None   (unsaved)
+            dataflow_object.save()
+            print(dataflow_object.id)  # returns -> 123456 (saved)
         """
         self.contract: Contracts.Application = (
             get_session().app_service.SaveApplication(self.contract)
@@ -289,6 +308,11 @@ class DataFlowObject:
         """Runs the dataflow represented by contained contract. Any external modules
         (external int, table, file) that require outside input to run can be added using a
         dictionary with the module input's name and corresponding contract.
+
+        .. highlight:: python
+        .. code-block:: python
+
+            dataflow_run = dataflow_object.run()
         """
         session = get_session()
 

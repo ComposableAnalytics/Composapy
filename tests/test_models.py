@@ -2,6 +2,7 @@ from pathlib import Path
 import pytest
 import pandas as pd
 
+import composapy.utils
 from composapy.dataflow.models import DataFlowObject
 
 from System import Uri
@@ -88,9 +89,7 @@ def test_download_file_result(dataflow_object: DataFlowObject, clean_file_path: 
     "file_path_object", ["create_file_ref_target.txt"], indirect=True
 )
 def test_create_file_reference_from_file(file_path_object):
-    import composapy.helper as cp
-
-    _file_ref = cp.file_ref(file_path_object)
+    _file_ref = composapy.utils.file_ref(file_path_object)
     assert isinstance(_file_ref, Contracts.FileReference)
     assert _file_ref.LocalFile == str(file_path_object)
     assert str(_file_ref.Uri) == str(Uri(str(file_path_object)))
