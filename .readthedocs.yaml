@@ -5,5 +5,5 @@ build:
   tools:
     python: "3.9"
   commands:
-    - mkdir _readthedocs/html/
+    - mkdir -p _readthedocs/html/
     - mv docs/sphinx-docs/build/html/ _readthedocs/html/
