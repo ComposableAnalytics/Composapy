@@ -1,7 +1,24 @@
+DataFlow
+========
+
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
 
     composapy-dataflow-api
-    composapy-dataflow-models
+    composapy-dataflow-models/index
+
+
+Session
+=======
+
+.. toctree::
+
     composapy-session
+
+
+Utils
+=====
+
+.. toctree::
+
     composapy-utils

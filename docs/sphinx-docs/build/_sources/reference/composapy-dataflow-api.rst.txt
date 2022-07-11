@@ -1,5 +1,5 @@
-dataflow/api
-------------
+Api
+===
 
 .. automodule:: composapy.dataflow.api
     :members:

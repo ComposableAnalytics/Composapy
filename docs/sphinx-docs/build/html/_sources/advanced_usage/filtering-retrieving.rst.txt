@@ -1,5 +1,5 @@
-filtering and retrieving object-sets
-====================================
+ObjectSet Methods
+=================
 
 Set-objects (ModuleSet/InputSet/ResultSet) all have similar behaviors.
 

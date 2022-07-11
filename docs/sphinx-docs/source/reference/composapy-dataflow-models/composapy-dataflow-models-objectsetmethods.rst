@@ -1,5 +1,5 @@
-filtering and retrieving object-sets
-====================================
+ObjectSet Methods
+=================
 
 Set-objects (ModuleSet/InputSet/ResultSet) all have similar behaviors.
 
@@ -79,3 +79,4 @@ Instead of accessing `results` and using `first()` or `[0]`, you can instead use
 .. code-block:: python
 
     dataflow_run.modules.get(name="String Formatter").result  # Result(name='Result', type=String, value='This is a test format')
+

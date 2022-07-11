@@ -1,5 +1,5 @@
-utils
------
+Utils
+=====
 
 .. automodule:: composapy.utils
     :members:

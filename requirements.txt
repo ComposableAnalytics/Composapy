@@ -10,3 +10,5 @@ papermill
 jupytext
 requests
 json-fix
+sphinx
+sphinx_rtd_theme

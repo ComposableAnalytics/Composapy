@@ -1,24 +1,17 @@
-API Reference
-=============
+Table of Contents
+=================
+
+
+Composapy Reference
+===================
 
 If you are looking for information about a specific function, class, or method,
 this documentation section will help you.
 
 .. toctree::
-    :maxdepth: 3
+    :maxdepth: 2
 
-    reference/index.rst
-
-Advanced Usage
-==============
-
-If you are looking for more advanced information on how to access and filter the input/outputs of
-your DataFlows, this advanced usage section will help you.
-
-.. toctree::
-    :maxdepth: 3
-
-    advanced_usage/index.rst
+    reference/index
 
 
 Indices and tables

@@ -1,5 +1,5 @@
-dataflow/models
----------------
+Models
+======
 
 .. automodule:: composapy.dataflow.models
     :members:

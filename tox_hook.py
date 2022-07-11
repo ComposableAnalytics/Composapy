@@ -1,5 +1,7 @@
 import os
 import sys
+from contextlib import contextmanager
+
 import jupytext
 from pathlib import Path
 from tfs_utils import (
@@ -42,16 +44,30 @@ def build():
 
 
 def docs():
+    # convert notebook (composapy-readme.ipynb) to markdown (README.md)
     nb = jupytext.read(COMPOSAPY_README_IPYNB)
     jupytext.write(nb, "README.md")
-    # with open("README.md", "r+") as readme_file:
-    #     lines = readme_file.readlines()
-    #     readme_file.seek(0)
-    #     readme_file.truncate()
 
 
 def _update_readme():
     docs()
+
+
+@contextmanager
+def working_directory(path):
+    """Change working directory to `path` and restore old path on exit.
+    `path` can be `None` in which case this is a no-op.
+    """
+    if path is None:
+        yield
+
+    else:
+        old_dir = Path.cwd()
+        os.chdir(path)
+        try:
+            yield
+        finally:
+            os.chdir(old_dir)
 
 
 if __name__ == "__main__":
