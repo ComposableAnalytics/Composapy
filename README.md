@@ -5,7 +5,7 @@ programmatically interface with Composable. Composapy allows you to interactivel
 and retrieve results from DataFlows (Directed Acyclic Graphs, DAGs).
 
 - [#Quick-Start](#quick-start) : some simple use cases and examples
-- [#Reference](#reference) : more details about the components
+- [#Documentation](#documentation) : more details about the components
 - [#Additional-Information](#additional-information) : some other links to information outside of this repo
 
 ## Quick-Start
@@ -70,9 +70,9 @@ dataflow_object.modules.filter(name="calc module name")[0].inputs.first()  # Inp
 dataflow_run.modules.get(name="string module name").result           # Result(name='foo name', type=String, value='foo value')
 ```
 
-## Reference
+## Documentation
 
-You can find our reference documentation on [readthedocs](https://composapy.readthedocs.io/).
+You can find more detailed documentation on our [readthedocs](https://composapy.readthedocs.io/).
 
 
 ### CompAnalytics.Contracts.Tables.Table

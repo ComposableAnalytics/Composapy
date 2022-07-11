@@ -12,6 +12,10 @@ this documentation section will help you.
     :maxdepth: 2
 
     reference/index
+    reference/composapy-session
+    reference/composapy-utils
+    reference/composapy-contracts-table
+    reference/composapy-contracts-filereference
 
 
 Indices and tables
