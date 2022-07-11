@@ -6,4 +6,4 @@ build:
     python: "3.9"
   commands:
     - mkdir -p _readthedocs/html/
-    - mv docs/sphinx-docs/build/html/ _readthedocs/html/
+    - mv docs/sphinx-docs/build/html/ _readthedocs/
