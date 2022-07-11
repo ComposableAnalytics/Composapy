@@ -14,7 +14,7 @@ sys.path.insert(0, pathlib.Path(__file__).parents[3].resolve().as_posix())
 # -- Project information -----------------------------------------------------
 
 project = "Composapy"
-copyright = "2022, michael surdouski"
+copyright = "2022, Composable Analytics, Inc."
 author = "michael surdouski"
 
 
