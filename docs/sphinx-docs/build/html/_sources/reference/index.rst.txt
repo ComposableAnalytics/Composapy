@@ -1,8 +1,8 @@
-Composapy
+Reference
 =========
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     composapy-dataflow/index
     composapy-session

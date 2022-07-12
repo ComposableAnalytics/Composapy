@@ -1,15 +1,11 @@
 Table of Contents
 =================
 
-
-Composapy Reference
-===================
-
 If you are looking for information about a specific function, class, or method,
 this documentation section will help you.
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     reference/index
 

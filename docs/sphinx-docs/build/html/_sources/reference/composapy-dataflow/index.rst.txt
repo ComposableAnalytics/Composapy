@@ -2,7 +2,7 @@ DataFlow
 ========
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
-    composapy-dataflow-api
     composapy-dataflow-models/index
+    composapy-dataflow-api

@@ -1,8 +1,8 @@
-Models
-======
+DataFlow Models
+===============
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 3
 
     composapy-dataflow-models-dataflowobject
     composapy-dataflow-models-dataflowrun
