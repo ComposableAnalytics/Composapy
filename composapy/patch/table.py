@@ -1,10 +1,55 @@
 from typing import Dict
 import pandas as pd
 
+import json
+
 import System
 from CompAnalytics.Contracts.Tables import Table
+from CompAnalytics.Core import ContractSerializer
 
 from composapy.session import get_session
+
+
+import json_fix  # used to patch json with fake magic method __json__
+
+
+# patching json package using json-fix
+# json-fix : https://pypi.org/project/json-fix/
+def _json(self):
+    return json.loads(ContractSerializer.Serialize(self))
+
+
+Table.__json__ = _json
+
+
+# patching copy.deepycopy
+# python docs : https://docs.python.org/3/library/copy.html#copy.deepcopy
+def deep_copy(self, memo):
+    """Only use for things which don't actually need to be copied."""
+    return self
+
+
+Table.__deepcopy__ = deep_copy
+
+
+# monkey patching Table for pickling
+# python docs : https://docs.python.org/3/library/pickle.html#object.__reduce_ex__
+# composable docs : https://dev.composable.ai/api/CompAnalytics.Contracts.Tables.Table.html
+def reduce_ex(self, protocol):
+    """Called when using pickle.dumps(table_to_pickle)."""
+    return (self.__class__, (ContractSerializer.Serialize(self),))
+
+
+Table.__reduce_ex__ = reduce_ex
+
+
+class TablePickleBehavior(Table):
+    """This is used for changing the behavior of pickling/depickling for Table."""
+
+    def __new__(self, *args, **kwargs):
+        """Called when using pickle.loads(picked_table)."""
+        return ContractSerializer.Deserialize[Table](args[0])
+
 
 MAP_CS_TYPES_TO_PANDAS_TYPES = {
     "System.String": "object",

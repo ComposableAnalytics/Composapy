@@ -5,6 +5,7 @@ from System import Object
 from System.Collections.Generic import List, KeyValuePair
 from CompAnalytics.Core import ContractSerializer
 from CompAnalytics.Contracts import FileReference
+from CompAnalytics.Contracts.Tables import Table
 
 
 class TypeNotSupportedError(Exception):
@@ -15,6 +16,7 @@ SUPPORTED_TYPES = (
     str,
     int,
     FileReference,
+    Table,
 )
 
 
@@ -34,11 +36,16 @@ def is_file_ref(python_object):
     return python_object
 
 
+def is_table(python_object):
+    return python_object
+
+
 marshall_actions = {
     str: is_string,
     int: is_int,
     None: is_none,
     FileReference: is_file_ref,
+    Table: is_table,
 }
 
 

@@ -3,11 +3,12 @@ import papermill as pm
 import nbformat
 from pathlib import Path
 
-from composapy import FileReferencePickleBehavior
+from composapy import FileReferencePickleBehavior, TablePickleBehavior
 
 from System import Object
 from CompAnalytics.Core import ContractSerializer
 from CompAnalytics.Contracts import FileReference
+from CompAnalytics.Contracts.Tables import Table
 from System.Collections.Generic import List, KeyValuePair
 
 
@@ -32,8 +33,11 @@ def execute_notebook(
 
     parameters = {}
     for parameter in deserialized_list:
-        if isinstance(parameter.Value, FileReference):  #  update pickling behavior
+        #  update pickling behaviors, if necessary
+        if isinstance(parameter.Value, FileReference):
             parameter.Value.__class__ = FileReferencePickleBehavior
+        elif isinstance(parameter.Value, Table):
+            parameter.Value.__class__ = TablePickleBehavior
         parameters[parameter.Key] = parameter.Value
 
     _nb = nbformat.read(input_nb_path, as_version=4)
@@ -64,6 +68,7 @@ def _inject_package_loading(nb: nbformat.NotebookNode):
 import composapy
 from CompAnalytics.Core import ContractSerializer
 from CompAnalytics.Contracts import FileReference
+from CompAnalytics.Contracts.Tables import Table 
 """
 
     new_cell = nbformat.v4.new_code_cell(source=code)

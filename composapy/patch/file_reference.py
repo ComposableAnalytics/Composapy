@@ -4,8 +4,6 @@ import json
 from pathlib import Path, PureWindowsPath
 
 import json_fix  # used to patch json with fake magic method __json__
-from six import string_types, integer_types
-import papermill
 
 from System import Uri
 from System.IO import File, SeekOrigin
@@ -57,46 +55,6 @@ class FileReferencePickleBehavior(FileReference):
         return FileReference.Create(
             args[0], ContractSerializer.Deserialize[Uri](args[1])
         )
-
-
-# patching for papermill translators - defining custom parameter rendering logic for FileReference
-# github docs : https://github.com/nteract/papermill/blob/main/papermill/translators.py
-@classmethod
-def translate_file_ref(cls, val):
-    return cls.translate_raw_str(
-        f"ContractSerializer.Deserialize[FileReference]('{val}')"
-    )
-
-
-papermill.translators.PythonTranslator.translate_file_ref = translate_file_ref
-
-
-@classmethod
-def translate(cls, val):
-    """Translate each of the standard json/yaml types to appropriate objects."""
-
-    if val is None:
-        return cls.translate_none(val)
-    elif isinstance(val, string_types):
-        return cls.translate_str(val)
-    # Needs to be before integer checks
-    elif isinstance(val, bool):
-        return cls.translate_bool(val)
-    elif isinstance(val, integer_types):
-        return cls.translate_int(val)
-    elif isinstance(val, float):
-        return cls.translate_float(val)
-    elif isinstance(val, dict):
-        return cls.translate_dict(val)
-    elif isinstance(val, list):
-        return cls.translate_list(val)
-    elif isinstance(val, FileReference):
-        return cls.translate_file_ref(ContractSerializer.Serialize(val))
-    # Use this generic translation as a last resort
-    return cls.translate_escaped_str(val)
-
-
-papermill.translators.Translator.translate = translate
 
 
 # patch FileReference with a utility function "to_file"
