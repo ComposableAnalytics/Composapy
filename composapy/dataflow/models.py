@@ -1,6 +1,8 @@
 from __future__ import annotations
 from typing import Optional, Tuple, Dict
 
+from composapy.decorators import session_required
+from composapy.session import get_session
 from composapy.dataflow.const import ExternalInput
 from composapy.dataflow.io import upload_file_to_runs_dir
 from composapy.mixins import (
@@ -8,8 +10,6 @@ from composapy.mixins import (
 )
 
 from CompAnalytics import Contracts
-
-from composapy.session import get_session
 
 
 class ModuleMemberBase:
@@ -186,10 +186,7 @@ class DataFlowRun:
 
     contract: Contracts.ExecutionState
 
-    def __init__(
-        self, execution_state: Contracts.ExecutionState, *args, **kwargs
-    ) -> None:
-        super().__init__(*args, **kwargs)
+    def __init__(self, execution_state: Contracts.ExecutionState) -> None:
         self.contract = execution_state
 
     def __repr__(self):
@@ -257,9 +254,8 @@ class DataFlowObject:
 
     contract: Contracts.Application
 
-    def __init__(self, contract: Contracts.Application, *args, **kwargs):
+    def __init__(self, contract: Contracts.Application):
         self.contract = contract
-        super().__init__(*args, **kwargs)
 
     def __repr__(self):
         return f"DataFlowObject(id={self.id})"
@@ -287,6 +283,7 @@ class DataFlowObject:
             )
         return next(iter(self.modules))
 
+    @session_required
     def save(self) -> DataFlowObject:
         """Saves the contract representation of DataFlowObject, uses server response as the newly
         updated contract object (for instance, saving an unsaved contract will give it an id).
@@ -304,6 +301,7 @@ class DataFlowObject:
         )
         return self
 
+    @session_required
     def run(self, external_inputs: Dict[str, any] = None) -> DataFlowRun:
         """Runs the dataflow represented by contained contract. Any external modules
         (external int, table, file) that require outside input to run can be added using a
@@ -314,7 +312,7 @@ class DataFlowObject:
 
             dataflow_run = dataflow_object.run()
         """
-        session = get_session()
+        app_service = get_session().app_service
 
         for module in self.modules:
             module.contract.RequestingExecution = True
@@ -322,15 +320,15 @@ class DataFlowObject:
         self._write_external_inputs(external_inputs)
 
         execution_handle: Contracts.ExecutionHandle = (
-            session.app_service.CreateExecutionContext(
+            app_service.CreateExecutionContext(
                 self.contract, Contracts.ExecutionContextOptions()
             )
         )
 
         self._post_context_setup_steps(external_inputs, execution_handle)
 
-        session.app_service.RunExecutionContext(execution_handle)
-        post_run_execution_state: Contracts.ExecutionState = session.app_service.GetRun(
+        app_service.RunExecutionContext(execution_handle)
+        post_run_execution_state: Contracts.ExecutionState = app_service.GetRun(
             execution_handle.Id
         )
 

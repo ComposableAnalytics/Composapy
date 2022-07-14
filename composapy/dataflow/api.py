@@ -1,5 +1,6 @@
 from typing import Optional, Dict
 
+from composapy.decorators import session_required
 from composapy.dataflow.models import DataFlowObject, DataFlowRun
 
 import System
@@ -20,6 +21,7 @@ class DataFlow:
     """
 
     @staticmethod
+    @session_required
     def get(dataflow_id: int) -> DataFlowObject:
         """Returns the wrapped Application contract inside a DataFlowObject.
 
@@ -36,6 +38,7 @@ class DataFlow:
         return DataFlowObject(dataflow)
 
     @staticmethod
+    @session_required
     def create(json: str = None, file_path: str = None) -> DataFlowObject:
         """Takes a json formatted string **or** a local file path containing a valid json
         (supplying arguments to both will raise exception). Imports the dataflow using the
@@ -65,6 +68,7 @@ class DataFlow:
         return DataFlowObject(app)
 
     @staticmethod
+    @session_required
     def get_run(run_id: int) -> DataFlowRun:
         """
         .. highlight:: python
@@ -80,6 +84,7 @@ class DataFlow:
         return DataFlowRun(execution_state)
 
     @staticmethod
+    @session_required
     def run(
         dataflow_id: int, external_inputs: Dict[str, any] = None
     ) -> Optional[DataFlowRun]:
@@ -110,6 +115,7 @@ class DataFlow:
         return dataflow_run
 
     @staticmethod
+    @session_required
     def run_status(run_id: int):
         """Retrieves run status.
 
@@ -120,6 +126,7 @@ class DataFlow:
         return System.Enum.GetNames(Contracts.ExecutionStatus)[run.Status]
 
     @staticmethod
+    @session_required
     def wait_for_run_execution(run_id: int) -> Dict[str, int]:
         """Waits until run has finished. Returns a dict with keys "execution_status"
         and "run_id".

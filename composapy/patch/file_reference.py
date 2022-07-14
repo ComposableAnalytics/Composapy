@@ -11,7 +11,7 @@ from CompAnalytics.Contracts import FileReference
 from CompAnalytics.Core import ContractSerializer
 from CompAnalytics.Utils import FileUtils, StandardPaths
 
-
+from composapy.decorators import session_required
 from composapy.session import get_session
 from composapy.utils import _urljoin
 
@@ -58,7 +58,8 @@ class FileReferencePickleBehavior(FileReference):
 
 
 # patch FileReference with a utility function "to_file"
-def _file_ref_to_file(self, save_dir: Path | str = None, file_name: str = None):
+@session_required
+def to_file(self, save_dir: Path | str = None, file_name: str = None):
     """Downloads a run file by calling file_ref.to_file().
 
     Parameters:
@@ -67,8 +68,8 @@ def _file_ref_to_file(self, save_dir: Path | str = None, file_name: str = None):
         The name of the newly saved file (default is None). If None is provided,
         uses the original filename from URI.
     """
-
-    session = get_session()
+    session_uri = get_session().uri
+    file_upload_service = get_session().file_upload_service
     file_ref_uri = str(self.Uri)
 
     # string magic to parse the useful bits out of uri
@@ -82,13 +83,13 @@ def _file_ref_to_file(self, save_dir: Path | str = None, file_name: str = None):
     if not file_name:
         file_name = file_ref_uri[file_ref_uri.rindex("/") :].strip("/")
 
-    virtual_path = _urljoin(session.uri, file_ref_relative_uri)
+    virtual_path = _urljoin(session_uri, file_ref_relative_uri)
     windows_path: PureWindowsPath = PureWindowsPath(save_dir.joinpath(file_name))
 
     Path.mkdir(save_dir, parents=True, exist_ok=True)
     file_path: Path = save_dir.joinpath(file_name)
 
-    _input_stream = session.file_upload_service.StreamFile(virtual_path)
+    _input_stream = file_upload_service.StreamFile(virtual_path)
     input_stream = FileUtils.GetEntireFileStream(_input_stream)  # fix seek issues
 
     output_stream = File.Create(str(windows_path))
@@ -105,4 +106,4 @@ def _file_ref_to_file(self, save_dir: Path | str = None, file_name: str = None):
     )
 
 
-FileReference.to_file = _file_ref_to_file
+FileReference.to_file = to_file

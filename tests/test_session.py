@@ -5,6 +5,7 @@ from pathlib import Path
 
 import pytest
 
+from composapy.decorators import SessionRequiredError
 from composapy.session import Session, get_session, SessionRegistrationException
 from composapy.dataflow.api import DataFlow
 
@@ -34,3 +35,14 @@ def test_clear_registration_session(session: Session):
 
     with pytest.raises(SessionRegistrationException):
         get_session()
+
+
+def test_session_required_decorator():
+    with pytest.raises(SessionRequiredError):
+        DataFlow.create(
+            file_path=str(
+                Path(
+                    os.path.dirname(Path(__file__)), "TestFiles", "calculator_test.json"
+                )
+            )
+        )  # dataflow.create() will throw an error if session authentication failed

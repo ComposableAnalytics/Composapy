@@ -7,6 +7,7 @@ import System
 from CompAnalytics.Contracts.Tables import Table
 from CompAnalytics.Core import ContractSerializer
 
+from composapy.decorators import session_required
 from composapy.session import get_session
 
 
@@ -84,11 +85,10 @@ MAP_STRING_TYPES_TO_PANDAS_TYPES = {
 }
 
 
-def _table_to_pandas(self) -> pd.DataFrame:
+@session_required
+def to_pandas(self) -> pd.DataFrame:
     """Converts a composapy table contract to a pandas dataframe."""
-    session = get_session()
-
-    table_results = session.table_service.GetResultFromTable(self, 0, 0x7FFFFFFF)
+    table_results = get_session().table_service.GetResultFromTable(self, 0, 0x7FFFFFFF)
     headers = table_results.Headers
     results = table_results.Results
     df = pd.DataFrame(results, columns=headers)
@@ -121,5 +121,5 @@ def _make_pandas_dtypes_from_list_of_column_defs(list_of_column_defs) -> Dict:
     return dtypes_dict
 
 
-Table.to_pandas = _table_to_pandas
+Table.to_pandas = to_pandas
 Table._repr_html_ = _repr_html_
