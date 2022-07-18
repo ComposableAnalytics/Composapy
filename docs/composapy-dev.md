@@ -1,6 +1,8 @@
 - [Dev Environment Setup](#dev-environment-setup)
+  - [Enable Windows Auth](#enable-windows-auth)
   - [Python](#python)
     - [Download Python](#download-python)
+    - [Create/Activate Virtual Environment](#createactivate-virtual-environment)
     - [Pip install](#pip-install)
   - [Composapy](#composapy)
     - [Update local .env files](#update-local-env-files)
@@ -20,6 +22,14 @@
 # Dev Environment Setup
 
 
+## Enable Windows Auth
+
+Windows auth is required to run the test suite for Composapy.
+
+1. Windows Key -> search for "turn windows features on or off"
+2. `World Wide Web Services` -> `Security` -> Ensure that `Windows Authentication` is checked
+
+
 ## Python
 
 
@@ -30,8 +40,8 @@ Click [here](https://www.python.org/downloads/release/python-3910/) for the most
 Navigate in command prompt or powershell to the Composapy project directory root folder and verify your python version.
 
 ```
-C:\> cd /your/path/to/Composable Analytics/Composapy/Composapy
-C:\..\composapy\composapy> python --version
+C:\> cd /your/path/to/Composable Analytics/Composapy/composapy
+C:\..\Composapy\Composapy> python --version
 Python 3.9.X
 ```
 
@@ -39,8 +49,8 @@ Python 3.9.X
 ### Create/Activate Virtual Environment
 
 ```
-C:\..\composapy\composapy> python -m venv dev
-C:\..\composapy\composapy> .\dev\Scripts\activate
+C:\..\Composapy\Composapy> python -m venv dev
+C:\..\Composapy\Composapy> .\dev\Scripts\activate
 ```
 
 After activating, you should see the `(dev)` tag prefixing your console. When you want to deactivate
@@ -51,8 +61,8 @@ your virtual environment, you can simply type `deactivate`.
 Install the following after activating your virtual environment.
 
 ```
-(dev) C:\..\composapy\composapy> pip install --upgrade pip build twine tox tox-wheel
-(dev) C:\..\composapy\composapy> pip install -r requirements.txt
+(dev) C:\..\Composapy\Composapy> pip install --upgrade pip build twine tox tox-wheel
+(dev) C:\..\Composapy\Composapy> pip install -r requirements.txt
 ```
 
 
@@ -74,7 +84,7 @@ In the Composapy directory, update or create the file `.test.env` (in the same d
     this environment variables and call/use that script within `tox-hook.exe`. 
 
 _example/.test.env_
-```cmd
+```
 TEST_API_KEY="yourApiKeyHere"
 TF_EXE_PATH="C:/Path/To/tf.exe"
 ```
@@ -88,7 +98,7 @@ Composapy uses [tox](https://tox.wiki/en/latest/) for the management of it's bui
 #### Build
 
 ```
-(dev) C:\..\composapy\composapy> tox -e build
+(dev) C:\..\Composapy\Composapy> tox -e build
 ```
 
 The following steps are performed with the build command.
@@ -107,14 +117,14 @@ When installing a new package, make sure to update the requirements.txt. Wheneve
 requirements.txt or any configuration files (other than `tox.ini`), you will need to use the `-r` flag to indicate your dependencies have changed.
 
 ```
-(dev) C:\..\composapy\composapy> tox -r -e build  //you can use the -r flag with any of the commands (test/build/etc)
+(dev) C:\..\Composapy\Composapy> tox -r -e build  //you can use the -r flag with any of the commands (test/build/etc)
 ```
 
 
 #### Run Tests
 
 ```
-(dev) C:\..\composapy\composapy> tox -e test
+(dev) C:\..\Composapy\Composapy> tox -e test
 ```
 
 _Make sure all tests are passing before doing any development on Composapy._
@@ -152,7 +162,7 @@ Do not do your Python development inside of visual studio! You can use one of th
 
 _Upload archives under `/dist/*` to PyPI -- you will be prompted for credentials._
 ```
-(dev) C:\..\composapy\composapy> python -m twine upload /.tox/dist/*
+(dev) C:\..\Composapy\Composapy> python -m twine upload /.tox/dist/*
 ```
 
 To upload the package on PyPI, you will need a user account for [PyPI](https://pypi.org/). You will also need to request permissions on the project index so that you can upload.

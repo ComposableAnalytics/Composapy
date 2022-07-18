@@ -8,18 +8,18 @@ and retrieve results from DataFlows (Directed Acyclic Graphs, DAGs).
 Visit our [ReadTheDocs](https://composapy.readthedocs.io/html/) page a more detailed look at
 Composapy.
 
+- [Examples](#examples)
+  - [Register a Session](#register-a-session)
+  - [Create and Save a DataFlow](#create-and-save-a-dataflow)
+  - [Run a DataFlow](#run-a-dataflow)
+  - [DataFlowObject and DataFlowRun Modules](#dataflowobject-and-dataflowrun-modules)
+  - [DataFlowObject and DataFlowRun Input](#dataflowobject-and-dataflowrun-input)
+  - [DataFlowRun Result](#dataflowrun-result)
 
-- [Register a Session](#register-a-session)
-- [Create and Save a DataFlow](#create-and-save-a-dataflow)
-- [Run a DataFlow](#run-a-dataflow)
-- [DataFlowObject and DataFlowRun Modules](#dataflowobject-and-dataflowrun-modules)
-- [DataFlowObject and DataFlowRun Input](#dataflowobject-and-dataflowrun-input)
-- [DataFlowRun Result](#dataflowrun-result)
 
+[Additional Information](#additional-information)
 
-- [Additional Information](#additional-information)
-
-## Quick-Start
+## Examples
 
 ### Register a Session
 

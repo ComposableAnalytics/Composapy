@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tables.Table &mdash; Composapy  documentation</title>
+  <title>Environment Variables &mdash; Composapy  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -19,8 +19,7 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="FileReference" href="composapy-contracts-filereference.html" />
-    <link rel="prev" title="Utils" href="composapy-utils.html" /> 
+    <link rel="prev" title="FileReference" href="composapy-contracts-filereference.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -43,9 +42,13 @@
 <li class="toctree-l2"><a class="reference internal" href="composapy-dataflow/index.html">DataFlow</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-session.html">Session</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-utils.html">Utils</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Tables.Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-table.html">Tables.Table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-contracts-filereference.html">FileReference</a></li>
-<li class="toctree-l2"><a class="reference internal" href="environment-variables.html">Environment Variables</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Environment Variables</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#datalab-dll-dir">DATALAB_DLL_DIR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#application-uri">APPLICATION_URI</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -65,9 +68,9 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="index.html">Reference</a> &raquo;</li>
-      <li>Tables.Table</li>
+      <li>Environment Variables</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/reference/composapy-contracts-table.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/reference/environment-variables.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -75,43 +78,29 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tables-table">
-<h1>Tables.Table<a class="headerlink" href="#tables-table" title="Permalink to this heading"></a></h1>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">CompAnalytics.Contracts.Tables</span> <span class="kn">import</span> <span class="n">Table</span>
-</pre></div>
-</div>
-<p>Table objects are container objects for queries. For convenience, their results are displayed
-as a pandas DataFrame when inside a notebook environment.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table_run</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">get_run</span><span class="p">(</span><span class="mi">138123</span><span class="p">)</span>
-<span class="n">table_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span>
-
-<span class="c1"># .to_markdown() was used for markdown presentation purposes</span>
-<span class="c1">#</span>
-<span class="c1"># +----+-----+-----+-----+</span>
-<span class="c1"># |    | a   | o   | e   |</span>
-<span class="c1"># +====+=====+=====+=====+</span>
-<span class="c1"># |  0 | a   | o   | e   |</span>
-<span class="c1"># +----+-----+-----+-----+</span>
-<span class="c1"># |  1 | e   |     |     |</span>
-<span class="c1"># +----+-----+-----+-----+</span>
-<span class="c1"># |  2 | e   |     |     |</span>
-<span class="c1"># +----+-----+-----+-----+</span>
-</pre></div>
-</div>
-<p>You can also retrieve the value of the pandas DataFrame Table object with to_pandas().</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">table_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span>  <span class="c1"># CompAnalytics.Contracts.Tables.Table</span>
-<span class="n">table_df</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>                    <span class="c1"># pandas.DataFrame</span>
-</pre></div>
-</div>
-<p>You can find more information on the CompAnalytics.Contracts.Tables.Table contract <a class="reference external" href="https://dev.composable.ai/api/CompAnalytics.Contracts.Tables.Table.html">here</a>.</p>
+  <section id="environment-variables">
+<h1>Environment Variables<a class="headerlink" href="#environment-variables" title="Permalink to this heading"></a></h1>
+<p>If running Composapy in a DataLab, your environment variables will already be set up
+on your running instance. If running outside of a DataLab instance, you will need to
+set “DATALAB_DLL_DIR”. “APPLICATION_URI” can also optionally be set, however it is only
+used to create a Session object and can be passed through it’s “uri” argument.</p>
+<section id="datalab-dll-dir">
+<h2>DATALAB_DLL_DIR<a class="headerlink" href="#datalab-dll-dir" title="Permalink to this heading"></a></h2>
+<p>The value of this should be a path to the required Composable dll’s needed to run
+Composapy. Composapy uses the <a class="reference external" href="https://github.com/pythonnet/pythonnet">PythonNet</a>
+package to bind to the Composable project dll’s.</p>
+</section>
+<section id="application-uri">
+<h2>APPLICATION_URI<a class="headerlink" href="#application-uri" title="Permalink to this heading"></a></h2>
+<p>See <a class="reference internal" href="composapy-session.html"><span class="doc">Session</span></a>.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="composapy-utils.html" class="btn btn-neutral float-left" title="Utils" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="composapy-contracts-filereference.html" class="btn btn-neutral float-right" title="FileReference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="composapy-contracts-filereference.html" class="btn btn-neutral float-left" title="FileReference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>

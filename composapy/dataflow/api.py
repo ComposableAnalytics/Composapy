@@ -30,7 +30,7 @@ class DataFlow:
 
             dataflow_object = DataFlow.get(123456)
 
-        :param dataflow_id: a valid(saved) composable dataflow id
+        :param dataflow_id: a valid(saved) Composable dataflow id
 
         :return: the Application contract wrapped in a DataFlowObject
         """
@@ -44,7 +44,7 @@ class DataFlow:
         (supplying arguments to both will raise exception). Imports the dataflow using the
         dataflow service binding, and returns a DataFlowObject.
         Note that creating does not save the dataflow, the .save() method must be called on
-        DataFlowObject to save it in your composable database.
+        DataFlowObject to save it in your Composable database.
 
         .. highlight:: python
         .. code-block:: python
@@ -74,9 +74,9 @@ class DataFlow:
         .. highlight:: python
         .. code-block:: python
 
-            dataflow_object = DataFlow.get(file_path="simple-dataflow.json")
+            dataflow_run = DataFlow.get_run(654321)
 
-        :param run_id: composable dataflow run id
+        :param run_id: Composable dataflow run id
 
         :return: the wrapped ExecutionState contract inside a DataFlowRun
         """
@@ -95,10 +95,10 @@ class DataFlow:
         .. highlight:: python
         .. code-block:: python
 
-            dataflow_object = DataFlow.run(123456)
-            dataflow_object = DataFlow.run(123456, external_inputs={"external_int_input_name": 3})
+            dataflow_run = DataFlow.run(123456)
+            dataflow_run = DataFlow.run(123456, external_inputs={"external_int_input_name": 3})
 
-        :param dataflow_id: a valid(saved) composable dataflow id
+        :param dataflow_id: a valid(saved) Composable dataflow id
         :param external_inputs: If there are any external inputs in the DataFlow, you can supply
             them via `external_inputs["key"] = value`. It takes the external input name as a key and the
             external input value as value. You can find more about external input modules
@@ -119,7 +119,7 @@ class DataFlow:
     def run_status(run_id: int):
         """Retrieves run status.
 
-        :param run_id: composable dataflow run id
+        :param run_id: Composable dataflow run id
         """
 
         run = get_session().app_service.GetRun(run_id)
@@ -131,7 +131,7 @@ class DataFlow:
         """Waits until run has finished. Returns a dict with keys "execution_status"
         and "run_id".
 
-        :param run_id: composable dataflow run id
+        :param run_id: Composable dataflow run id
 
         :return: status of the execution, ExecutionStatus
         """

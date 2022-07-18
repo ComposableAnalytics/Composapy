@@ -49,6 +49,7 @@
 <li class="toctree-l2"><a class="reference internal" href="../composapy-utils.html">Utils</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../composapy-contracts-table.html">Tables.Table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../composapy-contracts-filereference.html">FileReference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../environment-variables.html">Environment Variables</a></li>
 </ul>
 </li>
 </ul>
@@ -96,7 +97,7 @@ service user-level operations on an application-level library.</p>
 (supplying arguments to both will raise exception). Imports the dataflow using the
 dataflow service binding, and returns a DataFlowObject.
 Note that creating does not save the dataflow, the .save() method must be called on
-DataFlowObject to save it in your composable database.</p>
+DataFlowObject to save it in your Composable database.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_object</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;simple-dataflow.json&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -122,7 +123,7 @@ DataFlowObject to save it in your composable database.</p>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>dataflow_id</strong> – a valid(saved) composable dataflow id</p>
+<dd class="field-odd"><p><strong>dataflow_id</strong> – a valid(saved) Composable dataflow id</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the Application contract wrapped in a DataFlowObject</p>
@@ -133,12 +134,12 @@ DataFlowObject to save it in your composable database.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.dataflow.api.DataFlow.get_run">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-dataflow-models/composapy-dataflow-models-dataflowrun.html#composapy.dataflow.models.DataFlowRun" title="composapy.dataflow.models.DataFlowRun"><span class="pre">DataFlowRun</span></a></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.get_run" title="Permalink to this definition"></a></dt>
-<dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_object</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;simple-dataflow.json&quot;</span><span class="p">)</span>
+<dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">get_run</span><span class="p">(</span><span class="mi">654321</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>run_id</strong> – composable dataflow run id</p>
+<dd class="field-odd"><p><strong>run_id</strong> – Composable dataflow run id</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>the wrapped ExecutionState contract inside a DataFlowRun</p>
@@ -152,14 +153,14 @@ DataFlowObject to save it in your composable database.</p>
 <dd><p>Runs a dataflow from the dataflow id (an invalid id will cause this method to return None).
 Any external modules (external int, table, file) that require outside input to run can be
 added using a dictionary with the module input’s name and corresponding contract.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_object</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
-<span class="n">dataflow_object</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">123456</span><span class="p">,</span> <span class="n">external_inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;external_int_input_name&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
+<span class="n">dataflow_run</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">123456</span><span class="p">,</span> <span class="n">external_inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;external_int_input_name&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">})</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dataflow_id</strong> – a valid(saved) composable dataflow id</p></li>
+<li><p><strong>dataflow_id</strong> – a valid(saved) Composable dataflow id</p></li>
 <li><p><strong>external_inputs</strong> – If there are any external inputs in the DataFlow, you can supply
 them via <cite>external_inputs[“key”] = value</cite>. It takes the external input name as a key and the
 external input value as value. You can find more about external input modules
@@ -178,7 +179,7 @@ external input value as value. You can find more about external input modules
 <dd><p>Retrieves run status.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>run_id</strong> – composable dataflow run id</p>
+<dd class="field-odd"><p><strong>run_id</strong> – Composable dataflow run id</p>
 </dd>
 </dl>
 </dd></dl>
@@ -190,7 +191,7 @@ external input value as value. You can find more about external input modules
 and “run_id”.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>run_id</strong> – composable dataflow run id</p>
+<dd class="field-odd"><p><strong>run_id</strong> – Composable dataflow run id</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>status of the execution, ExecutionStatus</p>

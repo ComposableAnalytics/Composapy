@@ -29,22 +29,22 @@ class Session:
 
     @property
     def app_service(self) -> IServices.IApplicationService:
-        """A composable analytics csharp binding to the IServices.IApplicationService."""
+        """A Composable csharp binding to the IServices.IApplicationService."""
         return self.services["ApplicationService"]
 
     @property
     def table_service(self) -> IServices.ITableService:
-        """A composable analytics csharp binding to the IServices.ITableService object."""
+        """A Composable csharp binding to the IServices.ITableService object."""
         return self.services["TableService"]
 
     @property
     def file_upload_service(self) -> IServices.IFileUploadService:
-        """A composable analytics csharp binding to the IServices.IFileUploadService object."""
+        """A Composable csharp binding to the IServices.IFileUploadService object."""
         return self.services["FileUploadService"]
 
     @property
     def resource_manager(self) -> IServices.Deploy.ResourceManager:
-        """A composable analytics csharp binding to the IServices.Deploy.ResourceManager object."""
+        """A Composable csharp binding to the IServices.Deploy.ResourceManager object."""
         return self.ResourceManager
 
     @property
