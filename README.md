@@ -1,4 +1,3 @@
-<!-- #region -->
 # Composapy
 
 DataLabs comes pre-installed with Composapy, a python package that makes it easy to
@@ -15,9 +14,7 @@ Composapy.
   - [DataFlowObject and DataFlowRun Modules](#dataflowobject-and-dataflowrun-modules)
   - [DataFlowObject and DataFlowRun Input](#dataflowobject-and-dataflowrun-input)
   - [DataFlowRun Result](#dataflowrun-result)
-
-
-[Additional Information](#additional-information)
+- [Additional Information](#additional-information)
 
 ## Examples
 
@@ -26,7 +23,6 @@ Composapy.
 Composapy looks for the environment variable `APPLICATION_URI` by default (set by DataLabs). If you are using Composapy outside of the datalabs environment and the `APPLICATION_URI`
 environment variable is not set, you can set it with keyword argument `uri`. You can create a session with Windows Authentication (if you are in DataLab, this will be the same as the 
 key on the DataLab edit screen), [`string`] API Token (can be generated on the composable website), or with a [`tuple[str, str]`] username/password combination.
-<!-- #endregion -->
 
 ```python pycharm={"name": "#%%\n"}
 from composapy.session import Session
