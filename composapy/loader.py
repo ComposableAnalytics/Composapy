@@ -25,14 +25,15 @@ def load_init(environment_variables: Dict = None) -> None:
         for key, val in environment_variables.items():
             os.environ[key] = val
 
-    #  assume dev environment if datalab environment variable has not been set
-    DATALAB_DLL_DIR = (
-        Path(os.getenv("DATALAB_DLL_DIR"))
-        if os.getenv("DATALAB_DLL_DIR")
-        else Path(__file__).parent.parent.parent.parent.joinpath(
-            "Product", "CompAnalytics.DataLabService", "bin", "Debug"
+    # if datalab environment variable has not been set, throw an error
+    if os.getenv("DATALAB_DLL_DIR"):
+        DATALAB_DLL_DIR = Path(os.getenv("DATALAB_DLL_DIR"))
+    else:
+        raise ImportError(
+            "DATALAB_DLL_DIR environment variable is unset. "
+            "This variable must be set manually when using Composapy outside of a DataLabs notebook. "
+            "See the Composapy documentation for more details: https://composapy.readthedocs.io/html/reference/environment-variables.html"
         )
-    )
 
     # necessary non-composable dll's
     add_dll_reference("System.Runtime")

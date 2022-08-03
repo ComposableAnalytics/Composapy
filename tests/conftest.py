@@ -5,18 +5,28 @@ from dotenv import load_dotenv
 import warnings
 from urllib.parse import urlparse
 
-from composapy.dataflow.api import DataFlow
-from composapy.queryview.api import QueryView
-from composapy.session import Session
-from composapy.utils import _remove_suffix
-
-from CompAnalytics import Contracts
-from System import Uri
-from CompAnalytics.Utils import WinAuthUtils
-
 # does not override environment variables, this is essentially a failsafe for local dev environment
 for env_file in sorted(Path().rglob(".test*.env")):
     load_dotenv(env_file)
+
+# set DATALAB_DLL_DIR environment variable separately
+if not os.getenv("DATALAB_DLL_DIR"):
+    os.environ["DATALAB_DLL_DIR"] = str(
+        Path(__file__).parent.parent.parent.parent.joinpath(
+            "Product", "CompAnalytics.DataLabService", "bin", "Debug"
+        )
+    )
+
+from composapy.dataflow.api import DataFlow
+from composapy.queryview.api import QueryView
+from composapy.session import Session, get_session
+from composapy.utils import _remove_suffix
+
+from CompAnalytics import Contracts
+from CompAnalytics.Contracts import Property
+from CompAnalytics.Extension.Sql import SqlConnectionSettings
+from System import Uri
+from CompAnalytics.Utils import WinAuthUtils
 
 
 class TestSetupException(Exception):
@@ -152,6 +162,27 @@ def dataflow_object(request):
                 Path(os.path.dirname(Path(__file__)), "TestFiles", request.param[1])
             )
         )
+
+
+@pytest.fixture
+def property(request) -> Contracts.Property:
+    create_form_auth_session()
+    property_service = get_session().property_service
+
+    connection_settings = SqlConnectionSettings()
+    connection_settings.Host = "host.com"
+    connection_settings.Port = 1234
+    connection_settings.Username = "user"
+    connection_settings.Password = "password"
+
+    property = Property(connection_settings)
+    property.Name = request.param
+
+    saved_property = property_service.SaveProperty(property)
+
+    yield saved_property
+
+    property_service.DeleteProperty(saved_property.Id)
 
 
 # used when a fixture needs another copy of parameterized fixture

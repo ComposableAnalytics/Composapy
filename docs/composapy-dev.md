@@ -71,7 +71,7 @@ Install the following after activating your virtual environment.
 
 ### Update local .env files
 
-In the Composapy directory, update or create the file `.test.env` (in the same directory as `pyproject.toml`) with your local settings. Include the following in your file:
+In the Composapy directory, update or create the file `.local.env` (in the same directory as `pyproject.toml`) with your local settings. Include the following in your file:
 
 1. `TEST_API_KEY` : After logging into your development `unittestadmin` on your development instance of Composable, you can generate an api key for the account by going to the unittestadmin [profile](http://localhost/CompApp/UserView.aspx#/?userName=unittestadmin) page and using the `Generate API Token` button to get a new api token.
 

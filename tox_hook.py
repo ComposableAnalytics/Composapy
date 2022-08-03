@@ -1,4 +1,5 @@
 import os
+import subprocess
 import sys
 from contextlib import contextmanager
 
@@ -11,6 +12,11 @@ from tfs_utils import (
     update_static_wheel_deps,
 )
 
+os.environ["DATALAB_DLL_DIR"] = str(
+    Path(__file__).parent.parent.parent.joinpath(
+        "Product", "CompAnalytics.DataLabService", "bin", "Debug"
+    )
+)
 
 COMPOSAPY_ROOT_DIR = Path(__file__).parent
 COMPOSAPY_README_IPYNB = COMPOSAPY_ROOT_DIR.joinpath("docs", "composapy-readme.ipynb")
@@ -47,6 +53,30 @@ def docs():
     # convert notebook (composapy-readme.ipynb) to markdown (README.md)
     nb = jupytext.read(COMPOSAPY_README_IPYNB)
     jupytext.write(nb, "README.md")
+
+    sphinx_docs_dir = Path(COMPOSAPY_ROOT_DIR, "docs/sphinx-docs").as_posix()
+
+    _run = subprocess.run(
+        [
+            "sphinx-build",
+            "-b",
+            "html",
+            "source",
+            "build",
+        ],
+        cwd=sphinx_docs_dir,
+        capture_output=True,
+    )
+    print(_run.stdout.decode("utf-8"))
+    print(_run.stderr.decode("utf-8"))
+
+    _run = subprocess.run(["make", "clean"], cwd=sphinx_docs_dir, capture_output=True)
+    print(_run.stdout.decode("utf-8"))
+    print(_run.stderr.decode("utf-8"))
+
+    _run = subprocess.run(["make", "html"], cwd=sphinx_docs_dir, capture_output=True)
+    print(_run.stdout.decode("utf-8"))
+    print(_run.stderr.decode("utf-8"))
 
 
 def _update_readme():

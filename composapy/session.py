@@ -28,6 +28,11 @@ class Session:
         WINDOWS = "Windows"
 
     @property
+    def property_service(self) -> IServices.IPropertyService:
+        """A Composable csharp binding to the IServices.IPropertyService."""
+        return self.services["PropertyService"]
+
+    @property
     def app_service(self) -> IServices.IApplicationService:
         """A Composable csharp binding to the IServices.IApplicationService."""
         return self.services["ApplicationService"]
