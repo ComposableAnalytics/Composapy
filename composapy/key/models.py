@@ -60,4 +60,4 @@ class KeyObject:
                 setattr(self, key, value)
 
     def __repr__(self):
-        return f"Key(name='{self.contract.Name}', type='{self.contract.DisplayType}')"
+        return f"KeyObject(name='{self.contract.Name}', type='{self.contract.DisplayType}')"

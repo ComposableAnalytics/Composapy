@@ -125,7 +125,6 @@ def test_external_input_file(dataflow_object: DataFlowObject, file_path_string: 
     assert str(run.modules.get(name="File Reader").result.value) == "success\r\n"
 
 
-@pytest.mark.parametrize("property", ["some_property_name"], indirect=True)
 def test_get_key_with_name(property: Contracts.Property):
     key_object = Key.get(name=property.Name)
 
@@ -139,7 +138,6 @@ def test_get_key_with_name(property: Contracts.Property):
     assert key_object.Password == property_json["Password"]
 
 
-@pytest.mark.parametrize("property", ["some_property_name"], indirect=True)
 def test_get_key_with_id(property: Contracts.Property):
     key_object = Key.get(key_id=property.Id)
 
@@ -153,7 +151,6 @@ def test_get_key_with_id(property: Contracts.Property):
     assert key_object.Password == property_json["Password"]
 
 
-@pytest.mark.parametrize("property", ["some_property_name"], indirect=True)
 def test_search_key(property: Contracts.Property):
     key_objects = Key.search(property.Name)
 

@@ -1,5 +1,5 @@
-DataFlow Models
-===============
+Models
+======
 
 .. toctree::
     :maxdepth: 3

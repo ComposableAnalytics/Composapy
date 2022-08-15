@@ -1,5 +1,5 @@
-Key Models
-==========
+Models
+======
 
 .. automodule:: composapy.key.models
     :members:

@@ -4,7 +4,7 @@ Environment Variables
 If running Composapy in a DataLab, your environment variables will already be set up 
 on your running instance. If running outside of a DataLab instance, you will need to
 set "DATALAB_DLL_DIR". "APPLICATION_URI" can also optionally be set, however it is only
-used to create a Session object and can be passed through it's "uri" argument.
+used to create a Session object and can be passed through its "uri" argument.
 
 DATALAB_DLL_DIR
 ---------------

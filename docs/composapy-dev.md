@@ -7,8 +7,10 @@
   - [Composapy](#composapy)
     - [Update local .env files](#update-local-env-files)
     - [Tox](#tox)
+      - [Black](#black)
+      - [Docs](#docs)
+      - [Test](#test)
       - [Build](#build)
-      - [Run Tests](#run-tests)
   - [IDE](#ide)
     - [VSCode](#vscode)
     - [PyCharm](#pycharm)
@@ -16,7 +18,6 @@
   - [Source Control](#source-control)
     - [Visual Studio Project / Team Foundation Server](#visual-studio-project--team-foundation-server)
     - [Catastrophic Failure](#catastrophic-failure)
-  - [Tox Command Reference](#tox-command-reference)
 
 
 # Dev Environment Setup
@@ -92,7 +93,61 @@ TF_EXE_PATH="C:/Path/To/tf.exe"
 
 ### Tox
 
-Composapy uses [tox](https://tox.wiki/en/latest/) for the management of it's build/testing/deployment needs. Tox creates a virtual environment around your tests/builds, separating out any required python versions and environment variables.
+```
+(dev) C:\..\Composapy\Composapy> tox
+```
+
+Composapy uses [tox](https://tox.wiki/en/latest/) for the management of its 
+build/testing/deployment needs. Tox creates a virtual environment around your tests/builds, 
+separating out any required python versions and environment variables. To run the full suite of 
+commands, you can run the tox command without any `-e` specifiers.
+
+When installing a new package, make sure to update the requirements.txt. Whenever the
+requirements.txt or any configuration files change (other than `tox.ini`), the `-r` flag will be 
+needed to indicate your dependencies have changed and force the recreation of your virtual 
+environments.
+
+Each of the tox commands, defined by the `envlist` key (under `[tox]` header), are listed below.
+
+
+#### Black
+
+```
+(dev) C:\..\Composapy\Composapy> tox -e black
+```
+
+[Black](https://github.com/psf/black) is an uncompromising linting/code formatting library for 
+python.
+
+
+#### Docs
+
+```
+(dev) C:\..\Composapy\Composapy> tox -e docs
+```
+
+The docs command uses [jupytext](https://github.com/mwouts/jupytext) and 
+[sphinx](https://github.com/sphinx-doc/sphinx) to generate documentation from 
+composapy-readme.ipynb and python docstrings. 
+
+
+#### Test
+
+```
+(dev) C:\..\Composapy\Composapy> tox -e py38-test,py39-test,py310-test
+```
+
+The test commands (can be run separately or together by using commas between them) run all tests 
+in a virtual environment of the specified python version.
+
+Example:
+
+```tox -e py39-test -- tests/test_api.py```
+
+- This is equivalent to running `pytest tests/test_api.py` inside of a python3.9 environment. 
+Using `--` allows you to pass arguments to the command (if the command accepts `posargs`).
+
+**Note**: _Make sure all tests are passing before doing any development on Composapy._
 
 
 #### Build
@@ -101,33 +156,17 @@ Composapy uses [tox](https://tox.wiki/en/latest/) for the management of it's bui
 (dev) C:\..\Composapy\Composapy> tox -e build
 ```
 
-The following steps are performed with the build command.
-
-1. Creates a virtualenv for python39, using that context for the following steps
-
-2. Installs the packages from requirements.txt
-
-3. Runs black (auto-linting)
-
-4. Runs the tests
-
-5. Builds a wheel (`.whl`) binary
-
-When installing a new package, make sure to update the requirements.txt. Whenever the 
-requirements.txt or any configuration files (other than `tox.ini`), you will need to use the `-r` flag to indicate your dependencies have changed.
-
-```
-(dev) C:\..\Composapy\Composapy> tox -r -e build  //you can use the -r flag with any of the commands (test/build/etc)
-```
+Deploys required resources from the Composapy project to the csharp project, including any 
+wheels, tests, and documentation.
 
 
-#### Run Tests
+#### Tox Usage Examples
 
-```
-(dev) C:\..\Composapy\Composapy> tox -e test
-```
+```tox -e py39-test -- tests/test_api.py``` : This is equivalent to running 
+`pytest tests/test_api.py` inside of a python3.9 environment. Using `--` allows you to pass 
+arguments to the command (if the command accepts `posargs`).
 
-_Make sure all tests are passing before doing any development on Composapy._
+```tox -e build```
 
 
 ## IDE 
@@ -199,24 +238,3 @@ In case of catastrophic failure and there is a need to manually update files, th
 - Notebook: `composapy-readme.ipynb`, if changed, needs to be replaced at `/DataLabService/static`.
 
 - Directory: `/tests/*`, needs to be replaced at `/UnitTests/TestData/composapy`. _Note: You can exclude_ `/.pytest_cache` _from_ `/tests`.
-
-
-## Tox Command Reference
-
-Tox uses the `-e` flag to indicate the next argument is a command from `tox.ini`. You can use the `-r` flag to force the reinstallation of any dependencies, which you should do after making any updates to `requirements.txt`.
-
-`build`
-- does everything needed for you to build inside your composable analytics solution, 
-  including creating a wheel and adding all the necessary files to the project components.
-- note: after running tox build, you may need to rebuild datalabservice (and possibly unittest) in the composable analytics project. otherwise, visual studio may "forget" to copy the new wheels to the output directory
-
-`test`
-- uses a virtual env to run your tests inside, but does not create a new wheel.  
-
-`black`
-- is for formatting your code without having to run tests or build.
-
-Useful Examples
-
-```tox -e test -- tests/test_api.py``` : This is equivalent to running `pytest tests/test_api.
-py`. Using `--` allows you to pass arguments to the command being run inside of tox.

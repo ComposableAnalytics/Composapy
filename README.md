@@ -7,16 +7,25 @@ and retrieve results from DataFlows (Directed Acyclic Graphs, DAGs).
 Visit our [ReadTheDocs](https://composapy.readthedocs.io/html/) page a more detailed look at
 Composapy.
 
-- [Examples](#examples)
+- [Session](#session)
   - [Register a Session](#register-a-session)
+- [DataFlow](#dataflow)
   - [Create and Save a DataFlow](#create-and-save-a-dataflow)
   - [Run a DataFlow](#run-a-dataflow)
   - [DataFlowObject and DataFlowRun Modules](#dataflowobject-and-dataflowrun-modules)
   - [DataFlowObject and DataFlowRun Input](#dataflowobject-and-dataflowrun-input)
   - [DataFlowRun Result](#dataflowrun-result)
+- [Key](#key)
+  - [Retrieve a Composable Key](#retrieve-a-composable-key)
+  - [Search for a Composable Key](#search-for-a-composable-key)
+- [QueryView](#queryview)
+  - [Create and Connect to a QueryView Driver](#create-and-connect-to-a-queryview-driver)
+  - [Run a Query](#run-a-query)
 - [Additional Information](#additional-information)
 
-## Examples
+## Session
+
+[ReadTheDocs - Session](https://composapy.readthedocs.io/html/reference/composapy-session.html)
 
 ### Register a Session
 
@@ -34,6 +43,17 @@ session = Session(auth_mode=Session.AuthMode.FORM, credentials=("username", "pas
 
 session.register()  # register your session so that composapy uses this
 ```
+
+You can also call `get_session` to get the currently registered session.
+
+```python
+from composapy.session import get_session
+session = get_session()
+```
+
+## DataFlow
+
+[ReadTheDocs - DataFlow](https://composapy.readthedocs.io/html/reference/composapy-dataflow/index.html)
 
 ### Create and Save a DataFlow
 
@@ -57,7 +77,7 @@ dataflow_run = DataFlow.run(444333)  # DataFlowRun(id=444333)
 To run a DataFlow that has external input modules, use the `external_inputs` kwarg, which is a dictionary with key equal to the external modules name field and the value equal to what you want to pass in.
 
 ```python pycharm={"name": "#%%\n"}
-dataflow_run = DataFlow.run(444333, external_inputs={"a_string_external_input": "foo string"})   # DataFlowRun(id=444333)
+dataflow_run = DataFlow.run(444333, external_inputs={"a_string_external_input": "foo string"})  # DataFlowRun(id=444333)
 ```
 
 ### DataFlowObject and DataFlowRun Modules
@@ -75,7 +95,51 @@ dataflow_object.modules.filter(name="calc module name")[0].inputs.first()  # Inp
 ### DataFlowRun Result
 
 ```python pycharm={"name": "#%%\n"}
-dataflow_run.modules.get(name="string module name").result           # Result(name='foo name', type=String, value='foo value')
+dataflow_run.modules.get(name="string module name").result  # Result(name='foo name', type=String, value='foo value')
+```
+
+## Key
+
+[ReadTheDocs - Key](https://composapy.readthedocs.io/html/reference/composapy-key/index.html)
+
+### Retrieve a Composable Key
+
+```python
+from composapy.key.api import Key
+
+key_object = Key.get(123456)  # KeyObject(name='some name', type='StringConnectionSettings')
+
+# optionally, if your key has a unique name, you can retrieve with its name
+key_object = Key.get(name="a unique name")  # KeyObject(name='a unique name', type='SqlConnectionSettings')
+```
+
+### Search for a Composable Key
+
+Keys can be searched by name. It returns a list of key objects.
+
+```python
+key_objects = Key.search("same name")  # [KeyObject(name='same name', type='SqlConnectionSettings'), KeyObject(name='same name', type='StringConnectionSettings')]
+```
+
+## QueryView
+
+[ReadTheDocs - QueryView](https://composapy.readthedocs.io/html/reference/composapy-queryview/index.html)
+
+### Create and Connect to a QueryView Driver
+
+```python
+from composapy.queryview.api import QueryView
+
+driver = QueryView.driver()  # you can create a driver and then connect with a key...
+driver.connect(key_object)
+
+driver = QueryView.driver(key_object)  # ... or create a driver using the key as an argument
+```
+
+### Run a Query
+
+```python
+df = driver.run("select * from some_table")  # returns a Pandas DataFrame of your query
 ```
 
 ## Additional Information

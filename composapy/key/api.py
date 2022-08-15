@@ -1,3 +1,5 @@
+from typing import List
+
 from composapy import get_session, session_required
 from composapy.key.models import KeyObject
 
@@ -55,7 +57,7 @@ class Key:
     @session_required
     def search(
         name: str, index_start: int = 0, number_results: int = 10
-    ) -> list[KeyObject]:
+    ) -> List[KeyObject]:
         """Used to retrieve keys available to the user from the currently registered session.
         Each key result must be decoded, which is an expensive process. Limiting the number of
         results and skipping through paged results can reduce the search time. As an example, if

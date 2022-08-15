@@ -6,6 +6,7 @@ Reference
 
     composapy-dataflow/index
     composapy-key/index
+    composapy-queryview/index
     composapy-session
     composapy-utils
     composapy-contracts-table
