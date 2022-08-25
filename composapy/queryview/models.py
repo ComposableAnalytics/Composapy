@@ -108,7 +108,7 @@ class QueryViewObject:
         qv_data_result = queryview_service.RunQueryDynamic(self.contract)
 
         if qv_data_result.Error is not None:
-            raise QueryException(qv_data_result)
+            raise QueryException(qv_data_result.Error)
 
         columns_definitions = qv_data_result.ColumnDefinitions
         column_names = []
