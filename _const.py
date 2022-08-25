@@ -4,7 +4,6 @@ from dotenv import dotenv_values
 
 
 # Composapy Directory Paths
-
 COMPOSAPY_ROOT_DIR = Path(__file__).parent
 COMPOSAPY_DOCS_README_IPYNB = COMPOSAPY_ROOT_DIR.joinpath(
     "docs", "composapy-readme.ipynb"

@@ -2,28 +2,30 @@ import os
 import shutil
 import subprocess
 import sys
-from dataclasses import dataclass
 
 from termcolor import colored
-from wheel_filename import parse_wheel_filename, ParsedWheelFilename
+from wheel_filename import parse_wheel_filename
 import jupytext
 from pathlib import Path
 from tfs_utils import (
     grant_permissions,
     CopyFileToSolutionException,
     tfs_command,
-    add_to_csproj,
-    remove_from_csproj,
+    tfs_files_info,
+    TfsWheel,
+    LocalWheel,
+    WheelUpgrade,
+    TfsFile,
 )
 from _const import (
     DATALABSERVICE_STATIC_DIR,
     COMPOSAPY_ROOT_DIR,
     COMPOSAPY_DOCS_README_IPYNB,
     COMPOSAPY_SPHINX_DOCS_DIR,
-    DATALABSERVICE_WHEELS_DIR,
     COMPOSAPY_TESTS_DIR,
     DATALAB_DLL_DIR,
     COMPOSABLE_TESTDATA_COMPOSAPY_DIR,
+    DATALABSERVICE_WHEELS_DIR,
 )
 
 os.environ["DATALAB_DLL_DIR"] = str(DATALAB_DLL_DIR)
@@ -34,11 +36,9 @@ os.system("color")  # for colored text
 def sync_project():
     _write_static_artifacts()
 
-    _compile_local_docs()
-    _compile_sphinx_docs()
+    compile_docs()
 
-    _write_composapy_wheel_and_add_to_tfs()
-    _add_dependency_wheels_tfs()
+    _upgrade_composapy_wheel()
 
     _write_unittests_test_data()
     _add_test_data_tfs()
@@ -62,6 +62,11 @@ def _write_static_artifacts() -> None:
         raise
 
     print(colored("done.", "green"))
+
+
+def compile_docs():
+    _compile_local_docs()
+    _compile_sphinx_docs()
 
 
 def _compile_local_docs():
@@ -128,75 +133,6 @@ def _compile_sphinx_docs():
     print(colored("done.", "green"))
 
 
-def _write_composapy_wheel_and_add_to_tfs() -> None:
-    print("Copying Composapy wheel to static wheels dir and adding to tfs... ", end="")
-
-    try:
-        # grab .whl from most recent tox build
-        wheel = sorted(COMPOSAPY_ROOT_DIR.joinpath(".tox", "dist").glob("*.whl"))[0]
-
-        # grab all .whl from composable datalabservice static wheels directory
-        old_wheels = sorted(DATALABSERVICE_WHEELS_DIR.glob("composapy-*.whl"))
-
-        # add new composapy wheel to local save_dir
-        try:
-            shutil.copy(wheel, DATALABSERVICE_WHEELS_DIR)
-            grant_permissions(DATALABSERVICE_WHEELS_DIR)
-        except Exception:
-            raise CopyFileToSolutionException(
-                f"Failed to copy wheel from {wheel} to {DATALABSERVICE_WHEELS_DIR}."
-            )
-
-        print("Adding Composapy wheel to tfs...")
-
-        # add new composapy wheel to tfs tracking
-        tfs_command(DATALABSERVICE_WHEELS_DIR, "add", wheel.name)
-
-        # add new composapy wheel to csproj
-        add_to_csproj(wheel.name)
-
-        # return if there are no wheels to remove from tfs and the csproj
-        if len(old_wheels) == 0:
-            return
-
-        # it is easier and faster to try deleting and undoing the file in tfs than it is to check for
-        # what state the file is in and doing the appropriate action.
-        for old_wheel in old_wheels:
-            if old_wheel.name != wheel.name:
-                try:
-                    tfs_command(DATALABSERVICE_WHEELS_DIR, "undo", old_wheel.name)
-                except Exception:
-                    pass
-                try:
-                    tfs_command(DATALABSERVICE_WHEELS_DIR, "delete", old_wheel.name)
-                except Exception:
-                    pass
-                try:
-                    remove_from_csproj(old_wheel.name)
-                    os.remove(Path(old_wheel))
-                except Exception:
-                    pass  #  if tfs did not fail to remove the file, this is expected
-    except:
-        print(colored("failed.", "red"))
-        raise
-
-    print(colored("done.", "green"))
-
-
-def _add_dependency_wheels_tfs() -> None:
-    # Goes through all wheels in ComposableAnalytics.DataLabService\static\wheels save_dir and
-    # attempts to add them to tfs tracking source. This will pick up any manually added wheels
-    # and fail silently with a return code of 1 if they already exist.
-    print("Adding dependency wheels to tfs... ", end="")
-
-    try:
-        tfs_command(DATALABSERVICE_STATIC_DIR, "add", "*", "/recursive")
-    except:
-        print(colored("failed.", "red"))
-
-    print(colored("done.", "green"))
-
-
 def _write_unittests_test_data() -> None:
     print("Writing unit test data... ", end="")
 
@@ -217,6 +153,8 @@ def _write_unittests_test_data() -> None:
 
 
 def _add_test_data_tfs() -> None:
+    """TODO: In the future, if ever refactoring something around tests, probably refactor this
+    as well."""
     print("Adding unit test data to tfs... ", end="")
 
     try:
@@ -243,69 +181,49 @@ def _add_test_data_tfs() -> None:
     print(colored("done.", "green"))
 
 
-@dataclass
-class WheelUpgrade:
-    project_name: str
-    old_version: str
-    new_version: str
-    old_wheel: ParsedWheelFilename
-    new_wheel: ParsedWheelFilename
-
-    def make_upgrade(self):
-        try:
-            print(
-                f"Upgrading {self.project_name} from {self.old_version} to "
-                f"{self.new_version}... ",
-                end="",
-            )
-
-            try:
-                tfs_command(DATALABSERVICE_WHEELS_DIR, "delete", str(self.old_wheel))
-                remove_from_csproj(str(self.old_wheel))
-                DATALABSERVICE_WHEELS_DIR.joinpath(str(self.old_wheel)).unlink()
-
-                tfs_command(DATALABSERVICE_WHEELS_DIR, "add", str(self.new_wheel))
-            except:
-                tfs_command(DATALABSERVICE_WHEELS_DIR, "undo", str(self.old_wheel))
-                raise
-
-            print(colored("done."), "green")
-        except:
-            print(colored("failed.", "red"))
-
-
 def upgrade_wheels(new_wheels_dir: Path):
-    new_wheel_names = [wheel.name for wheel in new_wheels_dir.glob("*.whl")]
-    current_wheels_dir = DATALABSERVICE_WHEELS_DIR
-    current_wheel_names = [wheel.name for wheel in current_wheels_dir.glob("*.whl")]
+    """Loads the wheels tracked by tfs in the datalabservice static wheels directory in addition
+    to the wheels at the specified new_wheels_dir location and attempts to match any previous
+    wheel packages before upgrading."""
 
-    current_wheels = [parse_wheel_filename(wheel) for wheel in current_wheel_names]
-    new_wheels = [parse_wheel_filename(wheel) for wheel in new_wheel_names]
-
-    current_wheels_dict = {wheel.project: wheel for wheel in current_wheels}
-    new_wheels_dict = {wheel.project: wheel for wheel in new_wheels}
-
-    upgrades = {
-        key: WheelUpgrade(
-            project_name=key,
-            old_version=val.version,
-            new_version=new_wheels_dict[key].version,
-            old_wheel=val,
-            new_wheel=new_wheels_dict[key],
+    files_info = tfs_files_info()  # lazily loaded
+    tfs_wheels = {}
+    for wheel in files_info:
+        tfs_wheel = TfsWheel(
+            tfs_file=TfsFile(**wheel.__dict__),
+            wheel_info=parse_wheel_filename(wheel.local_path),
         )
-        for key, val in current_wheels_dict.items()
-        if new_wheels_dict.get(key) and new_wheels_dict[key].version != val.version
-    }
+        tfs_wheels[tfs_wheel.wheel_info.project] = tfs_wheel
 
-    for key, val in upgrades.items():
-        val.make_upgrade()
+    local_wheels = {}
+    for wheel in DATALABSERVICE_WHEELS_DIR.glob("*.whl"):
+        local_wheel = LocalWheel(path=wheel)
+        local_wheels[local_wheel.wheel_info.project] = local_wheel
+
+    new_wheels = {}
+    for wheel in new_wheels_dir.glob("*.whl"):
+        new_wheel = LocalWheel(path=wheel)
+        new_wheels[new_wheel.wheel_info.project] = new_wheel
+
+    for key, val in new_wheels.items():
+        WheelUpgrade(
+            tfs_wheel=tfs_wheels.get(key),
+            local_wheel=local_wheels.get(key),
+            new_wheel=val,
+        ).make_upgrade()
+
+
+def _upgrade_composapy_wheel() -> None:
+    wheel_dir = COMPOSAPY_ROOT_DIR.joinpath(".tox", "dist")
+    upgrade_wheels(wheel_dir)
 
 
 if __name__ == "__main__":
-    OPTIONS = ["-sync-project", "-docs"]
+    OPTIONS = ["-sync-project", "-docs", "-upgrade-wheels"]
 
     if len(sys.argv) == 1:
         raise Exception("Must include command arg (build, docs, etc.).")
+
     arg = sys.argv[1]
 
     if "options" in arg:
@@ -315,16 +233,19 @@ if __name__ == "__main__":
         sync_project()
 
     elif "docs" in arg:
-        _compile_local_docs()
-        _compile_sphinx_docs()
+        compile_docs()
 
+    # tox.ini manages the initial pip wheels download, which then passes
+    # the path of the downloaded wheels to option.
     elif "upgrade-wheels" in arg:
         if not len(sys.argv) == 3:
             raise Exception(
                 "Must include path to directory where wheels are downloaded."
             )
+
         temp_wheels_dir = Path(sys.argv[2])
         temp_wheels_dir.mkdir(parents=True, exist_ok=True)
+
         upgrade_wheels(temp_wheels_dir)
 
     else:

@@ -137,9 +137,7 @@ def windows_auth(request):
 @pytest.fixture
 def session(request):
     if request.param == "Windows":
-        # enable_windows_auth()
         yield create_windows_auth_session()
-        # disable_windows_auth()
     elif request.param == "Form":
         yield create_form_auth_session()
     elif request.param == "Token":
@@ -150,7 +148,6 @@ def session(request):
 def dataflow_object(request):
     if request.param[0] == "Windows":
         try:
-            # enable_windows_auth()
             create_windows_auth_session()
 
             yield DataFlow.create(
@@ -159,7 +156,6 @@ def dataflow_object(request):
                 )
             )
         finally:
-            # disable_windows_auth()
             pass
 
     elif request.param[0] == "Form":

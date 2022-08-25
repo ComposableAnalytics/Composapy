@@ -10,7 +10,9 @@
       - [Black](#black)
       - [Docs](#docs)
       - [Test](#test)
-      - [Build](#build)
+      - [Sync Project](#sync-project)
+      - [Jupyter Lab Upgrade Wheels](#jupyter-lab-upgrade-wheels)
+      - [Tox Usage Examples](#tox-usage-examples)
   - [IDE](#ide)
     - [VSCode](#vscode)
     - [PyCharm](#pycharm)
@@ -36,7 +38,7 @@ Windows auth is required to run the test suite for Composapy.
 
 ### Download Python
 
-Click [here](https://www.python.org/downloads/release/python-3910/) for the most recent version of 3.9 at time of writing documentation. Add Python to your system path. _Python 3.9 currently the only officially supported version for development, although Python 3.8 no longer has any restrictions on use, as DataLabs is now managed with virtualenv._
+Click [here](https://www.python.org/downloads/release/python-3910/) for the most recent version of 3.9 at time of writing documentation. Add Python to your system path. _Although 3.9 is specifically linked above, you will need to download Python 3.8, 3.9, and 3.10 to run the full suite of tests._
 
 Navigate in command prompt or powershell to the Composapy project directory root folder and verify your python version.
 
@@ -56,6 +58,8 @@ C:\..\Composapy\Composapy> .\dev\Scripts\activate
 
 After activating, you should see the `(dev)` tag prefixing your console. When you want to deactivate
 your virtual environment, you can simply type `deactivate`.
+
+**Important: While the dev environment is useful for development and testing on the fly, make sure to deactivate it before running any tox commands. Failure to do so may cause errors with the initial virtualenv that tox needs to create.**
 
 ### Pip install
 
@@ -94,7 +98,7 @@ TF_EXE_PATH="C:/Path/To/tf.exe"
 ### Tox
 
 ```
-(dev) C:\..\Composapy\Composapy> tox
+C:\..\Composapy\Composapy> tox
 ```
 
 Composapy uses [tox](https://tox.wiki/en/latest/) for the management of its 
@@ -113,7 +117,7 @@ Each of the tox commands, defined by the `envlist` key (under `[tox]` header), a
 #### Black
 
 ```
-(dev) C:\..\Composapy\Composapy> tox -e black
+C:\..\Composapy\Composapy> tox -e black
 ```
 
 [Black](https://github.com/psf/black) is an uncompromising linting/code formatting library for 
@@ -123,7 +127,7 @@ python.
 #### Docs
 
 ```
-(dev) C:\..\Composapy\Composapy> tox -e docs
+C:\..\Composapy\Composapy> tox -e docs
 ```
 
 The docs command uses [jupytext](https://github.com/mwouts/jupytext) and 
@@ -134,7 +138,7 @@ composapy-readme.ipynb and python docstrings.
 #### Test
 
 ```
-(dev) C:\..\Composapy\Composapy> tox -e py38-test,py39-test,py310-test
+C:\..\Composapy\Composapy> tox -e py38-test,py39-test,py310-test
 ```
 
 The test commands (can be run separately or together by using commas between them) run all tests 
@@ -150,14 +154,29 @@ Using `--` allows you to pass arguments to the command (if the command accepts `
 **Note**: _Make sure all tests are passing before doing any development on Composapy._
 
 
-#### Build
+#### Sync Project
 
 ```
-(dev) C:\..\Composapy\Composapy> tox -e build
+C:\..\Composapy\Composapy> tox -e sync-project
 ```
 
 Deploys required resources from the Composapy project to the csharp project, including any 
 wheels, tests, and documentation.
+
+
+#### Jupyter Lab Upgrade Wheels
+
+```
+C:\..\Composapy\Composapy> tox -e upgrade-wheels -- jupyterlab==3.4.5
+```
+
+ This command downloads the required pinned versions in tox.ini with whatever package 
+ is specified inside of the command. It then creates upgrade plans for each wheel in the directory, 
+ matching any packages that already currently exist and adding any others that don't. Running this 
+ command should be enough to fully update your project, tfs, and the requirements.txt with all 
+ needed changes.
+
+ Note: This upgrade command is not run with the default `tox` run command.
 
 
 #### Tox Usage Examples
@@ -166,7 +185,7 @@ wheels, tests, and documentation.
 `pytest tests/test_api.py` inside of a python3.9 environment. Using `--` allows you to pass 
 arguments to the command (if the command accepts `posargs`).
 
-```tox -e build```
+```tox -e sync-project```
 
 
 ## IDE 
