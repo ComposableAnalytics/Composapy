@@ -11,6 +11,7 @@
       - [Docs](#docs)
       - [Test](#test)
       - [Sync Project](#sync-project)
+      - [Sync Composapy](#sync-composapy)
       - [Jupyter Lab Upgrade Wheels](#jupyter-lab-upgrade-wheels)
       - [Tox Usage Examples](#tox-usage-examples)
   - [IDE](#ide)
@@ -113,6 +114,10 @@ environments.
 
 Each of the tox commands, defined by the `envlist` key (under `[tox]` header), are listed below.
 
+Any commands involving the upgrading/building/deployment of wheels also install those packages
+into your local Composable python environment. This removes the need to restart the DataLabService
+to update any python packages that were deployed.
+
 
 #### Black
 
@@ -163,6 +168,13 @@ C:\..\Composapy\Composapy> tox -e sync-project
 Deploys required resources from the Composapy project to the csharp project, including any 
 wheels, tests, and documentation.
 
+#### Sync Composapy
+
+```
+C:\..\Composapy\Composapy> tox -e sync-composapy
+```
+
+Deploys wheel from the Composapy project, but does not deploy the required resources for tests and documentation.
 
 #### Jupyter Lab Upgrade Wheels
 

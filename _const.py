@@ -29,13 +29,16 @@ DATALABSERVICE_CSPROJ = DATALABSERVICE_DIR.joinpath(
     "CompAnalytics.DataLabService.csproj"
 )
 
-
 ## DataLab Directory Paths
 DATALAB_DLL_DIR = Path(__file__).parent.parent.parent.joinpath(
     "Product", "CompAnalytics.DataLabService", "bin", "Debug"
 )
 
-
 # Other
 TF_EXE_PATH = Path(dotenv_values(".local.env").get("TF_EXE_PATH"))
 XML_NAMESPACE = "http://schemas.microsoft.com/developer/msbuild/2003"  # for xml nodes
+
+# Dev
+_DEV_COMPOSABLE_PYTHON_EXE = Path(
+    "C:/dataLabsArtifacts/python/python38/Scripts/python.exe"
+)

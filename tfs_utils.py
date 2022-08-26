@@ -18,6 +18,8 @@ from _const import (
     XML_NAMESPACE,
     DATALABSERVICE_STATIC_DIR,
     DATALABSERVICE_WHEELS_DIR,
+    _DEV_COMPOSABLE_PYTHON_EXE,
+    COMPOSAPY_ROOT_DIR,
 )
 
 et.register_namespace("", XML_NAMESPACE)
@@ -189,6 +191,7 @@ class LocalWheel:
         self._add_to_tfs()
         self._add_to_csproj()
         self._update_requirements_dot_txt()
+        self._inline_update_python_venv()
 
     def _add_to_tfs(self) -> None:
         tfs_command(DATALABSERVICE_WHEELS_DIR, "add", str(self.wheel_info))
@@ -228,7 +231,7 @@ class LocalWheel:
         shutil.copy(self.path, DATALABSERVICE_WHEELS_DIR)
         grant_permissions(DATALABSERVICE_WHEELS_DIR)
 
-    def _update_requirements_dot_txt(self):
+    def _update_requirements_dot_txt(self) -> None:
         req_dot_txt = DATALABSERVICE_STATIC_DIR.joinpath("requirements.txt")
 
         # package names use dash instead of underscore for requirements.txt
@@ -251,14 +254,33 @@ class LocalWheel:
         with open(req_dot_txt, "w") as _file:
             _file.writelines(lines)
 
+    def _inline_update_python_venv(self) -> None:
+        composapy_wheel_dist_dir = COMPOSAPY_ROOT_DIR.joinpath(".tox", "dist")
+        run = subprocess.run(
+            [
+                f"{_DEV_COMPOSABLE_PYTHON_EXE}",
+                "-m",
+                "pip",
+                "install",
+                f"{self.wheel_info.project}=={self.wheel_info.version}",
+                "--no-index",
+                f"--find-links",
+                f"{composapy_wheel_dist_dir.as_posix()}",
+            ]
+        )
+        if run.returncode > 1:
+            print(
+                f"Failed to update {self.wheel_info.project} package inline. You will need to "
+                f"restart the datalabservice to have this change deployed to your python "
+                f"environment."
+            )
+
 
 @dataclass
 class WheelUpgrade:
     tfs_wheel: TfsWheel
     local_wheel: LocalWheel
     new_wheel: LocalWheel
-
-    pinned_versions = ["pyzmq", "nbclient"]
 
     def make_upgrade(self):
         try:
@@ -279,20 +301,16 @@ class WheelUpgrade:
             if self.tfs_wheel.wheel_info.version == self.new_wheel.wheel_info.version:
                 return
 
-            if self.tfs_wheel.wheel_info.project in self.pinned_versions:
-                return
-
             # only upgrade if new wheel is a different version
-            else:
-                print(
-                    f"Upgrading {self.tfs_wheel.wheel_info.project} from "
-                    f"{self.tfs_wheel.wheel_info.version} to "
-                    f"{self.new_wheel.wheel_info.version}... ",
-                    end="",
-                )
-                self.tfs_wheel.remove()
-                self.new_wheel.add()
-                print(colored("done.", "green"))
+            print(
+                f"Upgrading {self.tfs_wheel.wheel_info.project} from "
+                f"{self.tfs_wheel.wheel_info.version} to "
+                f"{self.new_wheel.wheel_info.version}... ",
+                end="",
+            )
+            self.tfs_wheel.remove()
+            self.new_wheel.add()
+            print(colored("done.", "green"))
 
         except:
             print(colored("failed.", "red"))

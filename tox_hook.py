@@ -38,7 +38,7 @@ def sync_project():
 
     compile_docs()
 
-    _upgrade_composapy_wheel()
+    upgrade_composapy_wheel()
 
     _write_unittests_test_data()
     _add_test_data_tfs()
@@ -213,13 +213,13 @@ def upgrade_wheels(new_wheels_dir: Path):
         ).make_upgrade()
 
 
-def _upgrade_composapy_wheel() -> None:
+def upgrade_composapy_wheel() -> None:
     wheel_dir = COMPOSAPY_ROOT_DIR.joinpath(".tox", "dist")
     upgrade_wheels(wheel_dir)
 
 
 if __name__ == "__main__":
-    OPTIONS = ["-sync-project", "-docs", "-upgrade-wheels"]
+    OPTIONS = ["-sync-project", "-sync-composapy", "-docs", "-upgrade-wheels"]
 
     if len(sys.argv) == 1:
         raise Exception("Must include command arg (build, docs, etc.).")
@@ -231,6 +231,9 @@ if __name__ == "__main__":
 
     elif "sync-project" in arg:
         sync_project()
+
+    elif "sync-composapy" in arg:
+        upgrade_composapy_wheel()
 
     elif "docs" in arg:
         compile_docs()
