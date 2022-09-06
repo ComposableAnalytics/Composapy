@@ -49,6 +49,7 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Environment Variables</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#datalab-dll-dir">DATALAB_DLL_DIR</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#application-uri">APPLICATION_URI</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#composapy-ini-dir">COMPOSAPY_INI_DIR</a></li>
 </ul>
 </li>
 </ul>
@@ -85,7 +86,7 @@
 <p>If running Composapy in a DataLab, your environment variables will already be set up
 on your running instance. If running outside of a DataLab instance, you will need to
 set “DATALAB_DLL_DIR”. “APPLICATION_URI” can also optionally be set, however it is only
-used to create a Session object and can be passed through its “uri” argument.</p>
+used to create a Session object and can be passed in as the “uri” argument.</p>
 <section id="datalab-dll-dir">
 <h2>DATALAB_DLL_DIR<a class="headerlink" href="#datalab-dll-dir" title="Permalink to this heading"></a></h2>
 <p>The value of this should be a path to the required Composable dll’s needed to run
@@ -95,6 +96,11 @@ package to bind to the Composable project dll’s.</p>
 <section id="application-uri">
 <h2>APPLICATION_URI<a class="headerlink" href="#application-uri" title="Permalink to this heading"></a></h2>
 <p>See <a class="reference internal" href="composapy-session.html"><span class="doc">Session</span></a>.</p>
+</section>
+<section id="composapy-ini-dir">
+<h2>COMPOSAPY_INI_DIR<a class="headerlink" href="#composapy-ini-dir" title="Permalink to this heading"></a></h2>
+<p>This can be set to change the read/write location of the “composapy.ini” configuration file. If
+not specified, defaults to current working directory.</p>
 </section>
 </section>
 

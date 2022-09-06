@@ -113,6 +113,15 @@ The key attributes are dynamically constructed based on key type retrieved.</p>
 <span class="c1">#  &#39;UserName&#39;: &#39;Us3rNam3&#39;}</span>
 </pre></div>
 </div>
+<dl class="py method">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObject.clear_registration">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clear_registration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.key.models.KeyObject.clear_registration" title="Permalink to this definition"></a></dt>
+<dd><p>Used to unregister the currently registered KeyObject.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">KeyObject</span><span class="o">.</span><span class="n">clear_registration</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObject.id">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.id" title="Permalink to this definition"></a></dt>
@@ -125,12 +134,54 @@ The key attributes are dynamically constructed based on key type retrieved.</p>
 <dd><p>Returns the contract member, Name.</p>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObject.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.key.models.KeyObject.register" title="Permalink to this definition"></a></dt>
+<dd><p>Used to register a class instance of KeyObject that is used implicitly across the
+kernel. Only one KeyObject can registered at a time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">key_object</span> <span class="o">=</span> <span class="n">KeyObject</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
+<span class="n">key_object</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>save</strong> – If true, saves configuration in local composapy.ini file. Default is false.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObject.type">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.type" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the contract member, DisplayType.</p>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObjectException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObjectException</span></span><a class="headerlink" href="#composapy.key.models.KeyObjectException" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObjectRegistrationException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObjectRegistrationException</span></span><a class="headerlink" href="#composapy.key.models.KeyObjectRegistrationException" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="composapy.key.models.get_key_object">
+<span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">get_key_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raise_exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#composapy.key.models.KeyObject" title="composapy.key.models.KeyObject"><span class="pre">KeyObject</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#composapy.key.models.get_key_object" title="Permalink to this definition"></a></dt>
+<dd><p>Used to get the current registered KeyObject.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.key.api</span> <span class="kn">import</span> <span class="n">get_key_object</span>
+<span class="n">KeyObject</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+<span class="n">key_object</span> <span class="o">=</span> <span class="n">get_key_object</span><span class="p">()</span>  <span class="c1"># can use this anywhere on running kernel</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the currently registered key object</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>

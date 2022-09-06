@@ -1,14 +1,20 @@
 from __future__ import annotations
+from typing import TYPE_CHECKING
 import pytest
 import pandas as pd
 import os
 from pathlib import Path
 
-from composapy.dataflow.models import DataFlowObject
-from composapy.session import Session
+from composapy.auth import AuthMode
 from composapy.dataflow.api import DataFlow
+from composapy.utils import get_config_path
+from composapy.config import read_config_session
 
-from CompAnalytics import Contracts
+from CompAnalytics.Contracts import FileReference
+
+if TYPE_CHECKING:
+    from composapy.dataflow.models import DataFlowObject
+    from composapy.session import Session
 
 
 @pytest.mark.parametrize(
@@ -111,7 +117,7 @@ def test_download_file_result(dataflow_object: DataFlowObject, clean_file_path: 
     dataflow_run = dataflow_object.run()
     file_ref = dataflow_run.modules.first().result.value
 
-    assert isinstance(file_ref, Contracts.FileReference)
+    assert isinstance(file_ref, FileReference)
     assert file_ref.LocalFile is None
 
     new_file_ref = file_ref.to_file(
@@ -130,3 +136,12 @@ def test_session(session: Session):
         )
     )  # dataflow.create() will throw an error if session authentication failed
     assert True
+
+
+@pytest.mark.parametrize("session", ["Windows"], indirect=True)
+def test_register_session_save_true_windows(session: Session):
+    session.register(save=True)
+    config_session = read_config_session()
+
+    assert config_session.auth_mode == AuthMode.WINDOWS
+    assert config_session.uri == session.uri

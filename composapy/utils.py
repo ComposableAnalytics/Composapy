@@ -1,4 +1,5 @@
 from __future__ import annotations
+import os
 from pathlib import Path
 
 from System import Uri
@@ -43,3 +44,12 @@ def file_ref(path: str | Path) -> FileReference:
     uri = Uri(str(Path(path).absolute()))
     file_ref = FileReference.CreateWithAbsoluteUri(uri.LocalPath, uri)
     return file_ref
+
+
+def get_config_path() -> Path:
+    """If environment variable COMPOSAPY_INI_DIR exists, use that path. Otherwise,
+    assume composapy.ini resides in the current working directory."""
+    composapy_ini_dir = os.getenv("COMPOSAPY_INI_DIR", None)
+    if composapy_ini_dir:
+        return Path(composapy_ini_dir, "composapy.ini")
+    return Path("composapy.ini")

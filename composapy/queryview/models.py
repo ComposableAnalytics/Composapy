@@ -1,7 +1,9 @@
+from typing import Dict, Any
 import pandas as pd
 
-from composapy import get_session, session_required
-from composapy.key.models import KeyObject
+from composapy.decorators import session_required
+from composapy.session import get_session
+from composapy.key.models import KeyObject, get_key_object
 from composapy.patch.table import MAP_CS_TYPES_TO_PANDAS_TYPES
 
 from CompAnalytics import Contracts
@@ -31,7 +33,9 @@ class QueryViewObject:
 
     def __init__(self, contract: Contracts.QueryView):
         self.contract = contract
-        self._key = None
+        self._key = get_key_object(raise_exception=False)
+        if self._key:
+            self.contract.DbConnectionId = self._key.id
 
         properties = [
             item
@@ -51,7 +55,7 @@ class QueryViewObject:
         return self._key
 
     @property
-    def connection_info(self) -> str:
+    def connection_info(self) -> Dict[str, Any]:
         """Returns KeyObject attribute information."""
         return self._key.__dict__
 
@@ -62,8 +66,8 @@ class QueryViewObject:
 
     def __repr__(self):
         return (
-            f"QueryViewObject(name={self.contract.Name if self.contract.Name else 'None'}, "
-            f"key={self._key.name if self._key else 'None'})"
+            f"QueryViewObject(name='{self.contract.Name if self.contract.Name else 'None'}', "
+            f"key='{self._key.name if self._key else 'None'}')"
         )
 
     def connect(self, key: KeyObject) -> None:
@@ -121,9 +125,7 @@ class QueryViewObject:
                     column_definition.Type
                 ]
 
-        df = pd.DataFrame(qv_data_result.Data)
-        df.columns = column_names
-
+        df = pd.DataFrame(qv_data_result.Data, columns=column_names)
         return df.astype(column_dtypes)
 
 

@@ -20,12 +20,15 @@ class QueryView:
 
             key = Key.get(123456)  # KeyObject(id=123456)
 
-            # create driver and connect...
+            # Create driver and connect...
             driver = QueryView.driver()  # QueryViewObject(name=some_name, key=None)
             driver.connect(key)
 
-            # ...or use the key as method argument to automatically connect
+            # ... or use the key as method argument to automatically connect.
             driver = QueryView.driver(key)  # QueryViewObject(name=some_name, key=some_key)
+
+            # If you already have a KeyObject registered, there is no need to pass in the key
+            # or call connect with it; the driver will be created with a registered key by default.
 
         :param key: KeyObject retrieved with the Composable Key api
         """

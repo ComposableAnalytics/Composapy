@@ -1,7 +1,10 @@
 from __future__ import annotations
-
+from typing import Optional
 import os
-from enum import Enum
+
+from composapy.config import write_config_session
+from composapy.auth import AuthMode
+from composapy.bindings import configure_binding
 
 from System import Uri, Net
 from CompAnalytics import IServices
@@ -14,18 +17,8 @@ class Session:
     .. code-block:: python
 
             from composapy.session import Session
+            from composapy.auth import AuthMode
     """
-
-    class AuthMode(Enum):
-        """
-        - TOKEN
-        - FORM
-        - WINDOWS
-        """
-
-        TOKEN = "Token"
-        FORM = "Form"
-        WINDOWS = "Windows"
 
     @property
     def property_service(self) -> IServices.IPropertyService:
@@ -79,11 +72,12 @@ class Session:
         .. highlight:: python
         .. code-block:: python
 
-            session = Session(auth_mode=Session.AuthMode.WINDOWS)                                                                           # Windows Auth
-            session = Session(auth_mode=Session.AuthMode.TOKEN, credentials="<your-api-token-here>", uri="http://localhost/CompAnalytics/") # Token
-            session = Session(auth_mode=Session.AuthMode.FORM, credentials=("username", "password"))                                        # Form
+            session = Session(auth_mode=AuthMode.WINDOWS)                                                                           # Windows Auth
+            session = Session(auth_mode=AuthMode.TOKEN, credentials="<your-api-token-here>", uri="http://localhost/CompAnalytics/") # Token
+            session = Session(auth_mode=AuthMode.FORM, credentials=("username", "password"))                                        # Form
 
             session.register()  # register your session so that composapy uses this
+            session.register(save=True)  # optionally, save for autoload with configuration file "composapy.ini"
 
         :param uri: The Composable application uri used to access your resources. If using
             Composapy within DataLabs, uses the environment variable "APPLICATION_URI" that it sets
@@ -103,7 +97,7 @@ class Session:
                 "initialization kwargs."
             )
 
-        if auth_mode == Session.AuthMode.WINDOWS and credentials:
+        if auth_mode == AuthMode.WINDOWS and credentials:
             raise InvalidWindowsConfigError(
                 "AuthMode.WINDOWS authorization does not "
                 "use any credentials kwarg input value, "
@@ -113,14 +107,14 @@ class Session:
                 "authentication scheme."
             )
 
-        if auth_mode == Session.AuthMode.TOKEN and not isinstance(credentials, str):
+        if auth_mode == AuthMode.TOKEN and not isinstance(credentials, str):
             raise InvalidTokenConfigError(
                 "For AuthMode.TOKEN authorization, "
                 "you must pass a string (token) value to the"
                 "credentials initialization kwargs."
             )
 
-        if auth_mode == Session.AuthMode.FORM and (
+        if auth_mode == AuthMode.FORM and (
             not isinstance(credentials, tuple) or len(credentials) != 2
         ):
             raise InvalidFormConfigError(
@@ -131,41 +125,29 @@ class Session:
 
         uri = uri if uri is not None else os.getenv("APPLICATION_URI")
         self._auth_mode = auth_mode
+        self._credentials = credentials
 
         self.connection_settings = IServices.Deploy.ConnectionSettings()
         self.connection_settings.Uri = Uri(uri)
 
-        if auth_mode == Session.AuthMode.TOKEN:
+        if auth_mode == AuthMode.TOKEN:
             self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Api
             self.connection_settings.ApiKey = credentials
 
-        elif auth_mode == Session.AuthMode.FORM:
+        elif auth_mode == AuthMode.FORM:
             self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Form
             self.connection_settings.FormCredential = Net.NetworkCredential(
                 credentials[0], credentials[1]
             )
 
-        elif auth_mode == Session.AuthMode.WINDOWS:
+        elif auth_mode == AuthMode.WINDOWS:
             self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Windows
 
         self.ResourceManager = IServices.Deploy.ResourceManager(
             self.connection_settings
         )
 
-        self.services = {}
-        for method in self.ResourceManager.AvailableServices():
-            method_name = self._get_method_name(method)
-            try:
-                self.services[method_name] = self.ResourceManager.CreateAuthChannel[
-                    method
-                ](method_name)
-
-            except:
-                self.services[
-                    method_name
-                ] = self.ResourceManager.CreateAuthChannelNoWebScripting[method](
-                    method_name
-                )
+        self._bind_services()
 
     @classmethod
     def clear_registration(cls) -> None:
@@ -179,25 +161,49 @@ class Session:
         singleton = _SessionSingleton()
         singleton.session = None
 
-    def register(self) -> None:
+    def register(self, save=False) -> None:
         """Used to register a class instance of session that is used implicitly across the
         kernel. Only one session can registered at a time.
 
         .. highlight:: python
         .. code-block:: python
 
-            session = Session(auth_mode=Session.AuthMode.WINDOWS)
-            session.register()
+            session = Session(auth_mode=AuthMode.WINDOWS)
+            session.register(save=True)
+
+        :param save: If true, saves configuration in local composapy.ini file. Default is false.
         """
         singleton = _SessionSingleton()
         singleton.session = self
 
+        if save:
+            write_config_session(self)
+
+    def _bind_services(self) -> None:
+        self.services = {}
+        for service in self.ResourceManager.AvailableServices():
+            service_name = self._parse_service_name(service)
+            uri = self.ResourceManager.CreateServiceEndpointUri(service_name)
+
+            binding = configure_binding(
+                service_name, self.ResourceManager.CreateAuthBinding(uri)
+            )
+
+            try:  # enable web scripting = True
+                self.services[service_name] = self.ResourceManager.CreateAuthChannel[
+                    service
+                ](uri, binding, True)
+            except:  # enable web scripting = False
+                self.services[service_name] = self.ResourceManager.CreateAuthChannel[
+                    service
+                ](uri, binding, False)
+
     @staticmethod
-    def _get_method_name(method):
+    def _parse_service_name(method):
         return str(method).split(".")[-1][1:]
 
 
-def get_session() -> Session:
+def get_session(raise_exception=True) -> Optional[Session]:
     """Used to get the current registered Session object.
 
     .. highlight:: python
@@ -210,7 +216,7 @@ def get_session() -> Session:
     :return: the currently registered session
     """
     singleton = _SessionSingleton()
-    if singleton.session is None:
+    if singleton.session is None and raise_exception:
         raise SessionRegistrationException("No session currently registered.")
     return singleton.session
 

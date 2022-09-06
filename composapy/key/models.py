@@ -1,6 +1,11 @@
+from __future__ import annotations
+from typing import TYPE_CHECKING, Optional
 import json
 
-import CompAnalytics.Contracts
+from composapy import config
+
+if TYPE_CHECKING:
+    from CompAnalytics import Contracts
 
 
 class KeyObject:
@@ -35,7 +40,7 @@ class KeyObject:
 
     """
 
-    contract: CompAnalytics.Contracts.Property
+    contract: Contracts.Property
 
     @property
     def name(self) -> str:
@@ -61,3 +66,70 @@ class KeyObject:
 
     def __repr__(self):
         return f"KeyObject(name='{self.contract.Name}', type='{self.contract.DisplayType}')"
+
+    @classmethod
+    def clear_registration(cls) -> None:
+        """Used to unregister the currently registered KeyObject.
+
+        .. highlight:: python
+        .. code-block:: python
+
+            KeyObject.clear_registration()
+        """
+        singleton = _KeyObjectSingleton()
+        singleton.key_object = None
+
+    def register(self, save=False) -> None:
+        """Used to register a class instance of KeyObject that is used implicitly across the
+        kernel. Only one KeyObject can registered at a time.
+
+        .. highlight:: python
+        .. code-block:: python
+
+            key_object = KeyObject(123456)
+            key_object.register(save=True)
+
+        :param save: If true, saves configuration in local composapy.ini file. Default is false.
+        """
+        singleton = _KeyObjectSingleton()
+        singleton.key_object = self
+
+        if save:
+            config.write_config_key(self)
+
+
+def get_key_object(raise_exception=True) -> Optional[KeyObject]:
+    """Used to get the current registered KeyObject.
+
+    .. highlight:: python
+    .. code-block:: python
+
+        from composapy.key.api import get_key_object
+        KeyObject(123456).register()
+        key_object = get_key_object()  # can use this anywhere on running kernel
+
+    :return: the currently registered key object
+    """
+    singleton = _KeyObjectSingleton()
+    if singleton.key_object is None:
+        if raise_exception:
+            raise KeyObjectRegistrationException("No key object currently registered.")
+        return None
+    return singleton.key_object
+
+
+class _KeyObjectSingleton:
+    key_object = None
+
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super().__new__(cls)
+        return cls.instance
+
+
+class KeyObjectException(Exception):
+    pass
+
+
+class KeyObjectRegistrationException(KeyObjectException):
+    pass

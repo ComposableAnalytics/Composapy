@@ -16,11 +16,13 @@ Composapy.
   - [DataFlowObject and DataFlowRun Input](#dataflowobject-and-dataflowrun-input)
   - [DataFlowRun Result](#dataflowrun-result)
 - [Key](#key)
-  - [Retrieve a Composable Key](#retrieve-a-composable-key)
-  - [Search for a Composable Key](#search-for-a-composable-key)
+  - [Retrieve Key](#retrieve-key)
+  - [Register Key](#register-key)
+  - [Search for Key](#search-for-key)
 - [QueryView](#queryview)
   - [Create and Connect to a QueryView Driver](#create-and-connect-to-a-queryview-driver)
   - [Run a Query](#run-a-query)
+  - [SQL Magic Commands](#sql-magic-commands)
 - [Additional Information](#additional-information)
 
 ## Session
@@ -35,19 +37,25 @@ key on the DataLab edit screen), [`string`] API Token (can be generated on the c
 
 ```python pycharm={"name": "#%%\n"}
 from composapy.session import Session
+from composapy.auth import AuthMode
 
-# use one of the following three methods of authentication
-session = Session(auth_mode=Session.AuthMode.WINDOWS)                                                                           # Windows Auth
-session = Session(auth_mode=Session.AuthMode.TOKEN, credentials="<your-api-token-here>", uri="http://localhost/CompAnalytics/") # Token
-session = Session(auth_mode=Session.AuthMode.FORM, credentials=("username", "password"))                                        # Form
+session = Session(auth_mode=AuthMode.WINDOWS)
+session = Session(auth_mode=AuthMode.TOKEN, credentials="<your-api-token-here>", uri="http://localhost/CompAnalytics/")
+session = Session(auth_mode=AuthMode.FORM, credentials=("username", "password"))
+```
 
-session.register()  # register your session so that composapy uses this
+After creating a session, register it (future operations use this session by _default_). Optionally, enable the `save` flag to write to a local config file for automatical loading/registration on next Composapy import.
+
+```python
+session.register()
+session.register(save=True)
 ```
 
 You can also call `get_session` to get the currently registered session.
 
 ```python
 from composapy.session import get_session
+
 session = get_session()
 ```
 
@@ -102,18 +110,41 @@ dataflow_run.modules.get(name="string module name").result  # Result(name='foo n
 
 [ReadTheDocs - Key](https://composapy.readthedocs.io/html/reference/composapy-key/index.html)
 
-### Retrieve a Composable Key
+### Retrieve Key
+
+
+A Composapy Key can be retrieved using the python Key API.
 
 ```python
 from composapy.key.api import Key
 
 key_object = Key.get(123456)  # KeyObject(name='some name', type='StringConnectionSettings')
+```
 
-# optionally, if your key has a unique name, you can retrieve with its name
+Optionally, if your key name is unique, you can retrieve it by name.
+
+```python
 key_object = Key.get(name="a unique name")  # KeyObject(name='a unique name', type='SqlConnectionSettings')
 ```
 
-### Search for a Composable Key
+### Register Key
+
+
+Similar to Session, KeyObjects can be registered with the `save=True` flag. This will save the key id in the working directory's "composapy.ini" file, which will then be loaded when the Composapy package is imported.
+
+```python
+key_object.register(save=True)
+```
+
+You can retrieve the currently registered key_object with `get_key_object`.
+
+```python
+from composapy.key.models import get_key_object
+
+get_key_object()  # KeyObject(name='a unique name', type='SqlConnectionSettings')
+```
+
+### Search for Key
 
 Keys can be searched by name. It returns a list of key objects.
 
@@ -136,10 +167,36 @@ driver.connect(key_object)
 driver = QueryView.driver(key_object)  # ... or create a driver using the key as an argument
 ```
 
+If there is a currently registered key, there is no need to pass the key to the driver object; the driver will be automatically initialized with the database connection.
+
+```python
+QueryView.driver()
+```
+
 ### Run a Query
 
 ```python
-df = driver.run("select * from some_table")  # returns a Pandas DataFrame of your query
+df = driver.run("select * from table_name")  # returns a Pandas DataFrame of your query
+```
+
+### SQL Magic Commands
+
+
+In a notebook (IPython) environment, custom sql magic commands are loaded on import with Composapy. Note that both `%sql` and `%%sql` require a registered Session and KeyObject. Both can be loaded on import if saved in the "composapy.ini" config file. See [register-session](#register-a-session) and [register-key](#register-key).
+
+```python vscode={"languageId": "sql"}
+%sql select * from some_table  --returns the same result as QueryView.driver("select * from some_table")
+```
+
+Instead of doing line magic (only takes that line as input), you can alternatively do cell magic (takes entire cell as input).
+
+```sql vscode={"languageId": "sql"}
+select
+    *
+from
+    some_table
+where
+    some_id is not null
 ```
 
 ## Additional Information

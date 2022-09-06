@@ -1,6 +1,7 @@
 from typing import List
 
-from composapy import get_session, session_required
+from composapy.decorators import session_required
+from composapy.session import get_session
 from composapy.key.models import KeyObject
 
 

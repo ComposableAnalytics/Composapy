@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-import json
 from pathlib import Path
 import pytest
 import pandas as pd
 
 from composapy.dataflow.models import DataFlowObject
-from composapy.key.api import Key
 
 
 @pytest.mark.parametrize(
@@ -123,45 +121,3 @@ def test_external_input_file(dataflow_object: DataFlowObject, file_path_string: 
     )
     # my IDE automatically adds \r\n, so I just leave it that way in test
     assert str(run.modules.get(name="File Reader").result.value) == "success\r\n"
-
-
-def test_get_key_with_name(property: Contracts.Property):
-    key_object = Key.get(name=property.Name)
-
-    assert key_object.name == property.Name
-    assert key_object.id == property.Id
-
-    property_json = json.loads(property.Value)
-    assert key_object.Host == property_json["Host"]
-    assert key_object.Port == property_json["Port"]
-    assert key_object.Username == property_json["Username"]
-    assert key_object.Password == property_json["Password"]
-
-
-def test_get_key_with_id(property: Contracts.Property):
-    key_object = Key.get(key_id=property.Id)
-
-    assert key_object.name == property.Name
-    assert key_object.id == property.Id
-
-    property_json = json.loads(property.Value)
-    assert key_object.Host == property_json["Host"]
-    assert key_object.Port == property_json["Port"]
-    assert key_object.Username == property_json["Username"]
-    assert key_object.Password == property_json["Password"]
-
-
-def test_search_key(property: Contracts.Property):
-    key_objects = Key.search(property.Name)
-
-    assert len(key_objects) == 1
-    key_object = key_objects[0]
-
-    assert key_object.name == property.Name
-    assert key_object.id == property.Id
-
-    property_json = json.loads(property.Value)
-    assert key_object.Host == property_json["Host"]
-    assert key_object.Port == property_json["Port"]
-    assert key_object.Username == property_json["Username"]
-    assert key_object.Password == property_json["Password"]

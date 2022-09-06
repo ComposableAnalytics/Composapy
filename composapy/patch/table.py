@@ -57,6 +57,7 @@ MAP_CS_TYPES_TO_PANDAS_TYPES = {
     "System.Int64": "Int64",
     "System.Int32": "Int64",
     "System.Int16": "Int64",
+    "System.Byte": "Int64",
     "System.Double": "float64",
     "System.Decimal": "float64",
     "System.Single": "float64",

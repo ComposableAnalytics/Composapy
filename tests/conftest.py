@@ -4,6 +4,7 @@ from pathlib import Path, PureWindowsPath
 from dotenv import load_dotenv
 import warnings
 from urllib.parse import urlparse
+import shutil
 
 # does not override environment variables, this is essentially a failsafe for local dev environment
 for env_file in sorted(Path().rglob(".test*.env")):
@@ -17,6 +18,19 @@ if not os.getenv("DATALAB_DLL_DIR"):
         )
     )
 
+FIXTURE_DIR: Path = Path(os.path.join(os.path.dirname(os.path.realpath(__file__))))
+LOCAL_FILES_DIR: Path = FIXTURE_DIR.joinpath(".local_files")
+os.environ["COMPOSAPY_INI_DIR"] = str(LOCAL_FILES_DIR)
+
+
+def _clean_testing_local_files():
+    LOCAL_FILES_DIR.mkdir(exist_ok=True)
+    for child in LOCAL_FILES_DIR.iterdir():
+        child.unlink()
+
+
+_clean_testing_local_files()
+
 from composapy.dataflow.api import DataFlow
 from composapy.queryview.api import QueryView
 from composapy.session import Session, get_session
@@ -24,6 +38,7 @@ from composapy.utils import _remove_suffix
 from composapy.key.models import KeyObject
 from composapy.queryview.models import QueryViewObject
 from composapy.key.api import Key
+from composapy.auth import AuthMode
 
 from CompAnalytics import Contracts
 from CompAnalytics.Contracts import Property
@@ -40,10 +55,15 @@ class InvalidTestConfigError(TestSetupException):
     pass
 
 
+@pytest.fixture(scope="function", autouse=True)
+def _clean_local_files_dir():
+    _clean_testing_local_files()
+
+
 def create_token_auth_session() -> Session:
     if os.getenv("TEST_API_KEY"):
         session = Session(
-            auth_mode=Session.AuthMode.TOKEN, credentials=os.getenv("TEST_API_KEY")
+            auth_mode=AuthMode.TOKEN, credentials=os.getenv("TEST_API_KEY")
         )
         session.register()
         return session
@@ -82,13 +102,13 @@ def create_token_auth_session() -> Session:
     )
     os.environ["TEST_API_KEY"] = api_key
 
-    session = Session(auth_mode=Session.AuthMode.TOKEN, credentials=api_key)
+    session = Session(auth_mode=AuthMode.TOKEN, credentials=api_key)
     session.register()
     return session
 
 
 def create_windows_auth_session():
-    session = Session(auth_mode=Session.AuthMode.WINDOWS)
+    session = Session(auth_mode=AuthMode.WINDOWS)
     session.register()
     return session
 
@@ -101,7 +121,7 @@ def create_form_auth_session() -> Session:
         )
 
     session = Session(
-        auth_mode=Session.AuthMode.FORM,
+        auth_mode=AuthMode.FORM,
         credentials=(os.getenv("TEST_USERNAME"), os.getenv("TEST_PASSWORD")),
     )
     session.register()
@@ -219,9 +239,6 @@ def default_health_key_object() -> KeyObject:
 
 # used when a fixture needs another copy of parameterized fixture
 dataflow_object_extra = dataflow_object
-
-
-FIXTURE_DIR: Path = Path(os.path.join(os.path.dirname(os.path.realpath(__file__))))
 
 
 @pytest.fixture

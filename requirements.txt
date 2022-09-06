@@ -16,3 +16,4 @@ sphinx_rtd_theme
 termcolor
 wheel-filename
 pydantic
+ipython
