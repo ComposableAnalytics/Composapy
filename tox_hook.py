@@ -91,42 +91,24 @@ def _compile_sphinx_docs():
     _build_run = subprocess.run(
         [
             "sphinx-build",
+            "-a",
+            "-E",
             "-b",
             "html",
             "source",
-            "build",
+            "build/html",
         ],
-        cwd=(COMPOSAPY_SPHINX_DOCS_DIR.as_posix()),
-        capture_output=True,
-    )
-
-    # cleans the previous build,
-    _clean_run = subprocess.run(
-        ["make", "clean"],
-        cwd=(COMPOSAPY_SPHINX_DOCS_DIR.as_posix()),
-        capture_output=True,
-    )
-
-    # makes new html files
-    _make_run = subprocess.run(
-        ["make", "html"],
         cwd=(COMPOSAPY_SPHINX_DOCS_DIR.as_posix()),
         capture_output=True,
     )
 
     try:
         _build_run.check_returncode()
-        _clean_run.check_returncode()
-        _make_run.check_returncode()
     except:
         print(colored("failed.", "red"))
 
         print(_build_run.stdout.decode("utf-8"))
         print(_build_run.stderr.decode("utf-8"))
-        print(_clean_run.stdout.decode("utf-8"))
-        print(_clean_run.stderr.decode("utf-8"))
-        print(_make_run.stdout.decode("utf-8"))
-        print(_make_run.stderr.decode("utf-8"))
 
         raise
 
