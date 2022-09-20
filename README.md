@@ -4,7 +4,7 @@ DataLabs comes pre-installed with Composapy, a python package that makes it easy
 programmatically interface with Composable. Composapy allows you to interactively author, execute
 and retrieve results from DataFlows (Directed Acyclic Graphs, DAGs).
 
-Visit our [ReadTheDocs](https://composapy.readthedocs.io/html/) page a more detailed look at
+Visit our [ReadTheDocs](https://composapy.readthedocs.io/) page a more detailed look at
 Composapy.
 
 - [Session](#session)
@@ -27,7 +27,7 @@ Composapy.
 
 ## Session
 
-[ReadTheDocs - Session](https://composapy.readthedocs.io/html/reference/composapy-session.html)
+[ReadTheDocs - Session](https://composapy.readthedocs.io/reference/composapy-session.html)
 
 ### Register a Session
 
@@ -61,7 +61,7 @@ session = get_session()
 
 ## DataFlow
 
-[ReadTheDocs - DataFlow](https://composapy.readthedocs.io/html/reference/composapy-dataflow/index.html)
+[ReadTheDocs - DataFlow](https://composapy.readthedocs.io/reference/composapy-dataflow/index.html)
 
 ### Create and Save a DataFlow
 
@@ -108,7 +108,7 @@ dataflow_run.modules.get(name="string module name").result  # Result(name='foo n
 
 ## Key
 
-[ReadTheDocs - Key](https://composapy.readthedocs.io/html/reference/composapy-key/index.html)
+[ReadTheDocs - Key](https://composapy.readthedocs.io/reference/composapy-key/index.html)
 
 ### Retrieve Key
 
@@ -154,7 +154,7 @@ key_objects = Key.search("same name")  # [KeyObject(name='same name', type='SqlC
 
 ## QueryView
 
-[ReadTheDocs - QueryView](https://composapy.readthedocs.io/html/reference/composapy-queryview/index.html)
+[ReadTheDocs - QueryView](https://composapy.readthedocs.io/reference/composapy-queryview/index.html)
 
 ### Create and Connect to a QueryView Driver
 
