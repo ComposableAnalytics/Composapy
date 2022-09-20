@@ -96,7 +96,7 @@ def _compile_sphinx_docs():
             "-b",
             "html",
             "source",
-            "build/html",
+            "build",
         ],
         cwd=(COMPOSAPY_SPHINX_DOCS_DIR.as_posix()),
         capture_output=True,

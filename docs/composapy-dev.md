@@ -64,13 +64,26 @@ your virtual environment, you can simply type `deactivate`.
 
 ### Pip install
 
-Install the following after activating your virtual environment.
+#### Deactivated Environment
+
+Install the following after deactivating your virtual environment.
 
 ```
-(dev) C:\..\Composapy\Composapy> pip install --upgrade pip build twine tox tox-wheel
+C:\..\Composapy\Composapy> pip install --upgrade pip build twine tox tox-wheel
+```
+
+#### Activated Environment
+
+Reactivate your environment and install the project requirements here. This environment should be
+used for python packages related to Composapy during development. It can also be used for 
+localized testing, but tox (see below) will do the heavy lifting for automated test environment 
+setup and teardown.
+
+```
 (dev) C:\..\Composapy\Composapy> pip install -r requirements.txt
 ```
 
+Keep your virtual environment deactivated for the rest of the readme unless it says otherwise.
 
 ## Composapy
 

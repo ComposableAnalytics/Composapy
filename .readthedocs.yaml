@@ -7,4 +7,4 @@ build:
   commands:
     - rm -rf _readthedocs/html
     - mkdir -p _readthedocs/html
-    - mv docs/sphinx-docs/build/html/ _readthedocs/html/
+    - mv docs/sphinx-docs/build/ _readthedocs/html/
