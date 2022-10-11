@@ -4,7 +4,7 @@ from typing import Optional, Tuple, Dict
 from composapy.decorators import session_required
 from composapy.session import get_session
 from composapy.dataflow.const import ExternalInput
-from composapy.dataflow.io import upload_file_to_runs_dir
+from composapy.dataflow.io import upload_files_as_external_input
 from composapy.mixins import (
     ObjectSetMixin,
 )
@@ -340,8 +340,16 @@ class DataFlowObject:
         if not external_inputs:
             return
 
+        from CompAnalytics.Execution import ExternalInputExecutor
+
         for module in self.modules:
-            if module.type != ExternalInput.FILE and module.type in ExternalInput.ALL:
+            if module.type == ExternalInput.FILE:
+                # management of external file inputs occurs after context creation
+                pass
+            elif module.contract.ModuleType.ExecutionType.IsSubclassOf(
+                ExternalInputExecutor
+            ):
+                # if execution type is derived from external input executor
                 input_name = module.contract.ModuleInputs["Name"].ValueObj
                 if input_name in external_inputs.keys():
                     module.contract.ModuleInputs["Input"].ValueObj = external_inputs[
@@ -358,4 +366,6 @@ class DataFlowObject:
 
         for module in self.modules:
             if module.contract.ModuleType.Name == ExternalInput.FILE:
-                upload_file_to_runs_dir(execution_handle, module, external_inputs)
+                upload_files_as_external_input(
+                    execution_handle, module, external_inputs
+                )

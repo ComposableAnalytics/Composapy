@@ -1,5 +1,6 @@
 import sys
 import papermill as pm
+from papermill import utils
 import nbformat
 from pathlib import Path
 
@@ -13,6 +14,7 @@ from System.Collections.Generic import List, KeyValuePair
 
 
 RETURN_VALUES_KEYWORD = "return_values"
+EXECUTION_HANDLE_VAR = "_execution_handle"
 
 
 def execute_notebook(
@@ -47,11 +49,14 @@ def execute_notebook(
     with open(temp_nb_path, "w") as _file:
         nbformat.write(_nb, _file)
 
+    # used as current working directory when running notebook
+    root_notebook_working_dir = run_directory.parent.parent
+
     notebook = pm.execute_notebook(
         temp_nb_path,
         result_nb_path,
         parameters=parameters,
-        cwd=run_directory,
+        cwd=root_notebook_working_dir,
     )
     return notebook
 
@@ -59,16 +64,29 @@ def execute_notebook(
 def _inject_notebook(
     nb: nbformat.NotebookNode, serialized_return_values_path: Path
 ) -> None:
+    _inject_missing_parameters_cell(nb)
     _inject_package_loading(nb)
     _inject_return_values_serialization(nb, serialized_return_values_path)
+
+
+def _inject_missing_parameters_cell(nb):
+    for cell in nb.cells:
+        # if cell with parameters tag already exists, no need to add new cell
+        if cell.metadata.get("tags") and "parameters" in cell.metadata.tags:
+            return
+
+    params_cell = nbformat.v4.new_code_cell(source="")
+    params_cell.metadata["tags"] = ["parameters"]
+    nb.cells.insert(0, params_cell)
 
 
 def _inject_package_loading(nb: nbformat.NotebookNode):
     code = f"""\
 import composapy
 from CompAnalytics.Core import ContractSerializer
-from CompAnalytics.Contracts import FileReference
-from CompAnalytics.Contracts.Tables import Table 
+from CompAnalytics.Contracts import FileReference, ExecutionHandle
+from CompAnalytics.Contracts.Tables import Table
+{RETURN_VALUES_KEYWORD} = {{}}
 """
 
     new_cell = nbformat.v4.new_code_cell(source=code)
@@ -80,7 +98,11 @@ def _inject_return_values_serialization(
 ) -> None:
     code = f"""\
 from composapy.notebook import inject
-inject.serialize_return_values({RETURN_VALUES_KEYWORD}, '{serialized_return_values_path.as_posix()}')
+inject.serialize_return_values(
+    {EXECUTION_HANDLE_VAR},
+    {RETURN_VALUES_KEYWORD},
+    '{serialized_return_values_path.as_posix()}'
+)
 """
 
     new_cell = nbformat.v4.new_code_cell(source=code)

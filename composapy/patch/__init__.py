@@ -3,7 +3,7 @@ from six import string_types, integer_types
 
 from CompAnalytics.Core import ContractSerializer
 from CompAnalytics.Contracts.Tables import Table
-from CompAnalytics.Contracts import FileReference
+from CompAnalytics.Contracts import FileReference, ExecutionHandle
 
 # patching for papermill translators - defining custom parameter rendering logic for FileReference
 # github docs : https://github.com/nteract/papermill/blob/main/papermill/translators.py
@@ -25,6 +25,20 @@ def translate_table(cls, val):
 
 
 papermill.translators.PythonTranslator.translate_table = translate_table
+
+
+# patching for papermill translators - defining custom parameter rendering logic for ExecutionHandle
+# github docs : https://github.com/nteract/papermill/blob/main/papermill/translators.py
+@classmethod
+def translate_execution_handle(cls, val):
+    return cls.translate_raw_str(
+        f"ContractSerializer.Deserialize[ExecutionHandle]('{val}')"
+    )
+
+
+papermill.translators.PythonTranslator.translate_execution_handle = (
+    translate_execution_handle
+)
 
 
 @classmethod
@@ -50,6 +64,8 @@ def translate(cls, val):
         return cls.translate_file_ref(ContractSerializer.Serialize(val))
     elif isinstance(val, Table):
         return cls.translate_table(ContractSerializer.Serialize(val))
+    elif isinstance(val, ExecutionHandle):
+        return cls.translate_execution_handle(ContractSerializer.Serialize(val))
     # Use this generic translation as a last resort
     return cls.translate_escaped_str(val)
 

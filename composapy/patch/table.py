@@ -111,7 +111,10 @@ def _make_pandas_dtypes_dict(table_columns) -> Dict[any, str]:
     dtypes_dict = dict()
     for key in table_columns.Dictionary.Keys:
         column = table_columns.Dictionary[key]
-        dtypes_dict[column.Name] = MAP_STRING_TYPES_TO_PANDAS_TYPES[column.Type]
+        column_dtype = "object"
+        if column.Type in MAP_STRING_TYPES_TO_PANDAS_TYPES.keys():
+            column_dtype = MAP_STRING_TYPES_TO_PANDAS_TYPES[column.Type]
+        dtypes_dict[column.Name] = column_dtype
     return dtypes_dict
 
 
