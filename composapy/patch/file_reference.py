@@ -69,8 +69,10 @@ def to_file(self, save_dir: Path | str = None, file_name: str = None):
         uses the original filename from URI.
     """
     if not getattr(self, "_contract__result_id"):
-        raise NoFileReferenceResultId("Can't download file if file reference was not"
-                                      "created by a dataflow run. [no ResultId]")
+        raise NoFileReferenceResultId(
+            "Can't download file if file reference was not"
+            "created by a dataflow run. [no ResultId]"
+        )
 
     session_uri = get_session().uri
     file_upload_service = get_session().file_upload_service

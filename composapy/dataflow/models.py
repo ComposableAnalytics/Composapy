@@ -35,8 +35,11 @@ class ModuleMemberBase:
     def value(self) -> any:
         """Adds contract result id to the ValueObj, then returns the contract member, ValueObj."""
         value_obj = self.contract.ValueObj
-        if getattr(self.contract, "ResultId"):
-            setattr(value_obj, "_contract__result_id", self.contract.ResultId)
+        try:
+            if getattr(self.contract, "ResultId"):
+                setattr(value_obj, "_contract__result_id", self.contract.ResultId)
+        except AttributeError:
+            pass  # such immutable, much wow
         return value_obj
 
     @value.setter
