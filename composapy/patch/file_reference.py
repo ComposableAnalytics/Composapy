@@ -68,12 +68,13 @@ def to_file(self, save_dir: Path | str = None, file_name: str = None):
         The name of the newly saved file (default is None). If None is provided,
         uses the original filename from URI.
     """
+    if not getattr(self, "_contract__result_id"):
+        raise NoFileReferenceResultId("Can't download file if file reference was not"
+                                      "created by a dataflow run. [no ResultId]")
+
     session_uri = get_session().uri
     file_upload_service = get_session().file_upload_service
     file_ref_uri = str(self.Uri)
-
-    # string magic to parse the useful bits out of uri
-    file_ref_relative_uri = "/".join(list(filter(None, file_ref_uri.split("/")))[1:])
 
     if isinstance(save_dir, str):
         save_dir = Path(save_dir)
@@ -83,13 +84,12 @@ def to_file(self, save_dir: Path | str = None, file_name: str = None):
     if not file_name:
         file_name = file_ref_uri[file_ref_uri.rindex("/") :].strip("/")
 
-    virtual_path = _urljoin(session_uri, file_ref_relative_uri)
     windows_path: PureWindowsPath = PureWindowsPath(save_dir.joinpath(file_name))
 
     Path.mkdir(save_dir, parents=True, exist_ok=True)
     file_path: Path = save_dir.joinpath(file_name)
 
-    _input_stream = file_upload_service.StreamFile(virtual_path)
+    _input_stream = file_upload_service.StreamFile(self._contract__result_id)
     input_stream = FileUtils.GetEntireFileStream(_input_stream)  # fix seek issues
 
     output_stream = File.Create(str(windows_path))
@@ -100,10 +100,18 @@ def to_file(self, save_dir: Path | str = None, file_name: str = None):
     output_stream.Close()
     input_stream.Close()
 
+    # string magic to parse the useful bits out of uri
+    file_ref_relative_uri = "/".join(list(filter(None, file_ref_uri.split("/")))[1:])
+    virtual_path = _urljoin(session_uri, file_ref_relative_uri)
+
     return FileReference.Create[FileReference](
         str(file_path),
         StandardPaths.CreateSiteRelativePath(Uri(virtual_path)),
     )
+
+
+class NoFileReferenceResultId(Exception):
+    pass
 
 
 FileReference.to_file = to_file

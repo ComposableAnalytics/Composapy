@@ -33,8 +33,11 @@ class ModuleMemberBase:
 
     @property
     def value(self) -> any:
-        """Returns the contract member, ValueObj."""
-        return self.contract.ValueObj
+        """Adds contract result id to the ValueObj, then returns the contract member, ValueObj."""
+        value_obj = self.contract.ValueObj
+        if getattr(self.contract, "ResultId"):
+            setattr(value_obj, "_contract__result_id", self.contract.ResultId)
+        return value_obj
 
     @value.setter
     def value(self, val):
