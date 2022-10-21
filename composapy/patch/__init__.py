@@ -32,7 +32,9 @@ papermill.translators.PythonTranslator.translate_table = translate_table
 @classmethod
 def translate_execution_handle(cls, val):
     return cls.translate_raw_str(
-        f"ContractSerializer.Deserialize[ExecutionHandle]('{val}')"
+        f"ContractSerializer.Deserialize[ExecutionHandle]('{val}')\n"
+        f"import os\n"
+        f'os.environ[\'_execution_handle\'] = """{val}"""'
     )
 
 

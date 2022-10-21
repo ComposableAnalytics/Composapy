@@ -5,8 +5,7 @@ import json
 from composapy.key.api import Key
 from composapy.key.models import get_key_object
 
-from composapy.utils import get_config_path
-from composapy.config import read_config_key_id
+from composapy.config import get_config_path, get_config_key_id, read_config
 
 if TYPE_CHECKING:
     from CompAnalytics import Contracts
@@ -66,6 +65,8 @@ def test_register_key_save_true(default_health_key_object: KeyObject):
     config_path.unlink(missing_ok=True)  # ensure no file exists before test
 
     default_health_key_object.register(save=True)
-    config_key_id = read_config_key_id()
+
+    _, config = read_config()  # read new config after registration
+    config_key_id = get_config_key_id(config)
 
     assert default_health_key_object.id == config_key_id

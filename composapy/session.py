@@ -41,6 +41,11 @@ class Session:
         return self.services["FileUploadService"]
 
     @property
+    def queryview_service(self) -> IServices.IQueryViewService:
+        """A Composable csharp binding to the IServices.IQueryViewService object."""
+        return self.services["QueryViewService"]
+
+    @property
     def resource_manager(self) -> IServices.Deploy.ResourceManager:
         """A Composable csharp binding to the IServices.Deploy.ResourceManager object."""
         return self.ResourceManager

@@ -7,8 +7,7 @@ from pathlib import Path
 
 from composapy.auth import AuthMode
 from composapy.dataflow.api import DataFlow
-from composapy.utils import get_config_path
-from composapy.config import read_config_session
+from composapy.config import get_config_session, read_config
 
 from CompAnalytics.Contracts import FileReference
 
@@ -141,7 +140,8 @@ def test_session(session: Session):
 @pytest.mark.parametrize("session", ["Windows"], indirect=True)
 def test_register_session_save_true_windows(session: Session):
     session.register(save=True)
-    config_session = read_config_session()
+    _, config = read_config()
+    config_session = get_config_session(config)
 
     assert config_session.auth_mode == AuthMode.WINDOWS
     assert config_session.uri == session.uri

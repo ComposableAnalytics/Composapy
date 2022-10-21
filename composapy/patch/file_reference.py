@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import json
 from pathlib import Path, PureWindowsPath
 
@@ -7,7 +8,7 @@ import json_fix  # used to patch json with fake magic method __json__
 
 from System import Uri
 from System.IO import File, SeekOrigin
-from CompAnalytics.Contracts import FileReference
+from CompAnalytics.Contracts import FileReference, ExecutionHandle
 from CompAnalytics.Core import ContractSerializer
 from CompAnalytics.Utils import FileUtils, StandardPaths
 
@@ -68,14 +69,26 @@ def to_file(self, save_dir: Path | str = None, file_name: str = None):
         The name of the newly saved file (default is None). If None is provided,
         uses the original filename from URI.
     """
-    if not getattr(self, "_contract__result_id"):
-        raise NoFileReferenceResultId(
-            "Can't download file if file reference was not"
-            "created by a dataflow run. [no ResultId]"
+    file_upload_service = get_session().file_upload_service
+
+    if hasattr(self, "_contract__result_id"):  # comes from dataflow api call
+        _input_stream = file_upload_service.StreamResultFile(
+            self._contract__result_id
         )
+    elif os.getenv("_execution_handle"):  # comes from notebook runner call
+        _input_stream = file_upload_service.StreamRunFile(
+            ContractSerializer.Deserialize[ExecutionHandle](
+                os.environ["_execution_handle"]
+            ),
+            self.Uri,
+        )
+    else:
+        raise InvalidFileReference(
+            "Can't download file if file reference was not created by a dataflow run."
+        )
+    input_stream = FileUtils.GetEntireFileStream(_input_stream)  # fix seek issues
 
     session_uri = get_session().uri
-    file_upload_service = get_session().file_upload_service
     file_ref_uri = str(self.Uri)
 
     if isinstance(save_dir, str):
@@ -90,9 +103,6 @@ def to_file(self, save_dir: Path | str = None, file_name: str = None):
 
     Path.mkdir(save_dir, parents=True, exist_ok=True)
     file_path: Path = save_dir.joinpath(file_name)
-
-    _input_stream = file_upload_service.StreamFile(self._contract__result_id)
-    input_stream = FileUtils.GetEntireFileStream(_input_stream)  # fix seek issues
 
     output_stream = File.Create(str(windows_path))
 
@@ -112,7 +122,7 @@ def to_file(self, save_dir: Path | str = None, file_name: str = None):
     )
 
 
-class NoFileReferenceResultId(Exception):
+class InvalidFileReference(Exception):
     pass
 
 

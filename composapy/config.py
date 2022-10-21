@@ -3,8 +3,8 @@ from typing import Tuple, TYPE_CHECKING
 import configparser
 from dataclasses import dataclass
 from pathlib import Path
+import os
 
-from composapy.utils import get_config_path
 from composapy.auth import AuthMode
 
 if TYPE_CHECKING:
@@ -38,10 +38,17 @@ class WindowsSession(ConfigSession):
     auth_mode: AuthMode = AuthMode.WINDOWS
 
 
-def read_config_session() -> ConfigSession:
-    """Returns the session saved in the config."""
-    config_path, config = _read_config()
+def get_config_path() -> Path:
+    """If environment variable COMPOSAPY_INI_DIR exists, use that path. Otherwise,
+    assume composapy.ini resides in the current working directory."""
+    composapy_ini_dir = os.getenv("COMPOSAPY_INI_DIR")
+    if composapy_ini_dir:
+        return Path(composapy_ini_dir, "composapy.ini")
+    return Path("composapy.ini")
 
+
+def get_config_session(config: configparser.ConfigParser) -> ConfigSession:
+    """Returns the session saved in the config."""
     if "session" not in config:
         raise SessionConfigDoesNotExist(
             "No saved configuration for session exists in composapy.ini."
@@ -65,7 +72,7 @@ def read_config_session() -> ConfigSession:
 
 def write_config_session(session: Session) -> None:
     """Updates configuration file with session."""
-    config_path, config = _read_config()
+    config_path, config = read_config()
 
     config["session"] = {
         "uri": session.uri,
@@ -82,28 +89,24 @@ def write_config_session(session: Session) -> None:
     _write_config(config_path, config)
 
 
-def read_config_key_id() -> int:
+def get_config_key_id(config: configparser.ConfigParser) -> int:
     """Returns the key id saved in the config."""
-    config_path, config = _read_config()
-
     if "key" not in config:
-        raise KeyConfigDoesNotExist(
-            "No saved configuration for session exists in composapy.ini."
-        )
+        raise KeyConfigDoesNotExist("No key exists in composapy.ini.")
 
     return config["key"].getint("id")
 
 
 def write_config_key(key_object: KeyObject) -> None:
     """Updates configuration file with key."""
-    config_path, config = _read_config()
+    config_path, config = read_config()
 
     config["key"] = {"id": key_object.id}
 
     _write_config(config_path, config)
 
 
-def _read_config() -> Tuple[Path, configparser.ConfigParser]:
+def read_config() -> Tuple[Path, configparser.ConfigParser]:
     config_path = get_config_path()
     config = configparser.ConfigParser()
     config.read(config_path)

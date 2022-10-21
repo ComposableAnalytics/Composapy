@@ -25,7 +25,7 @@ def deep_copy(self, memo):
 ExecutionHandle.__deepcopy__ = deep_copy
 
 
-# monkey patching Table for pickling
+# monkey patching ExecutionHandle for pickling
 # python docs : https://docs.python.org/3/library/pickle.html#object.__reduce_ex__
 # composable docs : https://dev.composable.ai/api/CompAnalytics.Contracts.ExecutionHandle.html
 def reduce_ex(self, protocol):
@@ -41,4 +41,4 @@ class ExecutionHandlePickleBehavior(ExecutionHandle):
 
     def __new__(self, *args, **kwargs):
         """Called when using pickle.loads(picked_table)."""
-        return ContractSerializer.Deserialize[Table](args[0])
+        return ContractSerializer.Deserialize[ExecutionHandle](args[0])

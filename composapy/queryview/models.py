@@ -106,26 +106,28 @@ class QueryViewObject:
                 "Must first attach key by using method: connect(key_object)."
             )
 
-        queryview_service = get_session().services["QueryViewService"]
+        queryview_service = get_session().queryview_service
         self.contract.QueryString = query
 
-        qv_data_result = queryview_service.RunQueryDynamic(self.contract)
+        qv_result = queryview_service.RunQueryDynamic(self.contract)
 
-        if qv_data_result.Error is not None:
-            raise QueryException(qv_data_result.Error)
+        if qv_result.Error is not None:
+            raise QueryException(qv_result.Error)
 
-        columns_definitions = qv_data_result.ColumnDefinitions
+        return QueryViewObject._qv_result_to_df(qv_result)
+
+    @staticmethod
+    def _qv_result_to_df(qv_result):
+        columns_definitions = qv_result.ColumnDefinitions
         column_names = []
         column_dtypes = {}
-
         for column_definition in columns_definitions:
             if not column_definition.Exclude:
                 column_names.append(column_definition.Name)
                 column_dtypes[column_definition.Name] = MAP_CS_TYPES_TO_PANDAS_TYPES[
                     column_definition.Type
                 ]
-
-        df = pd.DataFrame(qv_data_result.Data, columns=column_names)
+        df = pd.DataFrame(qv_result.Data, columns=column_names)
         return df.astype(column_dtypes)
 
 

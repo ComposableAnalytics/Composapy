@@ -36,7 +36,7 @@ class ModuleMemberBase:
         """Adds contract result id to the ValueObj, then returns the contract member, ValueObj."""
         value_obj = self.contract.ValueObj
         try:
-            if getattr(self.contract, "ResultId"):
+            if hasattr(self.contract, "ResultId"):
                 setattr(value_obj, "_contract__result_id", self.contract.ResultId)
         except AttributeError:
             pass  # such immutable, much wow
