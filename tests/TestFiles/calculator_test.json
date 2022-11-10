@@ -1,0 +1,821 @@
+{
+  "CloneCount": 0,
+  "CreatedBy": null,
+  "CreatedById": null,
+  "CreatedDateTime": null,
+  "DepthFirstExecution": false,
+  "Description": "",
+  "Id": null,
+  "Modules": [
+    {
+      "AccumulatedValues": [],
+      "HasExecuted": false,
+      "HasInputConnections": false,
+      "HasOutputConnections": true,
+      "Id": null,
+      "IsMinimized": false,
+      "Location": {
+        "Id": null,
+        "Width": 180,
+        "X": 570,
+        "Y": 208
+      },
+      "LoopComplete": false,
+      "ModuleInputs": [
+        {
+          "__type": "ModuleInputOfdouble:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "Double",
+          "ArgumentTypeName": "System.Double",
+          "ArgumentTypeStr": "System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.IFormattable",
+            "System.IConvertible",
+            "System.IComparable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.IEquatable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.ValueType",
+            "System.Object"
+          ],
+          "Description": "First numerical input",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": [
+            {
+              "ModuleArgumentName": "Result",
+              "ModuleTypeName": "Calculator",
+              "ModuleTypeNamespace": "edu.mit.ll.companalytics",
+              "NestedAppName": null,
+              "NestedRefAppId": null
+            }
+          ],
+          "MaxConnections": 1,
+          "ModuleConnections": [],
+          "Name": "Param1",
+          "NestedRefModuleId": null,
+          "UiHandle": "input0",
+          "ControlParameters": null,
+          "ValueObj": 1
+        },
+        {
+          "__type": "ModuleInputOfstring:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "String",
+          "ArgumentTypeName": "System.String",
+          "ArgumentTypeStr": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.ICloneable",
+            "System.IConvertible",
+            "System.Collections.IEnumerable",
+            "System.IComparable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.IEquatable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Object"
+          ],
+          "Description": "Numerical operation",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": 1,
+          "ModuleConnections": [],
+          "Name": "Operator",
+          "NestedRefModuleId": null,
+          "UiHandle": "input1",
+          "ControlParameters": {
+            "__type": "ComboBoxParameters:#CompAnalytics.Contracts.Controls",
+            "ControlType": "ComboBox",
+            "Values": [
+              "*",
+              "+",
+              "-",
+              "/",
+              "%",
+              "^"
+            ]
+          },
+          "ValueObj": "+"
+        },
+        {
+          "__type": "ModuleInputOfdouble:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "Double",
+          "ArgumentTypeName": "System.Double",
+          "ArgumentTypeStr": "System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.IFormattable",
+            "System.IConvertible",
+            "System.IComparable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.IEquatable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.ValueType",
+            "System.Object"
+          ],
+          "Description": "Second numerical input",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": [
+            {
+              "ModuleArgumentName": "Result",
+              "ModuleTypeName": "Calculator",
+              "ModuleTypeNamespace": "edu.mit.ll.companalytics",
+              "NestedAppName": null,
+              "NestedRefAppId": null
+            }
+          ],
+          "MaxConnections": 1,
+          "ModuleConnections": [],
+          "Name": "Param2",
+          "NestedRefModuleId": null,
+          "UiHandle": "input2",
+          "ControlParameters": null,
+          "ValueObj": 2
+        }
+      ],
+      "ModuleOutputs": [
+        {
+          "__type": "ModuleOutputOfdouble:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "Double",
+          "ArgumentTypeName": "System.Double",
+          "ArgumentTypeStr": "System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.IFormattable",
+            "System.IConvertible",
+            "System.IComparable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.IEquatable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.ValueType",
+            "System.Object"
+          ],
+          "Description": "Output of operation",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": [
+            {
+              "ModuleArgumentName": "Param1",
+              "ModuleTypeName": "Calculator",
+              "ModuleTypeNamespace": "edu.mit.ll.companalytics",
+              "NestedAppName": null,
+              "NestedRefAppId": null
+            },
+            {
+              "ModuleArgumentName": "Param2",
+              "ModuleTypeName": "Calculator",
+              "ModuleTypeNamespace": "edu.mit.ll.companalytics",
+              "NestedAppName": null,
+              "NestedRefAppId": null
+            }
+          ],
+          "MaxConnections": -1,
+          "ModuleConnections": [
+            "5b9527e1-1e4f-43d8-9416-1817860505f0"
+          ],
+          "Name": "Result",
+          "NestedRefModuleId": null,
+          "UiHandle": "output0",
+          "ResultId": null,
+          "ValueObj": 0
+        }
+      ],
+      "ModuleType": {
+        "Category": "operators",
+        "Description": "Performs numerical operation on two numbers",
+        "Enabled": true,
+        "Icon": "Icons.calculator.png",
+        "Iterable": false,
+        "Name": "Calculator",
+        "Namespace": "edu.mit.ll.companalytics",
+        "Type": "CompAnalytics.Execution.Modules.CalculatorModuleExecutor, CompAnalytics.Execution.Modules, Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9",
+        "Valid": true,
+        "Width": 150
+      },
+      "Name": "Calculator",
+      "NestedRefAppId": null,
+      "RequestingExecution": true,
+      "UiHandle": "module0"
+    },
+    {
+      "AccumulatedValues": [],
+      "HasExecuted": false,
+      "HasInputConnections": true,
+      "HasOutputConnections": false,
+      "Id": null,
+      "IsMinimized": false,
+      "Location": {
+        "Id": null,
+        "Width": 180,
+        "X": 856.8,
+        "Y": 239.8
+      },
+      "LoopComplete": false,
+      "ModuleInputs": [
+        {
+          "__type": "ModuleInputOfdouble:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "Double",
+          "ArgumentTypeName": "System.Double",
+          "ArgumentTypeStr": "System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.IFormattable",
+            "System.IConvertible",
+            "System.IComparable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.IEquatable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.ValueType",
+            "System.Object"
+          ],
+          "Description": "First numerical input",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": [
+            {
+              "ModuleArgumentName": "Result",
+              "ModuleTypeName": "Calculator",
+              "ModuleTypeNamespace": "edu.mit.ll.companalytics",
+              "NestedAppName": null,
+              "NestedRefAppId": null
+            }
+          ],
+          "MaxConnections": 1,
+          "ModuleConnections": [
+            "5b9527e1-1e4f-43d8-9416-1817860505f0"
+          ],
+          "Name": "Param1",
+          "NestedRefModuleId": null,
+          "UiHandle": "input3",
+          "ControlParameters": null,
+          "ValueObj": 0
+        },
+        {
+          "__type": "ModuleInputOfstring:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "String",
+          "ArgumentTypeName": "System.String",
+          "ArgumentTypeStr": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.ICloneable",
+            "System.IConvertible",
+            "System.Collections.IEnumerable",
+            "System.IComparable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.IEquatable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Object"
+          ],
+          "Description": "Numerical operation",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": 1,
+          "ModuleConnections": [],
+          "Name": "Operator",
+          "NestedRefModuleId": null,
+          "UiHandle": "input4",
+          "ControlParameters": {
+            "__type": "ComboBoxParameters:#CompAnalytics.Contracts.Controls",
+            "ControlType": "ComboBox",
+            "Values": [
+              "*",
+              "+",
+              "-",
+              "/",
+              "%",
+              "^"
+            ]
+          },
+          "ValueObj": "+"
+        },
+        {
+          "__type": "ModuleInputOfdouble:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "Double",
+          "ArgumentTypeName": "System.Double",
+          "ArgumentTypeStr": "System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.IFormattable",
+            "System.IConvertible",
+            "System.IComparable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.IEquatable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.ValueType",
+            "System.Object"
+          ],
+          "Description": "Second numerical input",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": [
+            {
+              "ModuleArgumentName": "Result",
+              "ModuleTypeName": "Calculator",
+              "ModuleTypeNamespace": "edu.mit.ll.companalytics",
+              "NestedAppName": null,
+              "NestedRefAppId": null
+            }
+          ],
+          "MaxConnections": 1,
+          "ModuleConnections": [],
+          "Name": "Param2",
+          "NestedRefModuleId": null,
+          "UiHandle": "input5",
+          "ControlParameters": null,
+          "ValueObj": 2
+        }
+      ],
+      "ModuleOutputs": [
+        {
+          "__type": "ModuleOutputOfdouble:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "Double",
+          "ArgumentTypeName": "System.Double",
+          "ArgumentTypeStr": "System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.IFormattable",
+            "System.IConvertible",
+            "System.IComparable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.IEquatable`1[[System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.ValueType",
+            "System.Object"
+          ],
+          "Description": "Output of operation",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": [
+            {
+              "ModuleArgumentName": "Param1",
+              "ModuleTypeName": "Calculator",
+              "ModuleTypeNamespace": "edu.mit.ll.companalytics",
+              "NestedAppName": null,
+              "NestedRefAppId": null
+            },
+            {
+              "ModuleArgumentName": "Param2",
+              "ModuleTypeName": "Calculator",
+              "ModuleTypeNamespace": "edu.mit.ll.companalytics",
+              "NestedAppName": null,
+              "NestedRefAppId": null
+            }
+          ],
+          "MaxConnections": -1,
+          "ModuleConnections": [],
+          "Name": "Result",
+          "NestedRefModuleId": null,
+          "UiHandle": "output1",
+          "ResultId": null,
+          "ValueObj": 0
+        }
+      ],
+      "ModuleType": {
+        "Category": "operators",
+        "Description": "Performs numerical operation on two numbers",
+        "Enabled": true,
+        "Icon": "Icons.calculator.png",
+        "Iterable": false,
+        "Name": "Calculator",
+        "Namespace": "edu.mit.ll.companalytics",
+        "Type": "CompAnalytics.Execution.Modules.CalculatorModuleExecutor, CompAnalytics.Execution.Modules, Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9",
+        "Valid": true,
+        "Width": 150
+      },
+      "Name": "Calculator",
+      "NestedRefAppId": null,
+      "RequestingExecution": true,
+      "UiHandle": "module1"
+    },
+    {
+      "AccumulatedValues": [],
+      "HasExecuted": false,
+      "HasInputConnections": false,
+      "HasOutputConnections": false,
+      "Id": null,
+      "IsMinimized": false,
+      "Location": {
+        "Id": null,
+        "Width": 180,
+        "X": 1141,
+        "Y": 268
+      },
+      "LoopComplete": false,
+      "ModuleInputs": [
+        {
+          "__type": "ModuleInputOfstring:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "String",
+          "ArgumentTypeName": "System.String",
+          "ArgumentTypeStr": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.ICloneable",
+            "System.IConvertible",
+            "System.Collections.IEnumerable",
+            "System.IComparable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.IEquatable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Object"
+          ],
+          "Description": null,
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": 0,
+          "ModuleConnections": [],
+          "Name": "Input",
+          "NestedRefModuleId": null,
+          "UiHandle": "input6",
+          "ControlParameters": {
+            "__type": "TextAreaControlParameters:#CompAnalytics.Contracts.Controls",
+            "ControlType": "TextAreaControl",
+            "AutoCompile": false,
+            "Height": 300,
+            "Mode": null,
+            "Width": 300
+          },
+          "ValueObj": "This is a test string"
+        }
+      ],
+      "ModuleOutputs": [
+        {
+          "__type": "ModuleOutputOfstring:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "String",
+          "ArgumentTypeName": "System.String",
+          "ArgumentTypeStr": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.ICloneable",
+            "System.IConvertible",
+            "System.Collections.IEnumerable",
+            "System.IComparable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.IEquatable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Object"
+          ],
+          "Description": null,
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": -1,
+          "ModuleConnections": [],
+          "Name": "Result",
+          "NestedRefModuleId": null,
+          "UiHandle": "output2",
+          "ResultId": null,
+          "ValueObj": null
+        }
+      ],
+      "ModuleType": {
+        "Category": "inputs",
+        "Description": "Simply forwards input string to result, allowing for an input to be specified in separate module",
+        "Enabled": false,
+        "Icon": null,
+        "Iterable": false,
+        "Name": "String Input",
+        "Namespace": "edu.mit.ll.companalytics",
+        "Type": "CompAnalytics.Execution.Modules.StringInputExecutor, CompAnalytics.Execution.Modules, Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9",
+        "Valid": false,
+        "Width": 150
+      },
+      "Name": "String Input",
+      "NestedRefAppId": null,
+      "RequestingExecution": true,
+      "UiHandle": "module2"
+    },
+    {
+      "AccumulatedValues": [],
+      "HasExecuted": false,
+      "HasInputConnections": false,
+      "HasOutputConnections": false,
+      "Id": null,
+      "IsMinimized": false,
+      "Location": {
+        "Id": null,
+        "Width": 180,
+        "X": 1140,
+        "Y": 403
+      },
+      "LoopComplete": false,
+      "ModuleInputs": [
+        {
+          "__type": "ModuleInputOfstring:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "String",
+          "ArgumentTypeName": "System.String",
+          "ArgumentTypeStr": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.ICloneable",
+            "System.IConvertible",
+            "System.Collections.IEnumerable",
+            "System.IComparable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.IEquatable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Object"
+          ],
+          "Description": "Base format string.  Location of parameters are specified using syntax {0} {1} {2}",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": 1,
+          "ModuleConnections": [],
+          "Name": "Format",
+          "NestedRefModuleId": null,
+          "UiHandle": "input7",
+          "ControlParameters": {
+            "__type": "TextAreaControlParameters:#CompAnalytics.Contracts.Controls",
+            "ControlType": "TextAreaControl",
+            "AutoCompile": false,
+            "Height": 300,
+            "Mode": null,
+            "Width": 300
+          },
+          "ValueObj": "This is a test format"
+        },
+        {
+          "__type": "OrderedModuleInputCollectionOfanyType:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "List<Object>",
+          "ArgumentTypeName": "System.Collections.Generic.List`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+          "ArgumentTypeStr": "System.Collections.Generic.List`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.Collections.Generic.IList`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.ICollection`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.ICollection`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.IList",
+            "System.Collections.ICollection",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.ICollection",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IReadOnlyList`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IReadOnlyCollection`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IReadOnlyCollection`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Object"
+          ],
+          "Description": "List of parameters to include in string",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": true,
+          "IsPrimitive": false,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": -1,
+          "ModuleConnections": [],
+          "Name": "Parameters",
+          "NestedRefModuleId": null,
+          "UiHandle": "input8",
+          "ControlParameters": null,
+          "ValueObj": null,
+          "CollectionArgumentTypeName": "System.Object"
+        }
+      ],
+      "ModuleOutputs": [
+        {
+          "__type": "ModuleOutputOfstring:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "String",
+          "ArgumentTypeName": "System.String",
+          "ArgumentTypeStr": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.ICloneable",
+            "System.IConvertible",
+            "System.Collections.IEnumerable",
+            "System.IComparable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.IEquatable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Object"
+          ],
+          "Description": "Final string",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": -1,
+          "ModuleConnections": [],
+          "Name": "Result",
+          "NestedRefModuleId": null,
+          "UiHandle": "output3",
+          "ResultId": null,
+          "ValueObj": null
+        }
+      ],
+      "ModuleType": {
+        "Category": "operators",
+        "Description": "Combines multiple strings together using the specified format",
+        "Enabled": false,
+        "Icon": "Icons.string-formatter.png",
+        "Iterable": false,
+        "Name": "String Formatter",
+        "Namespace": "edu.mit.ll.companalytics",
+        "Type": "CompAnalytics.Execution.Modules.StringFormatter, CompAnalytics.Execution.Modules, Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9",
+        "Valid": false,
+        "Width": 150
+      },
+      "Name": "String Formatter",
+      "NestedRefAppId": null,
+      "RequestingExecution": true,
+      "UiHandle": "module3"
+    },
+    {
+      "AccumulatedValues": [],
+      "HasExecuted": false,
+      "HasInputConnections": false,
+      "HasOutputConnections": false,
+      "Id": null,
+      "IsMinimized": false,
+      "Location": {
+        "Id": null,
+        "Width": 180,
+        "X": 1137,
+        "Y": 529
+      },
+      "LoopComplete": false,
+      "ModuleInputs": [
+        {
+          "__type": "ModuleInputOfstring:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "String",
+          "ArgumentTypeName": "System.String",
+          "ArgumentTypeStr": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.ICloneable",
+            "System.IConvertible",
+            "System.Collections.IEnumerable",
+            "System.IComparable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.IEquatable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Object"
+          ],
+          "Description": "Base format string.  Location of parameters are specified using syntax {0} {1} {2}",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": 1,
+          "ModuleConnections": [],
+          "Name": "Format",
+          "NestedRefModuleId": null,
+          "UiHandle": "input9",
+          "ControlParameters": {
+            "__type": "TextAreaControlParameters:#CompAnalytics.Contracts.Controls",
+            "ControlType": "TextAreaControl",
+            "AutoCompile": false,
+            "Height": 300,
+            "Mode": null,
+            "Width": 300
+          },
+          "ValueObj": "This is a bad format"
+        },
+        {
+          "__type": "OrderedModuleInputCollectionOfanyType:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "List<Object>",
+          "ArgumentTypeName": "System.Collections.Generic.List`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+          "ArgumentTypeStr": "System.Collections.Generic.List`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.Collections.Generic.IList`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.ICollection`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.ICollection`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.IList",
+            "System.Collections.ICollection",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.ICollection",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IReadOnlyList`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IReadOnlyCollection`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Collections.Generic.IReadOnlyCollection`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Object, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.Collections.IEnumerable",
+            "System.Object"
+          ],
+          "Description": "List of parameters to include in string",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": true,
+          "IsPrimitive": false,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": -1,
+          "ModuleConnections": [],
+          "Name": "Parameters",
+          "NestedRefModuleId": null,
+          "UiHandle": "input10",
+          "ControlParameters": null,
+          "ValueObj": null,
+          "CollectionArgumentTypeName": "System.Object"
+        }
+      ],
+      "ModuleOutputs": [
+        {
+          "__type": "ModuleOutputOfstring:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "String",
+          "ArgumentTypeName": "System.String",
+          "ArgumentTypeStr": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.ICloneable",
+            "System.IConvertible",
+            "System.Collections.IEnumerable",
+            "System.IComparable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.IEnumerable",
+            "System.IEquatable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Object"
+          ],
+          "Description": "Final string",
+          "ExecuteClientScript": false,
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": -1,
+          "ModuleConnections": [],
+          "Name": "Result",
+          "NestedRefModuleId": null,
+          "UiHandle": "output4",
+          "ResultId": null,
+          "ValueObj": null
+        }
+      ],
+      "ModuleType": {
+        "Category": "operators",
+        "Description": "Combines multiple strings together using the specified format",
+        "Enabled": false,
+        "Icon": "Icons.string-formatter.png",
+        "Iterable": false,
+        "Name": "String Formatter",
+        "Namespace": "edu.mit.ll.companalytics",
+        "Type": "CompAnalytics.Execution.Modules.StringFormatter, CompAnalytics.Execution.Modules, Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9",
+        "Valid": false,
+        "Width": 150
+      },
+      "Name": "String Formatter 2",
+      "NestedRefAppId": null,
+      "RequestingExecution": true,
+      "UiHandle": "module4"
+    }
+  ],
+  "Name": "CalculatorTest",
+  "OriginalAppId": null,
+  "ParallelExecution": false,
+  "ReviewAverage": 0,
+  "ReviewCount": 0,
+  "Tags": []
+}
