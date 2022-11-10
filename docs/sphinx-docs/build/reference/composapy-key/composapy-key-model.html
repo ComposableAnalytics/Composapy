@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Models &mdash; Composapy  documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script src="../../_static/sphinx_highlight.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Api" href="composapy-key-api.html" />
+    <link rel="prev" title="Key" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> Composapy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../composapy-dataflow/index.html">DataFlow</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">Key</a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Models</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#composapy.key.models.KeyObject"><code class="docutils literal notranslate"><span class="pre">KeyObject</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#composapy.key.models.KeyObjectException"><code class="docutils literal notranslate"><span class="pre">KeyObjectException</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#composapy.key.models.KeyObjectRegistrationException"><code class="docutils literal notranslate"><span class="pre">KeyObjectRegistrationException</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#composapy.key.models.get_key_object"><code class="docutils literal notranslate"><span class="pre">get_key_object()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="composapy-key-api.html">Api</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../composapy-queryview/index.html">QueryView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../composapy-session.html">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../composapy-utils.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../composapy-contracts-table.html">Tables.Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../composapy-contracts-filereference.html">FileReference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../environment-variables.html">Environment Variables</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Composapy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Reference</a></li>
+          <li class="breadcrumb-item"><a href="index.html">Key</a></li>
+      <li class="breadcrumb-item active">Models</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/reference/composapy-key/composapy-key-model.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-composapy.key.models">
+<span id="models"></span><h1>Models<a class="headerlink" href="#module-composapy.key.models" title="Permalink to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObject">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#composapy.key.models.KeyObject" title="Permalink to this definition"></a></dt>
+<dd><p>KeyObject is a wrapper with a custom load strategy for the Composable Property contract.
+The key attributes are dynamically constructed based on key type retrieved.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.key.api</span> <span class="kn">import</span> <span class="n">Key</span>
+
+<span class="n">key_object</span> <span class="o">=</span> <span class="n">Key</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">key_object</span><span class="p">)</span>
+<span class="c1"># Key(name=&#39;us3r db connection key&#39;, type=&#39;SqlConnectionSettings&#39;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">key_object</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+<span class="c1"># {&#39;contract&#39;: &lt;CompAnalytics.Contracts.Property object at 0x000001CE10E18A40&gt;,</span>
+<span class="c1">#  &#39;Password&#39;: &#39;pa55w0rd&#39;,</span>
+<span class="c1">#  &#39;ConnectionParameters&#39;: [],</span>
+<span class="c1">#  &#39;Database&#39;: &#39;TestDb&#39;,</span>
+<span class="c1">#  &#39;Host&#39;: &#39;.&#39;,</span>
+<span class="c1">#  &#39;Port&#39;: None,</span>
+<span class="c1">#  &#39;UseMultipleActiveResultSets&#39;: None,</span>
+<span class="c1">#  &#39;Username&#39;: &#39;us3r&#39;}</span>
+
+<span class="n">key_object</span> <span class="o">=</span> <span class="n">Key</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">654321</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">key_object</span><span class="p">)</span>
+<span class="c1"># Key(name=&#39;us3r login credentials&#39;, type=&#39;Credential&#39;)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">key_object</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">)</span>
+<span class="c1"># {&#39;contract&#39;: &lt;CompAnalytics.Contracts.Property object at 0x000001CE65B37300&gt;,</span>
+<span class="c1">#  &#39;Password&#39;: &#39;pa55w0rd&#39;,</span>
+<span class="c1">#  &#39;UserName&#39;: &#39;Us3rNam3&#39;}</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObject.clear_registration">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clear_registration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.key.models.KeyObject.clear_registration" title="Permalink to this definition"></a></dt>
+<dd><p>Used to unregister the currently registered KeyObject.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">KeyObject</span><span class="o">.</span><span class="n">clear_registration</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObject.id">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.id" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the contract member, Id.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObject.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.name" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the contract member, Name.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObject.register">
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.key.models.KeyObject.register" title="Permalink to this definition"></a></dt>
+<dd><p>Used to register a class instance of KeyObject that is used implicitly across the
+kernel. Only one KeyObject can registered at a time.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">key_object</span> <span class="o">=</span> <span class="n">KeyObject</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
+<span class="n">key_object</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">save</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>save</strong> – If true, saves configuration in local composapy.ini file. Default is false.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObject.type">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.type" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the contract member, DisplayType.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObjectException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObjectException</span></span><a class="headerlink" href="#composapy.key.models.KeyObjectException" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="composapy.key.models.KeyObjectRegistrationException">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObjectRegistrationException</span></span><a class="headerlink" href="#composapy.key.models.KeyObjectRegistrationException" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="composapy.key.models.get_key_object">
+<span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">get_key_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raise_exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#composapy.key.models.KeyObject" title="composapy.key.models.KeyObject"><span class="pre">KeyObject</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#composapy.key.models.get_key_object" title="Permalink to this definition"></a></dt>
+<dd><p>Used to get the current registered KeyObject.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.key.api</span> <span class="kn">import</span> <span class="n">get_key_object</span>
+<span class="n">KeyObject</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+<span class="n">key_object</span> <span class="o">=</span> <span class="n">get_key_object</span><span class="p">()</span>  <span class="c1"># can use this anywhere on running kernel</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>the currently registered key object</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Key" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="composapy-key-api.html" class="btn btn-neutral float-right" title="Api" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Composable Analytics, Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
