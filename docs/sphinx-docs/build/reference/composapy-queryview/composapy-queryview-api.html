@@ -120,6 +120,27 @@ connect with key as argument to run a query.</p>
 </dl>
 </dd></dl>
 
+<<<<<<< HEAD
+=======
+<dl class="py method">
+<dt class="sig sig-object py" id="composapy.queryview.api.QueryView.run">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qv_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pd.DataFrame</span></span></span><a class="headerlink" href="#composapy.queryview.api.QueryView.run" title="Permalink to this definition"></a></dt>
+<dd><p>Run a saved QueryView resource, returning the results as a Pandas DataFrame. Will use
+the currently saved QueryView query and connection settings. Note, this will not use your
+currently registered key as the query connection settings.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.queryview.api</span> <span class="kn">import</span> <span class="n">QueryView</span>
+
+<span class="n">df</span> <span class="o">=</span> <span class="n">QueryView</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>qv_id</strong> – QueryView id, can be found in the url of your QueryView resource.</p>
+</dd>
+</dl>
+</dd></dl>
+
+>>>>>>> 70b6c3657d4bcbf9246755ab0ef74b1488d12de8
 </dd></dl>
 
 </section>
