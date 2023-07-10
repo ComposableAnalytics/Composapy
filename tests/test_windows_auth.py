@@ -9,6 +9,7 @@ from composapy.auth import AuthMode
 from composapy.dataflow.api import DataFlow
 from composapy.config import get_config_session, read_config
 
+
 from CompAnalytics.Contracts import FileReference
 
 if TYPE_CHECKING:
@@ -73,6 +74,20 @@ def test_external_input_table(
         table.Headers
     )
     assert dataflow_run.modules.first().result.value.SqlQuery == table.SqlQuery
+
+
+@pytest.mark.parametrize(
+    "dataflow_object",
+    [("Windows", "external_input_table.json")],
+    indirect=True,
+)
+def test_external_input_pandas_df(dataflow_object: DataFlowObject):
+    df = pd.DataFrame(data={"A": [11, 12, 13], "B": ["yes", "no", "maybe"]})
+    dataflow_run = dataflow_object.run(external_inputs={"TableInput": df})
+
+    table = dataflow_run.modules.first().result.value
+    assert list(table.Headers) == list(df.columns)
+    assert table.to_pandas().equals(df)
 
 
 @pytest.mark.parametrize("file_path_string", ["external_input_file.txt"], indirect=True)

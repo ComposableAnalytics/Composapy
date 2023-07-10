@@ -46,7 +46,7 @@ def execute_notebook(
     _inject_notebook(_nb, serialized_return_values_path)
 
     # write temporary file to execute notebook
-    with open(temp_nb_path, "w") as _file:
+    with open(temp_nb_path, "w", encoding="utf-8") as _file:
         nbformat.write(_nb, _file)
 
     # used as current working directory when running notebook

@@ -1,4 +1,5 @@
 from __future__ import annotations
+import pandas as pd
 from typing import Optional, Tuple, Dict
 
 from composapy.decorators import session_required
@@ -8,6 +9,7 @@ from composapy.dataflow.io import upload_files_as_external_input
 from composapy.mixins import (
     ObjectSetMixin,
 )
+from composapy.patch.table import to_table
 
 from CompAnalytics import Contracts
 
@@ -355,18 +357,23 @@ class DataFlowObject:
             elif module.contract.ModuleType.ExecutionType.IsSubclassOf(
                 ExternalInputExecutor
             ):
-                # if execution type is derived from external input executor
                 input_name = module.contract.ModuleInputs["Name"].ValueObj
-                if input_name in external_inputs.keys():
-                    module.contract.ModuleInputs["Input"].ValueObj = external_inputs[
-                        input_name
-                    ]
+                if module.type == ExternalInput.TABLE and isinstance(
+                    external_inputs[input_name], pd.DataFrame
+                ):
+                    # conversion of pandas dataframe to composable table occurs after context creation
+                    pass
+                else:
+                    if input_name in external_inputs.keys():
+                        module.contract.ModuleInputs[
+                            "Input"
+                        ].ValueObj = external_inputs[input_name]
 
     def _post_context_setup_steps(
         self, external_inputs: dict, execution_handle: Contracts.ExecutionHandle
     ):
         """Updates necessary post-context setup item for each individual module, such as
-        uploading any needed files before running the execution context."""
+        uploading any needed files or converting any pandas dataframes to tables before running the execution context."""
         if not external_inputs:
             return
 
@@ -375,3 +382,14 @@ class DataFlowObject:
                 upload_files_as_external_input(
                     execution_handle, module, external_inputs
                 )
+            elif module.contract.ModuleType.Name == ExternalInput.TABLE:
+                input_name = module.contract.ModuleInputs["Name"].ValueObj
+                df = external_inputs[input_name]
+                if isinstance(df, pd.DataFrame):
+                    module_handle = module.contract.UiHandle
+                    module_input_handle = module.contract.ModuleInputs["Input"].UiHandle
+                    handles = {
+                        "ModuleHandle": module_handle,
+                        "ModuleInputHandle": module_input_handle,
+                    }
+                    to_table(df, execution_handle, external_input_handles=handles)

@@ -42,6 +42,7 @@ from composapy.auth import AuthMode
 
 from CompAnalytics import Contracts
 from CompAnalytics.Contracts import Property
+from CompAnalytics.Contracts.QueryView import LiteralInput, SearchInput
 from CompAnalytics.Extension.Sql import SqlConnectionSettings
 from System import Uri, Guid
 from CompAnalytics.Utils import WinAuthUtils
@@ -270,3 +271,54 @@ def file_ref(request) -> Contracts.FileReference:
 @pytest.fixture
 def queryview_driver(default_health_key_object) -> QueryViewObject:
     yield QueryView.driver(default_health_key_object)
+
+
+@pytest.fixture
+def queryview_input_driver(default_health_key_object) -> QueryViewObject:
+    driver = QueryView.driver(default_health_key_object)
+
+    # set up literal/search inputs
+    race_input = LiteralInput()
+    race_input.DisplayName = "raceLiteralInput"
+    race_input.TemplateName = "raceLiteralInput"
+    race_input.DataType = "String"
+    race_input.Default = "White"
+
+    red_input = LiteralInput()
+    red_input.DisplayName = "redLiteralInput"
+    red_input.TemplateName = "redLiteralInput"
+    red_input.DataType = "Boolean"
+    red_input.Default = "true"
+
+    age_input = SearchInput()
+    age_input.DisplayName = "ageSearchInput"
+    age_input.TemplateName = "ageSearchInput"
+    age_input.DataType = "Number"
+    age_input.Column = "age"
+    age_input.Default = "50"
+    age_input.DefaultOperator = ">"
+
+    gender_input = SearchInput()
+    gender_input.DisplayName = "genderSearchInput"
+    gender_input.TemplateName = "genderSearchInput"
+    gender_input.DataType = "String"
+    gender_input.Column = "gender"
+    gender_input.Default = "M"
+    gender_input.DefaultOperator = "="
+    gender_input.OperatorOptional = True
+
+    date_input = SearchInput()
+    date_input.DisplayName = "dateSearchInput"
+    date_input.TemplateName = "dateSearchInput"
+    date_input.DataType = "Date"
+    date_input.Column = "visit_date"
+    date_input.DefaultOperator = "<"
+    date_input.OperatorOptional = True
+
+    driver.contract.LiteralInputs.Add(race_input)
+    driver.contract.LiteralInputs.Add(red_input)
+    driver.contract.SearchInputs.Add(age_input)
+    driver.contract.SearchInputs.Add(gender_input)
+    driver.contract.SearchInputs.Add(date_input)
+
+    yield driver

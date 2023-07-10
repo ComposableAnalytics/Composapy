@@ -23,6 +23,7 @@ Composapy.
   - [Create and Connect to a QueryView Driver](#create-and-connect-to-a-queryview-driver)
   - [Run a Query](#run-a-query)
   - [SQL Magic Commands](#sql-magic-commands)
+  - [Run a Saved QueryView](#run-a-saved-queryview)
 - [Additional Information](#additional-information)
 
 ## Session
@@ -197,6 +198,30 @@ from
     some_table
 where
     some_id is not null
+```
+
+`%%sql` cell magic also supports options to customize the query execution, such as setting a timeout value or capturing the output of the query into a Python variable. Run %%sql? for detailed documentation.
+
+
+### Run a Saved QueryView
+
+To run a saved QueryView, you can retrieve the ID in the QueryView's URL and invoke the static `run` method without needing to create a driver object.
+
+```python
+from composapy.queryview.api import QueryView
+
+QueryView.run(123456) # returns a Pandas DataFrame with the query results
+```
+
+If the QueryView has literal or filter inputs, you can optionally pass values and operators to the `run` method using the `inputs` argument. This argument must be a dictionary whose keys are the display name of the input. There are two possible formats for the dictionary values, depending on the kind of input:
+
+1. [LITERAL, FILTER] A single Python primitive (`int`, `bool`, `str`, `float`). The default operator will be used for filter inputs in this case.
+2. [FILTER] A tuple of size two in the form `(val, operator)` where `val` is the primitive input value and `operator` is one of the acceptable QueryView input operators (=, !=, >, <, >=, <=, LIKE)
+
+Note that multi-choice inputs are not currently supported. This feature will be added in a subsequent version of Composapy.
+
+```python
+QueryView.run(123456, inputs={"displayName1": "val1", "displayName2": (100, "!=")})
 ```
 
 ## Additional Information

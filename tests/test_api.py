@@ -121,3 +121,20 @@ def test_external_input_file(dataflow_object: DataFlowObject, file_path_string: 
     )
     # my IDE automatically adds \r\n, so I just leave it that way in test
     assert str(run.modules.get(name="File Reader").result.value) == "success\r\n"
+
+
+@pytest.mark.parametrize(
+    "dataflow_object",
+    [
+        ("Token", "external_input_table.json"),
+        ("Form", "external_input_table.json"),
+    ],
+    indirect=True,
+)
+def test_external_input_pandas_df(dataflow_object: DataFlowObject):
+    df = pd.DataFrame(data={"A": [11, 12, 13], "B": ["yes", "no", "maybe"]})
+    dataflow_run = dataflow_object.run(external_inputs={"TableInput": df})
+
+    table = dataflow_run.modules.first().result.value
+    assert list(table.Headers) == list(df.columns)
+    assert table.to_pandas().equals(df)

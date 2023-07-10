@@ -33,7 +33,7 @@
 Windows auth is required to run the test suite for Composapy.
 
 1. Windows Key -> search for "turn windows features on or off"
-2. `World Wide Web Services` -> `Security` -> Ensure that `Windows Authentication` is checked
+2. `Internet Information Services` -> `World Wide Web Services` -> `Security` -> Ensure that `Windows Authentication` is checked
 
 
 ## Python

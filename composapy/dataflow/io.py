@@ -23,7 +23,7 @@ def upload_files_as_external_input(
     module: Module,
     external_inputs: dict,
 ) -> None:
-    """Uploads a file to the runs directory an execution context that has been created but has
+    """Uploads a file to the runs directory in an execution context that has been created but has
     not yet run. Then, add it as an external module input.
 
     Parameters:

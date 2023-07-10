@@ -5,6 +5,7 @@ from composapy.decorators import session_required
 from composapy.session import get_session
 from composapy.key.models import KeyObject, get_key_object
 from composapy.patch.table import MAP_CS_TYPES_TO_PANDAS_TYPES
+from composapy.queryview.const import QV_BOOLEAN_VALUE_MAP
 
 from CompAnalytics import Contracts
 
@@ -31,11 +32,15 @@ class QueryViewObject:
 
     contract: Contracts.QueryView.QueryView
 
-    def __init__(self, contract: Contracts.QueryView):
+    def __init__(self, contract: Contracts.QueryView, timeout=None):
         self.contract = contract
         self._key = get_key_object(raise_exception=False)
         if self._key:
             self.contract.DbConnectionId = self._key.id
+
+        if timeout is None:
+            timeout = 10
+        self.set_driver_timeout(timeout)
 
         properties = [
             item
@@ -70,6 +75,24 @@ class QueryViewObject:
             f"key='{self._key.name if self._key else 'None'}')"
         )
 
+    @staticmethod
+    def _validate_timeout_value(value):
+        if not isinstance(value, int):
+            raise TypeError(
+                f"Timeout value must be of type integer, not '{type(value)}'"
+            )
+        if value <= 0:
+            raise ValueError("Timeout value must be non-negative.")
+
+    def get_driver_timeout(self):
+        """Get the current QueryTimeout value for the query driver (in seconds)."""
+        return self.contract.QueryTimeout
+
+    def set_driver_timeout(self, timeout: int):
+        """Set the QueryTimeout value for the query driver (in seconds)."""
+        QueryViewObject._validate_timeout_value(timeout)
+        self.contract.QueryTimeout = timeout
+
     def connect(self, key: KeyObject) -> None:
         """Set new key and update contract DbConnectionId.
 
@@ -91,7 +114,7 @@ class QueryViewObject:
         self.contract.DbConnectionId = self._key.id
 
     @session_required
-    def run(self, query: str) -> pd.DataFrame:
+    def run(self, query: str, timeout: int = None) -> pd.DataFrame:
         """Run a query on the connected database, returning a Pandas DataFrame of the results.
 
         .. highlight:: python
@@ -100,6 +123,7 @@ class QueryViewObject:
             df = driver.run("select column_name_1, column_name_2 from my_table")
 
         :param query: The query string
+        :param timeout: If specified, this integer timeout (in seconds) will be used as the QueryTimeout value, overriding the default timeout and the timeout specified when the driver was created.
         """
         if not self._key:
             raise KeyRequiredException(
@@ -109,7 +133,16 @@ class QueryViewObject:
         queryview_service = get_session().queryview_service
         self.contract.QueryString = query
 
-        qv_result = queryview_service.RunQueryDynamic(self.contract)
+        try:
+            # if a timeout is supplied at runtime, override the timeout set when the driver was created
+            old_timeout = self.get_driver_timeout()
+            if timeout is not None:
+                self.set_driver_timeout(timeout)
+
+            qv_result = queryview_service.RunQueryDynamic(self.contract)
+        finally:
+            # restore the timeout to the previously set value after query execution or if the new value is malformed
+            self.set_driver_timeout(old_timeout)
 
         if qv_result.Error is not None:
             raise QueryException(qv_result.Error)
@@ -128,10 +161,22 @@ class QueryViewObject:
                     column_definition.Type
                 ]
         df = pd.DataFrame(qv_result.Data, columns=column_names)
+
+        # The queryview result can have "True" or "False" values in boolean columns
+        # df.astype() will map both of these values to Python's True because they are "truthy" (non-empty strings)
+        # To avoid data loss, we manually map these values to Python bools before calling df.astype()
+        bool_columns = [col for col in column_dtypes if column_dtypes[col] == "bool"]
+        for col in bool_columns:
+            df[col] = df[col].map(QV_BOOLEAN_VALUE_MAP)
+
         return df.astype(column_dtypes)
 
 
 class QueryException(Exception):
+    pass
+
+
+class QueryInputException(Exception):
     pass
 
 
