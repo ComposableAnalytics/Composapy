@@ -1,0 +1,26 @@
+#python crap
+__pycache__/
+
+#IDE settings
+.pytest_cache/
+.vscode/
+.idea/
+
+#environment specific settings
+*.local.env
+*.test.env
+*.setup.env
+
+#binding config file, doesn't belong in project directory
+python.exe.config
+
+#build resource
+*/composapy.egg-info/*
+composapy.egg-info/*
+dist/*
+.tox/*
+build/*
+dev/*
+
+#test artifacts
+tests/.local_files

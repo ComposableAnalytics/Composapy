@@ -1,0 +1,301 @@
+{
+  "__type": "Application:#CompAnalytics.Contracts",
+  "AvoidSavingRuns": false,
+  "CanvasComments": [],
+  "CloneCount": 0,
+  "ConnectionIdToOutputHandle": [],
+  "ContinueOnError": false,
+  "CreatedBy": null,
+  "CreatedById": null,
+  "CreatedDateTime": null,
+  "DepthFirstExecution": false,
+  "Description": "",
+  "EmailOnError": false,
+  "ErrorAtCompletion": false,
+  "ErrorEmail": null,
+  "ErrorHandlingAppId": null,
+  "HighestReview": "",
+  "Id": null,
+  "LowestReview": "",
+  "ModifiedById": "552f635c-785d-4ed6-bf61-f6b71692e610",
+  "ModifiedDateTime": {
+    "__type": "DateTimeOffset:#System",
+    "DateTime": "\/Date(1623685004731)\/",
+    "OffsetMinutes": 0
+  },
+  "Modules": [
+    {
+      "__type": "Module:#CompAnalytics.Contracts",
+      "AccumulatedValues": null,
+      "CacheResults": false,
+      "ContinueOnError": null,
+      "ControlledModuleHandles": null,
+      "ControllingCycleHandles": null,
+      "Failed": false,
+      "ForceExecution": false,
+      "HasExecuted": false,
+      "HasInputConnections": false,
+      "HasOutputConnections": false,
+      "Id": null,
+      "IsMinimized": false,
+      "IterationCount": 0,
+      "LastRunId": null,
+      "Location": {
+        "__type": "Location:#CompAnalytics.Contracts",
+        "Id": null,
+        "Width": 180,
+        "X": 706,
+        "Y": 243
+      },
+      "LoopComplete": false,
+      "ModuleInputs": [
+        {
+          "__type": "ModuleInputOfTableBWskODFT:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "Table",
+          "ArgumentTypeName": "CompAnalytics.Contracts.Tables.Table",
+          "ArgumentTypeStr": "CompAnalytics.Contracts.Tables.Table, CompAnalytics.Contracts, Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9",
+          "Description": "Table to convert to JSON",
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": false,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": 1,
+          "ModuleConnections": [],
+          "Name": "Table",
+          "NestedRefModuleId": null,
+          "NestedRefModuleUiHandle": null,
+          "UiHandle": "input16",
+          "AllowNulls": null,
+          "ControlParameters": null,
+          "PropertyId": null,
+          "PropertyName": null,
+          "ValueObj": {
+            "__type": "Table:#CompAnalytics.Contracts.Tables",
+            "Columns": [
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "Id",
+                "Type": "INTEGER"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "InstanceListId",
+                "Type": "INTEGER"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "AclId",
+                "Type": "INTEGER"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "CreatedById",
+                "Type": "GUID"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "CreatedByUserName",
+                "Type": "VARCHAR"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "CreatedDateTime",
+                "Type": "DATETIMEOFFSET"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "FormGender_Id",
+                "Type": "INTEGER"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemString",
+                "Type": "VARCHAR"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemInt16",
+                "Type": "INT"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemInt32",
+                "Type": "INTEGER"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemInt64",
+                "Type": "BIGINT"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemDouble",
+                "Type": "DOUBLE"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemDecimal",
+                "Type": "DOUBLE"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemSingle",
+                "Type": "FLOAT"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemBoolean",
+                "Type": "BOOLEAN"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemGuid",
+                "Type": "GUID"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "SystemDateTimeOffset",
+                "Type": "DATETIMEOFFSET"
+              },
+              {
+                "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+                "Name": "a",
+                "Type": "VARCHAR"
+              }
+            ],
+            "Headers": [
+              "Id",
+              "InstanceListId",
+              "AclId",
+              "CreatedById",
+              "CreatedByUserName",
+              "CreatedDateTime",
+              "FormGender_Id",
+              "SystemString",
+              "SystemInt16",
+              "SystemInt32",
+              "SystemInt64",
+              "SystemDouble",
+              "SystemDecimal",
+              "SystemSingle",
+              "SystemBoolean",
+              "SystemGuid",
+              "SystemDateTimeOffset",
+              "a"
+            ],
+            "RootExecutionHandle": {
+              "__type": "ExecutionHandle:#CompAnalytics.Contracts",
+              "AppId": null,
+              "HandleId": "58172a34-afd1-454d-82db-7290b46d1353",
+              "Id": 140804
+            },
+            "SqlQuery": "SELECT * FROM [499013cd-d94a-49ce-a219-3bde500747a5]",
+            "TableName": "499013cd-d94a-49ce-a219-3bde500747a5"
+          }
+        },
+        {
+          "__type": "ModuleInputOfboolean:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "Boolean",
+          "ArgumentTypeName": "System.Boolean",
+          "ArgumentTypeStr": "System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "Description": "If checked, output will include duplicate header strings to make output more usable",
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": 1,
+          "ModuleConnections": [],
+          "Name": "Indexable",
+          "NestedRefModuleId": null,
+          "NestedRefModuleUiHandle": null,
+          "UiHandle": "input17",
+          "AllowNulls": null,
+          "ControlParameters": {
+            "__type": "ControlParameters:#CompAnalytics.Extension.Contracts",
+            "ControlType": "CheckBoxControl"
+          },
+          "PropertyId": null,
+          "PropertyName": null,
+          "ValueObj": true
+        }
+      ],
+      "ModuleOutputs": [
+        {
+          "__type": "ModuleOutputOfstring:#CompAnalytics.Contracts",
+          "ArgumentTypeFriendlyName": "String",
+          "ArgumentTypeName": "System.String",
+          "ArgumentTypeStr": "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089",
+          "Description": "Converted JSON string",
+          "Id": null,
+          "IsCollection": false,
+          "IsPrimitive": true,
+          "LinkedModuleCandidates": null,
+          "MaxConnections": -1,
+          "ModuleConnections": [],
+          "Name": "Json",
+          "NestedRefModuleId": null,
+          "NestedRefModuleUiHandle": null,
+          "UiHandle": "output3",
+          "BaseTypes": [
+            "System.IComparable",
+            "System.ICloneable",
+            "System.IConvertible",
+            "System.Collections.IEnumerable",
+            "System.IComparable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Collections.Generic.IEnumerable`1[[System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.IEquatable`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]",
+            "System.Object"
+          ],
+          "IsSet": true,
+          "ResultId": null,
+          "ValueObj": null
+        }
+      ],
+      "ModuleType": {
+        "__type": "ModuleType:#CompAnalytics.Contracts",
+        "CachingDisabled": false,
+        "Category": "tables",
+        "Deprecated": false,
+        "Description": "Serializes a table as a JSON string",
+        "DisplayName": null,
+        "Enabled": false,
+        "Icon": "Icons.table.png",
+        "Id": 424,
+        "IsViableCacheModule": true,
+        "Iterable": false,
+        "LoopTerminating": false,
+        "Name": "Table to JSON",
+        "Namespace": "edu.mit.ll.companalytics",
+        "Streaming": false,
+        "Type": "CompAnalytics.Extension.Tables.Modules.TableToJson, CompAnalytics.Extension.Tables, Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9",
+        "Valid": false,
+        "Version": 1,
+        "Width": 150
+      },
+      "Name": "Table to JSON",
+      "NestedRefAppId": null,
+      "PinResults": false,
+      "ProgressStats": null,
+      "RequestingExecution": true,
+      "RetryCount": 0,
+      "RetryDelay": "PT0S",
+      "RunReuseTimeoutMS": 0,
+      "Skipped": false,
+      "UiHandle": "module873609ae-cd85-4fff-9de7-ae1b104cd1ef",
+      "Version": 1
+    }
+  ],
+  "Name": "",
+  "OriginalAppId": null,
+  "Owner": null,
+  "ParallelExecution": false,
+  "ReceiveProgressEvents": true,
+  "ReceiveTraceEvents": true,
+  "ReferencedAppCount": 0,
+  "ReferringAppCount": 0,
+  "ReviewAverage": 0,
+  "ReviewCount": 0,
+  "ShowRealTimeOutputs": true,
+  "Tags": [],
+  "WireType": null
+}
