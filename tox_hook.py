@@ -26,6 +26,7 @@ from _const import (
     DATALAB_DLL_DIR,
     COMPOSABLE_TESTDATA_COMPOSAPY_DIR,
     DATALABSERVICE_WHEELS_DIR,
+    _DATALAB_SUPPORTED_PYTHON_VERSIONS,
 )
 
 os.environ["DATALAB_DLL_DIR"] = str(DATALAB_DLL_DIR)
@@ -163,7 +164,7 @@ def _add_test_data_tfs() -> None:
     print(colored("done.", "green"))
 
 
-def upgrade_wheels(new_wheels_dir: Path):
+def upgrade_wheels(new_wheels_dir: Path, python_versions: list):
     """Loads the wheels tracked by tfs in the datalabservice static wheels directory in addition
     to the wheels at the specified new_wheels_dir location and attempts to match any previous
     wheel packages before upgrading."""
@@ -192,12 +193,12 @@ def upgrade_wheels(new_wheels_dir: Path):
             tfs_wheel=tfs_wheels.get(key),
             local_wheel=local_wheels.get(key),
             new_wheel=val,
-        ).make_upgrade()
+        ).make_upgrade(python_versions)
 
 
 def upgrade_composapy_wheel() -> None:
     wheel_dir = COMPOSAPY_ROOT_DIR.joinpath(".tox", "dist")
-    upgrade_wheels(wheel_dir)
+    upgrade_wheels(wheel_dir, _DATALAB_SUPPORTED_PYTHON_VERSIONS)
 
 
 if __name__ == "__main__":
@@ -223,15 +224,18 @@ if __name__ == "__main__":
     # tox.ini manages the initial pip wheels download, which then passes
     # the path of the downloaded wheels to option.
     elif "upgrade-wheels" in arg:
-        if not len(sys.argv) == 3:
-            raise Exception(
-                "Must include path to directory where wheels are downloaded."
-            )
+        raise NotImplementedError(
+            "Do not use this tox command. It is undergoing development to better support multiple Python versions."
+        )
+        # if not len(sys.argv) == 3:
+        #     raise Exception(
+        #         "Must include path to directory where wheels are downloaded."
+        #     )
 
-        temp_wheels_dir = Path(sys.argv[2])
-        temp_wheels_dir.mkdir(parents=True, exist_ok=True)
+        # temp_wheels_dir = Path(sys.argv[2])
+        # temp_wheels_dir.mkdir(parents=True, exist_ok=True)
 
-        upgrade_wheels(temp_wheels_dir)
+        # upgrade_wheels(temp_wheels_dir)
 
     else:
         print(f"{arg} is not a valid option.")

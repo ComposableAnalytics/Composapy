@@ -32,7 +32,9 @@ class QueryViewObject:
 
     contract: Contracts.QueryView.QueryView
 
-    def __init__(self, contract: Contracts.QueryView, timeout=None):
+    def __init__(
+        self, contract: Contracts.QueryView, timeout=None, validate_query=False
+    ):
         self.contract = contract
         self._key = get_key_object(raise_exception=False)
         if self._key:
@@ -41,6 +43,9 @@ class QueryViewObject:
         if timeout is None:
             timeout = 10
         self.set_driver_timeout(timeout)
+
+        QueryViewObject._validate_vq_value(validate_query)
+        self.validate_query = validate_query
 
         properties = [
             item
@@ -81,8 +86,15 @@ class QueryViewObject:
             raise TypeError(
                 f"Timeout value must be of type integer, not '{type(value)}'"
             )
-        if value <= 0:
+        if value < 0:
             raise ValueError("Timeout value must be non-negative.")
+
+    @staticmethod
+    def _validate_vq_value(value):
+        if not isinstance(value, bool):
+            raise TypeError(
+                f"Validate Query parameter must be of type bool, not '{type(value)}'"
+            )
 
     def get_driver_timeout(self):
         """Get the current QueryTimeout value for the query driver (in seconds)."""
@@ -114,7 +126,9 @@ class QueryViewObject:
         self.contract.DbConnectionId = self._key.id
 
     @session_required
-    def run(self, query: str, timeout: int = None) -> pd.DataFrame:
+    def run(
+        self, query: str, timeout: int = None, validate_query: bool = None
+    ) -> pd.DataFrame:
         """Run a query on the connected database, returning a Pandas DataFrame of the results.
 
         .. highlight:: python
@@ -124,6 +138,7 @@ class QueryViewObject:
 
         :param query: The query string
         :param timeout: If specified, this integer timeout (in seconds) will be used as the QueryTimeout value, overriding the default timeout and the timeout specified when the driver was created.
+        :param validate_query: If specified, this boolean indicates whether to apply a pre-compilation step to validate SQL queries run with the driver, overriding the validation setting specified when the driver was created. This often provides more informative error output but can be disabled for maximal query performance.
         """
         if not self._key:
             raise KeyRequiredException(
@@ -132,6 +147,24 @@ class QueryViewObject:
 
         queryview_service = get_session().queryview_service
         self.contract.QueryString = query
+
+        # query validation setting specified at runtime takes priority over driver-level setting
+        if validate_query is not None:
+            QueryViewObject._validate_vq_value(validate_query)
+        else:
+            validate_query = self.validate_query
+
+        # optionally pre-compile query to provide better error output
+        if validate_query:
+            opts = Contracts.QueryView.ValidationOptions()
+            result = queryview_service.CompileQuery(self.contract, opts)
+            error_msgs = [
+                f"{e.Message} ({e.Start.LineNumber}, {e.Start.ColumnNumber})"
+                for e in result.Errors
+                if not e.IsWarning
+            ]
+            if len(error_msgs) > 0:
+                raise QueryException("\n".join(error_msgs))
 
         try:
             # if a timeout is supplied at runtime, override the timeout set when the driver was created
@@ -165,9 +198,9 @@ class QueryViewObject:
         # The queryview result can have "True" or "False" values in boolean columns
         # df.astype() will map both of these values to Python's True because they are "truthy" (non-empty strings)
         # To avoid data loss, we manually map these values to Python bools before calling df.astype()
-        bool_columns = [col for col in column_dtypes if column_dtypes[col] == "bool"]
+        bool_columns = [col for col in column_dtypes if column_dtypes[col] == "boolean"]
         for col in bool_columns:
-            df[col] = df[col].map(QV_BOOLEAN_VALUE_MAP)
+            df[col] = df[col].map(lambda x: pd.NA if not x else QV_BOOLEAN_VALUE_MAP[x])
 
         return df.astype(column_dtypes)
 

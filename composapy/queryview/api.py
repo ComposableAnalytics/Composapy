@@ -20,7 +20,9 @@ class QueryView:
     """A wrapper class for queryview operations."""
 
     @staticmethod
-    def driver(key: KeyObject = None, timeout: int = None) -> QueryViewObject:
+    def driver(
+        key: KeyObject = None, timeout: int = None, validate_query: bool = False
+    ) -> QueryViewObject:
         """Retrieve a queryview driver object, key is optional argument, but will need to call
         connect with key as argument to run a query.
 
@@ -44,8 +46,9 @@ class QueryView:
 
         :param key: KeyObject retrieved with the Composable Key api
         :param timeout: optional integer timeout value (in seconds) for the query driver. This will apply to all queries executed with this driver unless an alternate timeout value is specified when calling the driver.run() method
+        :param validate_query: boolean indicating whether to apply a pre-compilation step to validate SQL queries run with the driver. This often provides more informative error output but can be disabled for maximal query performance.
         """
-        qv_object = QueryViewObject(QueryView_(), timeout)
+        qv_object = QueryViewObject(QueryView_(), timeout, validate_query)
         if key:
             qv_object.connect(key)
         return qv_object

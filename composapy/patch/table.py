@@ -59,32 +59,37 @@ class TablePickleBehavior(Table):
         return ContractSerializer.Deserialize[Table](args[0])
 
 
+# Used for QueryView result to Pandas Dataframe conversion
 MAP_CS_TYPES_TO_PANDAS_TYPES = {
     "System.String": "object",
-    "System.Int64": "Int64",
-    "System.Int32": "Int64",
-    "System.Int16": "Int64",
-    "System.Byte": "Int64",
+    "System.Int64": "Int64",  # alias for pd.Int64DType(), a nullable int64
+    "System.Int32": "Int32",
+    "System.Int16": "Int16",
+    "System.Byte": "UInt8",
     "System.Double": "float64",
     "System.Decimal": "float64",
-    "System.Single": "float64",
-    "System.Boolean": "bool",
+    "System.Single": "float32",
+    "System.Boolean": "boolean",
     "System.Guid": "object",
+    "System.DateTime": "datetime64[ns]",
+    "System.DateTimeOffset": "datetime64[ns]",
 }
+
+# Used for Composable table to Pandas Dataframe conversion
 MAP_STRING_TYPES_TO_PANDAS_TYPES = {
     "CHAR": "object",
-    "INTEGER": "int64",
-    "INT": "int64",
-    "BIGINT": "int64",
-    "INT64": "int64",
-    "UNSIGNED BIG INT": "int64",
+    "INTEGER": "Int64",
+    "INT": "Int64",
+    "BIGINT": "Int64",
+    "INT64": "Int64",
+    "UNSIGNED BIG INT": "UInt64",
     "VARCHAR": "object",
     "STRING": "object",
     "TEXT": "object",
     "FLOAT": "float64",
     "DOUBLE": "float64",
     "REAL": "float64",
-    "BOOLEAN": "bool",
+    "BOOLEAN": "boolean",
     "DATETIME": "datetime64[ns]",
     "DATETIMEOFFSET": "datetime64[ns]",
     "BLOB": "object",
@@ -93,6 +98,7 @@ MAP_STRING_TYPES_TO_PANDAS_TYPES = {
 }
 
 
+# Used for Pandas Dataframe to Composable table conversion
 def _as_csharp_type_str(type_: any) -> str:
     """Maps a Python/numpy/pandas type to its corresponding C# type."""
     if type_ in (np.int8, pd.Int8Dtype):
@@ -154,7 +160,12 @@ def _init_cs_list(type_, data, f=lambda x: x):
 
 @session_required
 def to_table(df, execution_handle, external_input_handles=None):
-    """Creates a composapy table for the given pandas dataframe and returns the table contract."""
+    """Creates a Composable table for the given pandas dataframe and returns the table contract."""
+    if df.empty and df.shape[1] == 0:
+        raise ValueError(
+            "DataFrame must have at least one column to be converted into a Composable table."
+        )
+
     if not _has_default_range_index(df):
         df = df.reset_index(drop=False)
 
@@ -169,7 +180,7 @@ def to_table(df, execution_handle, external_input_handles=None):
             [f"'{name}'" for name in column_names if column_names.count(name) > 1]
         )
         raise ValueError(
-            f"Cannot create table from dataframe with duplicate column name(s): "
+            f"Cannot create table from DataFrame with duplicate column name(s): "
             + ", ".join(dups)
         )
 

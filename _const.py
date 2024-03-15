@@ -39,6 +39,9 @@ TF_EXE_PATH = Path(dotenv_values(".local.env").get("TF_EXE_PATH"))
 XML_NAMESPACE = "http://schemas.microsoft.com/developer/msbuild/2003"  # for xml nodes
 
 # Dev
-_DEV_COMPOSABLE_PYTHON_EXE = Path(
-    "C:/dataLabsArtifacts/python/python38/Scripts/python.exe"
-)
+_DATALAB_SUPPORTED_PYTHON_VERSIONS = ["py38", "py311"]
+_DEV_COMPOSABLE_PYTHON_EXE = {
+    "py38": "C:/dataLabsArtifacts/python/python38/Scripts/python.exe",
+    "py311": "C:/dataLabsArtifacts/python/python311/Scripts/python.exe",
+}
+_DEV_REQUIREMENTS_TXT = {"py38": "requirements38.txt", "py311": "requirements311.txt"}

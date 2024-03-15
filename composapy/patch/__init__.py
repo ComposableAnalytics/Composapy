@@ -5,6 +5,7 @@ from CompAnalytics.Core import ContractSerializer
 from CompAnalytics.Contracts.Tables import Table
 from CompAnalytics.Contracts import FileReference, ExecutionHandle
 
+
 # patching for papermill translators - defining custom parameter rendering logic for FileReference
 # github docs : https://github.com/nteract/papermill/blob/main/papermill/translators.py
 @classmethod

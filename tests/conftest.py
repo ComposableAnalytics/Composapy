@@ -56,6 +56,27 @@ class InvalidTestConfigError(TestSetupException):
     pass
 
 
+@pytest.fixture(scope="function", autouse=False)
+def dll_exclude(monkeypatch):
+    DATALAB_DLL_DIR = os.getenv("DATALAB_DLL_DIR")
+    temp_dll_subfolder_path = Path(DATALAB_DLL_DIR, "testDllExclude")
+    mock_dll = "CompAnalytics.MockExclude.dll"
+    mock_dll_src_path = Path(os.path.dirname(Path(__file__)), "TestFiles", mock_dll)
+    mock_dll_target_path = temp_dll_subfolder_path.joinpath(mock_dll)
+
+    # setup
+    temp_dll_subfolder_path.mkdir(exist_ok=True)
+    shutil.copyfile(mock_dll_src_path, mock_dll_target_path)
+    monkeypatch.setenv("DATALAB_DLL_DIR_EXCLUDE", str(temp_dll_subfolder_path) + ";")
+
+    yield
+
+    # cleanup
+    mock_dll_target_path.unlink()
+    temp_dll_subfolder_path.rmdir()
+    monkeypatch.delenv("DATALAB_DLL_DIR_EXCLUDE", raising=False)
+
+
 @pytest.fixture(scope="function", autouse=True)
 def _clean_local_files_dir():
     _clean_testing_local_files()

@@ -18,6 +18,7 @@ from _const import (
     DATALABSERVICE_STATIC_DIR,
     DATALABSERVICE_WHEELS_DIR,
     _DEV_COMPOSABLE_PYTHON_EXE,
+    _DEV_REQUIREMENTS_TXT,
     COMPOSAPY_ROOT_DIR,
 )
 
@@ -45,7 +46,8 @@ def grant_permissions(path: Path) -> None:
 
 def tfs_command(cwd: Path, *args) -> str:
     """Refer to link for available commands:
-    https://learn.microsoft.com/en-us/azure/devops/repos/tfvc/use-team-foundation-version-control-commands?view=azure-devops"""
+    https://learn.microsoft.com/en-us/azure/devops/repos/tfvc/use-team-foundation-version-control-commands?view=azure-devops
+    """
     run = subprocess.run([f"{TF_EXE_PATH}", *args], cwd=cwd, capture_output=True)
     if run.returncode > 1:
         raise TfsException(
@@ -62,7 +64,8 @@ def tfs_command(cwd: Path, *args) -> str:
 class TfsFile:
     """Represents the relevant results of the 'info' (aliased to properties in newer versions)
     command on tf.exe:
-    https://learn.microsoft.com/en-us/azure/devops/repos/tfvc/properties-or-info-command?view=azure-devops"""
+    https://learn.microsoft.com/en-us/azure/devops/repos/tfvc/properties-or-info-command?view=azure-devops
+    """
 
     local_path: Path
     server_path: str
@@ -106,7 +109,6 @@ def tfs_files_info() -> List[TfsFile]:
     for local_file_list in file_attr_lists:
         attrs = {}
         for attr_string in local_file_list:
-
             # regex matches the key : val before a newline
             match = re.match(r"^(?P<_key>[^:]+?)\s*:\s*(?P<_value>.*)$", attr_string)
 
@@ -117,7 +119,6 @@ def tfs_files_info() -> List[TfsFile]:
 
         # skip if local_path does not exist or type is not file
         if attrs.get("local_path") and attrs.get("type") == "file":
-
             # updating change to None for sanity reasons
             attrs["change"] = None if attrs["change"] == "none" else attrs["change"]
             local_tfs_files.append(TfsFile(**attrs))
@@ -204,12 +205,13 @@ class LocalWheel:
     def __post_init__(self):
         self.wheel_info = parse_wheel_filename(self.path)
 
-    def add(self) -> None:
+    def add(self, python_versions) -> None:
         self._add_to_static_wheels_dir()
         self._add_to_tfs()
         self._add_to_csproj()
-        self._update_requirements_dot_txt()
-        self._inline_update_python_venv()
+        for py_v in python_versions:
+            self._update_requirements_dot_txt(py_v)
+            self._inline_update_python_venv(py_v)
 
     def _add_to_tfs(self) -> None:
         tfs_command(DATALABSERVICE_WHEELS_DIR, "add", str(self.wheel_info))
@@ -249,8 +251,10 @@ class LocalWheel:
         shutil.copy(self.path, DATALABSERVICE_WHEELS_DIR)
         grant_permissions(DATALABSERVICE_WHEELS_DIR)
 
-    def _update_requirements_dot_txt(self) -> None:
-        req_dot_txt = DATALABSERVICE_STATIC_DIR.joinpath("requirements.txt")
+    def _update_requirements_dot_txt(self, python_version) -> None:
+        req_dot_txt = DATALABSERVICE_STATIC_DIR.joinpath(
+            _DEV_REQUIREMENTS_TXT[python_version]
+        )
 
         # package names use dash instead of underscore for requirements.txt
         project_name = self.wheel_info.project.replace("_", "-")
@@ -272,11 +276,11 @@ class LocalWheel:
         with open(req_dot_txt, "w") as _file:
             _file.writelines(lines)
 
-    def _inline_update_python_venv(self) -> None:
+    def _inline_update_python_venv(self, python_version) -> None:
         composapy_wheel_dist_dir = COMPOSAPY_ROOT_DIR.joinpath(".tox", "dist")
         run = subprocess.run(
             [
-                f"{_DEV_COMPOSABLE_PYTHON_EXE}",
+                f"{_DEV_COMPOSABLE_PYTHON_EXE[python_version]}",
                 "-m",
                 "pip",
                 "install",
@@ -302,14 +306,14 @@ class WheelUpgrade:
     local_wheel: LocalWheel  # used for validation of wheel version
     new_wheel: LocalWheel  # used to add any new wheels
 
-    def make_upgrade(self):
+    def make_upgrade(self, python_versions):
         try:
             # wheel is not tracked on tfs and does not exist in local repo
             if self.tfs_wheel is None and self.local_wheel is None:
                 print(
                     f"Adding {self.new_wheel.wheel_info.project} to project... ", end=""
                 )
-                self.new_wheel.add()
+                self.new_wheel.add(python_versions)
                 print(colored("done.", "green"))
 
             # same version of wheel already exists locally
@@ -332,7 +336,7 @@ class WheelUpgrade:
                 end="",
             )
             self.tfs_wheel.remove()
-            self.new_wheel.add()
+            self.new_wheel.add(python_versions)
             print(colored("done.", "green"))
 
         except:

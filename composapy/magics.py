@@ -31,6 +31,12 @@ def sql(line):
     action="store_true",
     help="Suppress visible output of the magic command. Defaults to False if unspecified.",
 )
+@argument(
+    "-p",  # "p" for pre-compile
+    dest="validate_query",
+    action="store_true",
+    help="Enable the query validation step. This will result in more informative error messages but can be disabled to improve overall performance.",
+)
 @register_cell_magic
 def sql(line, cell):
     from keyword import iskeyword
@@ -39,7 +45,9 @@ def sql(line, cell):
     args = parse_argstring(sql, line)
 
     driver = QueryView.driver()
-    data = driver.run("".join(cell), timeout=args.timeout)
+    data = driver.run(
+        "".join(cell), timeout=args.timeout, validate_query=args.validate_query
+    )
 
     if args.variable is not None:
         name = args.variable

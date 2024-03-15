@@ -78,12 +78,12 @@ def write_config_session(session: Session) -> None:
         "uri": session.uri,
         "auth_mode": session.auth_mode.value,
         "token": session._credentials if session.auth_mode == AuthMode.TOKEN else "",
-        "username": session._credentials[0]
-        if session.auth_mode == AuthMode.FORM
-        else "",
-        "password": session._credentials[1]
-        if session.auth_mode == AuthMode.FORM
-        else "",
+        "username": (
+            session._credentials[0] if session.auth_mode == AuthMode.FORM else ""
+        ),
+        "password": (
+            session._credentials[1] if session.auth_mode == AuthMode.FORM else ""
+        ),
     }
 
     _write_config(config_path, config)

@@ -25,6 +25,7 @@ def _json(self):
 
 FileReference.__json__ = _json
 
+
 # patching copy.deepycopy
 # python docs : https://docs.python.org/3/library/copy.html#copy.deepcopy
 def deep_copy(self, memo):

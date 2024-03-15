@@ -41,7 +41,7 @@ Windows auth is required to run the test suite for Composapy.
 
 ### Download Python
 
-Click [here](https://www.python.org/downloads/release/python-3910/) for the most recent version of 3.9 at time of writing documentation. Add Python to your system path. _Although 3.9 is specifically linked above, you will need to download Python 3.8, 3.9, and 3.10 to run the full suite of tests._
+Click [here](https://www.python.org/downloads/release/python-3910/) for the most recent version of 3.9 at time of writing documentation. Add Python to your system path. _Although 3.9 is specifically linked above, you will need to download Python 3.8, 3.9, 3.10, and 3.11 to run the full suite of tests._
 
 Navigate in command prompt or powershell to the Composapy project directory root folder and verify your python version.
 
@@ -139,6 +139,7 @@ C:\..\Composapy\Composapy> tox
    - Python3.8
    - Python3.9
    - Python3.10
+   - Python3.11
 4. Copy over required artifacts into the DataLabService csproj directory so that they are able to be copied over to DataLabs notebook directories
 5. Compile `docs\composapy-readme.ipynb` into the `README.md`
 6. Compile the docstrings documentation (sphinx-docs) into html for ReadTheDocs (runs `sphinx-build -a -E -b html source build`)
@@ -182,7 +183,7 @@ _The test commands (can be run separately or together by using commas between th
 in a virtual environment of the specified python version._
 
 ```
-C:\..\Composapy\Composapy> tox -e py38-test,py39-test,py310-test
+C:\..\Composapy\Composapy> tox -e py38-test,py39-test,py310-test,py311-test
 ```
 
 1. Build the distribution wheel.
@@ -190,6 +191,7 @@ C:\..\Composapy\Composapy> tox -e py38-test,py39-test,py310-test
    - Python3.8
    - Python3.9
    - Python3.10
+   - Python3.11
 
 **Note**: _Make sure all tests are passing before doing any development on Composapy._
 
@@ -216,6 +218,15 @@ C:\..\Composapy\Composapy> tox -e sync-project
    - Copy pytest test files into the Visual Studio project (for c# tests)
    - Add pytest test files to tfs tracking
 
+
+**Troubleshooting:** 
+Sometimes when running tox commands that involve interacting with TFS, a TFS30063 authorization error occurs. Usually it fails on on `tfs.exe info /recursive wheels`
+**Solution:**
+   1. Open a command prompt in administrator mode.
+   2. Change directory (cd) to `C:\<repo>\Product\CompAnalytics.DataLabService\static` replacing <repo> as needed for your local setup.
+   3. Locate the path to the `TF.exe` file, which you should have set in the `.local.env` file.
+   4. Run `<PATH TO TF.exe>\tf.exe info /recursive wheels`
+   5. A box will pop up prompting you to select a Microsoft account. Use your Composable account to re-authorize TFS. Once the command completes, you can re-run the tox command.
 
 #### Sync Composapy
 
@@ -290,10 +301,12 @@ Do not do your Python development inside of visual studio! You can use one of th
 
 _Upload archives under `/dist/*` to PyPI -- you will be prompted for credentials._
 ```
-(dev) C:\..\Composapy\Composapy> python -m twine upload /.tox/dist/*
+(dev) C:\..\Composapy\Composapy> python -m twine upload .tox/dist/*
 ```
 
 To upload the package on PyPI, you will need a user account for [PyPI](https://pypi.org/). You will also need to request permissions on the project index so that you can upload.
+
+Note that if you have 2-factor authentication enabled on your PyPI account, you will need to use an API token instead of your password. First, log in to PyPI in your browser, go to Account Settings, generate a token, and save it in a safe place. Then, when the above twine command prompts for credentials, use `__token__` as the username and paste in your API token (including the `pypi-` prefix) as the password.
 
 Although tox will take care of packaging for you, you can read up on packaging 
 [here](https://packaging.python.org/en/latest/tutorials/packaging-projects/#packaging-python-projects).

@@ -11,16 +11,12 @@ from CompAnalytics.Core import ContractSerializer
 from CompAnalytics.Contracts import FileReference
 from CompAnalytics.Contracts.Tables import Table
 from System.Collections.Generic import List, KeyValuePair
-
-
-RETURN_VALUES_KEYWORD = "return_values"
-EXECUTION_HANDLE_VAR = "_execution_handle"
+from composapy.notebook.nbr_globals import RETURN_VALUES_KEYWORD, EXECUTION_HANDLE_VAR
 
 
 def execute_notebook(
     input_nb_path: str, serialized_params_path: str
 ) -> nbformat.NotebookNode:
-
     run_directory = Path(serialized_params_path).parent
     serialized_return_values_path = Path(run_directory, "outputs.serialized")
     temp_nb_path = Path(run_directory, "temp.ipynb")

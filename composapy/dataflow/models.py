@@ -365,15 +365,16 @@ class DataFlowObject:
                     pass
                 else:
                     if input_name in external_inputs.keys():
-                        module.contract.ModuleInputs[
-                            "Input"
-                        ].ValueObj = external_inputs[input_name]
+                        module.contract.ModuleInputs["Input"].ValueObj = (
+                            external_inputs[input_name]
+                        )
 
     def _post_context_setup_steps(
         self, external_inputs: dict, execution_handle: Contracts.ExecutionHandle
     ):
         """Updates necessary post-context setup item for each individual module, such as
-        uploading any needed files or converting any pandas dataframes to tables before running the execution context."""
+        uploading any needed files or converting any pandas dataframes to tables before running the execution context.
+        """
         if not external_inputs:
             return
 

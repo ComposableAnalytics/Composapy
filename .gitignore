@@ -1,4 +1,4 @@
-#python crap
+#python cache
 __pycache__/
 
 #IDE settings
@@ -24,3 +24,6 @@ dev/*
 
 #test artifacts
 tests/.local_files
+
+#misc
+.tfignore

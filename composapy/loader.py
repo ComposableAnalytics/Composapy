@@ -44,17 +44,38 @@ def load_init() -> None:
 def _load_dlls() -> None:
     """Uses DATALAB_DLL_DIR to find and load needed dll's in order to create a session."""
     DATALAB_DLL_DIR = os.getenv("DATALAB_DLL_DIR")
+    DATALAB_DLL_DIR_EXCLUDE = os.getenv("DATALAB_DLL_DIR_EXCLUDE")
 
     # necessary non-composable dll's
     add_dll_reference("System.Runtime")
     add_dll_reference("System")
     add_dll_reference("System.Net")
+
     # by adding to sys.path, ensure directory will be available for all users
     sys.path.append(DATALAB_DLL_DIR)
-    DLLs = list(Path(DATALAB_DLL_DIR).rglob("*.dll"))
-    composable_DLLs = [dll for dll in DLLs if dll.name.startswith("CompAnalytics")]
+
+    exclude_dirs = []
+    if DATALAB_DLL_DIR_EXCLUDE:
+        exclude_dirs = [Path(p) for p in DATALAB_DLL_DIR_EXCLUDE.rstrip(";").split(";")]
+
+    composable_DLLs = _find_dlls(Path(DATALAB_DLL_DIR), exclude=exclude_dirs)
     for dll in composable_DLLs:
         add_dll_reference(str(dll))
+
+
+def _find_dlls(path, exclude=[]):
+    """Recursively traverse the given directory to look for CompAnalytics DLLs while ignoring any excluded subfolders."""
+    result = set()
+    for p in path.glob("*"):
+        if p.is_dir() and p not in exclude:
+            result = result.union(_find_dlls(p, exclude=exclude))
+        elif (
+            not p.is_dir()
+            and p.name.lower().startswith("companalytics")
+            and p.suffix == ".dll"
+        ):
+            result.add(p)
+    return result
 
 
 def add_dll_reference(path: str) -> None:

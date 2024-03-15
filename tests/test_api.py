@@ -46,17 +46,45 @@ def test_convert_table_to_pandas(dataflow_object: DataFlowObject):
 
 @pytest.mark.parametrize(
     "dataflow_object",
-    [("Token", "datetimeoffset_table_column_dtypes.json")],
+    [
+        ("Form", "table_column_dtypes.json"),
+        ("Token", "table_column_dtypes.json"),
+    ],
     indirect=True,
 )
-def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject):
-    dataflow_run = dataflow_object.run()
+@pytest.mark.parametrize(
+    "data",
+    [
+        ("Boolean", pd.BooleanDtype(), ["True", "False"]),
+        ("Byte", pd.Int64Dtype(), ["0", "255"]),
+        ("Unsigned Short", pd.Int64Dtype(), ["0", "65535"]),
+        ("Unsigned Int", pd.Int64Dtype(), ["0", "2147483647"]),
+        ("Unsigned Long", pd.UInt64Dtype(), ["0", "9223372036854774784"]),
+        ("Short", pd.Int64Dtype(), ["-32768", "32767"]),
+        ("Int", pd.Int64Dtype(), ["-2147483648", "2147483647"]),
+        ("Long", pd.Int64Dtype(), ["-9223372036854774784", "9223372036854774784"]),
+        ("DatetimeOffset", "datetime64[ns]", ["01/17/2022 06:11:30 PM -05:00"]),
+    ],
+)
+def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject, data):
+    from composapy.patch.table import _init_cs_list
+    from System import Object
 
-    modules = dataflow_run.modules
-    df = modules.first_with_name("Column Type Converter").result.value.to_pandas()
+    ext_inputs = {"ColumnType": data[0], "ColumnData": _init_cs_list(Object, data[2])}
+
+    # the dataflow automatically adds a null value to the column data to test support for nullable types
+    dataflow_run = dataflow_object.run(external_inputs=ext_inputs)
+    df = dataflow_run.modules.first_with_name(
+        "Column Type Converter"
+    ).result.value.to_pandas()
 
     assert type(df) == type(pd.DataFrame())
-    assert str(df.dtypes["DATETIMEOFFSETCOLUMN"]) == "datetime64[ns]"
+    if data[0] == "DatetimeOffset":
+        assert str(df.dtypes["x"]) == data[1]
+    else:
+        assert df.dtypes["x"] == data[1]
+        assert [str(val) for val in df["x"][:-1]] == data[2]
+    assert df["x"].isna().sum() == 1
 
 
 @pytest.mark.parametrize(
@@ -133,8 +161,42 @@ def test_external_input_file(dataflow_object: DataFlowObject, file_path_string: 
 )
 def test_external_input_pandas_df(dataflow_object: DataFlowObject):
     df = pd.DataFrame(data={"A": [11, 12, 13], "B": ["yes", "no", "maybe"]})
+    df = df.astype({"A": "Int64"})
     dataflow_run = dataflow_object.run(external_inputs={"TableInput": df})
 
     table = dataflow_run.modules.first().result.value
     assert list(table.Headers) == list(df.columns)
     assert table.to_pandas().equals(df)
+
+
+@pytest.mark.parametrize(
+    "dataflow_object",
+    [
+        ("Token", "external_input_table.json"),
+        ("Form", "external_input_table.json"),
+    ],
+    indirect=True,
+)
+def test_external_input_pandas_df_no_data(dataflow_object: DataFlowObject):
+    df = pd.DataFrame(data={"A": [], "B": []})
+    dataflow_run = dataflow_object.run(external_inputs={"TableInput": df})
+
+    table = dataflow_run.modules.first().result.value
+    assert list(table.Headers) == list(df.columns)
+    assert table.to_pandas().empty
+    assert table.to_pandas().equals(df)
+
+
+@pytest.mark.parametrize(
+    "dataflow_object",
+    [
+        ("Token", "external_input_table.json"),
+        ("Form", "external_input_table.json"),
+    ],
+    indirect=True,
+)
+def test_external_input_pandas_df_no_cols(dataflow_object: DataFlowObject):
+    df = pd.DataFrame()
+    with pytest.raises(ValueError) as e:
+        dataflow_run = dataflow_object.run(external_inputs={"TableInput": df})
+    assert "DataFrame must have at least one column" in str(e)
