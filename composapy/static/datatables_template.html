@@ -1,0 +1,107 @@
+<!-- DataTables -->
+<!-- Adapted for server-side processing from https://github.com/mwouts/itables/blob/main/itables/html/datatables_template_connected.html -->
+<style>
+    /*.itables table td {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }*/
+
+    .itables table th {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .itables thead input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+
+    .itables tfoot input {
+        width: 100%;
+        padding: 3px;
+        box-sizing: border-box;
+    }
+
+    .dataTables_wrapper.no-footer .dataTables_scrollBody {
+        border-bottom: 1px solid lightgray !important;
+    }
+</style>
+<div class="itables">
+    <table id="<#= TABLE_ID #>" class="cell-border"></table>
+    <link rel="stylesheet" type="text/css" href="<#= DATATABLES_CSS_URI #>">
+    <script type="module">
+        import '<#= JS_ASSET_SERVICE_URI #>?scripts=vendor/jquery-3.6.0&alreadyLoaded=&min=true';
+        import '<#= JS_ASSET_SERVICE_URI #>?scripts=vendor/DataTables/media/js/jquery.dataTables&alreadyLoaded=&min=true';
+
+        let src = '<#= DATA_SOURCE #>'; // either 'QUERYVIEW' or 'TABLE'
+        let requestArgs = '<#= REQUEST_ARGS #>';
+        let drawCount = 0;
+        let search = false;
+        let contentType = 'application/json; charset=utf-8';
+
+        if (src !== 'QUERYVIEW' && src !== 'TABLE') {
+            $('#<#= TABLE_ID #>').replaceWith("<p>Could not display interactive table.</p>");
+            throw new Error(`Cannot display interactive table for data source '${src}'`);
+        }
+        
+        $.fn.dataTable.ext.legacy.ajax = false; // use new datatables format for queryviews, legacy for tables
+        if (src === 'TABLE') {
+            $.fn.dataTable.ext.legacy.ajax = true;
+            search = true;
+            contentType = 'application/x-www-form-urlencoded; charset=UTF-8';
+        }
+
+        // Define the dt_args
+        let dt_args = {
+            processing: true,
+            serverSide: true,
+            paging: true,
+            searching: search,
+            scrollX: true,
+            scrollY: '350px',
+            scrollCollapse: true,
+            pageLength: parseInt(<#= DEFAULT_PAGE_SIZE #>),
+            lengthMenu: [10, 25, 50, 100],
+            ajax: {
+                url: '<#= DATA_SERVICE_URI #>',
+                type: 'POST',
+                headers: {'Content-Type': contentType},
+                data: function (d) {
+                    if (src === 'QUERYVIEW') {
+                        drawCount = parseInt(d.draw); // set here and used later in the dataFilter definition
+                        
+                        let qvJson = JSON.parse(requestArgs);
+                        qvJson.queryView.PagingOptions.PageLimit = d.length;
+                        qvJson.queryView.PagingOptions.PageNum = Math.ceil(d.start / d.length) + 1;
+                        qvJson.queryView.OrderClause = d.order.map(c => { return {ColumnName: d.columns[c.column].name, Ascending: c.dir === 'asc'}; });
+
+                        return JSON.stringify(qvJson);
+                    } else if (src === 'TABLE') {
+                        d.tableContract = requestArgs;
+                        return d;
+                    }
+                }, // POST body
+                contentType: contentType,
+                dataFilter: function(res) { 
+                    const resObj = JSON.parse(res).d;
+                    if (src === 'QUERYVIEW') {
+                        return JSON.stringify({
+                            draw: parseInt(drawCount),
+                            recordsTotal: resObj.TotalNumber,
+                            recordsFiltered: resObj.TotalNumber,
+                            data: resObj.Data
+                        });
+                    } else {
+                        return JSON.stringify(resObj); 
+                    }
+                } // callback to format response from server
+            },
+            columns: <#= COLUMN_NAMES #>
+        };
+
+        $(document).ready(function () {
+            $('#<#= TABLE_ID #>').DataTable(dt_args);
+        });
+    </script>
+</div>

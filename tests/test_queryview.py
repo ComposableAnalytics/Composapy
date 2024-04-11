@@ -5,6 +5,7 @@ import pytest
 import re
 from typing import TYPE_CHECKING
 
+from composapy.interactive.itable import ITableResult
 from composapy.queryview.models import (
     QueryException,
     QueryInputException,
@@ -396,6 +397,61 @@ def test_queryview_run_with_id_and_invalid_input_value(
         qv_id = session.queryview_service.Save(qv_contract).Id
         with pytest.raises(QueryInputException):
             QueryView.run(qv_id, inputs={"genderSearchInput": ({"M"}, "<=")})
+    finally:
+        if qv_id != 0:
+            session.queryview_service.Delete(qv_id)
+
+
+def test_queryview_driver_interactive(queryview_driver_interactive):
+    result = queryview_driver_interactive.run(
+        "select * from syndromic_events where age > 100"
+    )
+
+    assert isinstance(result, ITableResult)
+    assert "<!-- DataTables -->" in result._repr_html_()
+
+
+@pytest.mark.parametrize("session", ["Form"], indirect=True)
+def test_saved_queryview_interactive(
+    session: Session, queryview_driver, default_health_key_object
+):
+    qv_contract = queryview_driver.contract  # driver sets up contract in conftest.py
+    qv_contract.DbConnectionId = default_health_key_object.id
+    qv_contract.QueryString = "select top 100 * from syndromic_events"
+    qv_id = 0
+
+    try:
+        qv_id = session.queryview_service.Save(qv_contract).Id
+        result = QueryView.run(qv_id, interactive=True)
+        assert isinstance(result, ITableResult)
+        assert "<!-- DataTables -->" in result._repr_html_()
+    finally:
+        if qv_id != 0:
+            session.queryview_service.Delete(qv_id)
+
+
+def test_queryview_driver_interactive_qv_error(queryview_driver_interactive):
+    with pytest.raises(QueryException) as e:
+        queryview_driver_interactive.run(
+            "select!!!! * from syndromic_events where age > 100"
+        )
+    assert "Incorrect syntax" in str(e)
+
+
+@pytest.mark.parametrize("session", ["Form"], indirect=True)
+def test_saved_queryview_interactive_qv_error(
+    session: Session, queryview_driver, default_health_key_object
+):
+    qv_contract = queryview_driver.contract  # driver sets up contract in conftest.py
+    qv_contract.DbConnectionId = default_health_key_object.id
+    qv_contract.QueryString = "select top 100 *, FAKE_COL from syndromic_events"
+    qv_id = 0
+
+    try:
+        qv_id = session.queryview_service.Save(qv_contract).Id
+        with pytest.raises(QueryException) as e:
+            QueryView.run(qv_id, interactive=True)
+        assert "Invalid column name 'FAKE_COL'" in str(e)
     finally:
         if qv_id != 0:
             session.queryview_service.Delete(qv_id)

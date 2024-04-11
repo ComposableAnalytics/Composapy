@@ -14,6 +14,8 @@ from System.Collections.Generic import List
 
 from composapy.decorators import session_required
 from composapy.session import get_session
+from composapy.interactive.itable import ITableResult, IDataSource
+import composapy.interactive.options as iopts
 
 
 import json_fix  # used to patch json with fake magic method __json__
@@ -233,7 +235,10 @@ def to_pandas(self) -> pd.DataFrame:
 
 
 def _repr_html_(self):
-    """Used to display table contracts as pandas dataframes inside of notebooks."""
+    """Used to display table contracts as pandas dataframes or interactive DataTables inside of notebooks."""
+    if iopts.SHOW_INTERACTIVE_TABLES:
+        cols = [c.Name for c in list(self.Columns)]
+        return ITableResult(cols, IDataSource.TABLE, self)._repr_html_()
     return self.to_pandas()._repr_html_()
 
 

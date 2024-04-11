@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DataFlowRun &mdash; Composapy  documentation</title>
-      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
-        <script src="../../../_static/jquery.js"></script>
-        <script src="../../../_static/underscore.js"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../../_static/doctools.js"></script>
-        <script src="../../../_static/sphinx_highlight.js"></script>
+        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -29,11 +30,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../../index.html" class="icon icon-home"> Composapy
+
+          
+          
+          <a href="../../../index.html" class="icon icon-home">
+            Composapy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -79,7 +84,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../../index.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="../index.html">DataFlow</a></li>
           <li class="breadcrumb-item"><a href="index.html">Models</a></li>
@@ -94,10 +99,10 @@
            <div itemprop="articleBody">
              
   <section id="dataflowrun">
-<h1>DataFlowRun<a class="headerlink" href="#dataflowrun" title="Permalink to this heading"></a></h1>
+<h1>DataFlowRun<a class="headerlink" href="#dataflowrun" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="composapy.dataflow.models.DataFlowRun">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.dataflow.models.</span></span><span class="sig-name descname"><span class="pre">DataFlowRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">execution_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ExecutionState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.dataflow.models.</span></span><span class="sig-name descname"><span class="pre">DataFlowRun</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">execution_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ExecutionState</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun" title="Link to this definition"></a></dt>
 <dd><p>Similar to a DataFlowObject, with a couple of differences. The first difference is that
 every DataFlowRun has an id, where as a DataFlowObject only has an ID if it is saved. The second
 difference is that the modules property on a DataFlowRun returns ModuleSet&lt;ResultModule&gt;
@@ -105,28 +110,28 @@ instead of ModuleSet&lt;Module&gt;, which has the additional functionality of vi
 results.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.dataflow.models.DataFlowRun.app_id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun.app_id" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun.app_id" title="Link to this definition"></a></dt>
 <dd><p>Returns the originating dataflow application id, assuming originating dataflow was
 saved.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.dataflow.models.DataFlowRun.id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun.id" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun.id" title="Link to this definition"></a></dt>
 <dd><p>Returns the id of dataflow run. Every DataFlowRun is guaranteed to have an id with a
 non-null value.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.dataflow.models.DataFlowRun.module">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">module</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">any</span></em><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun.module" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">module</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">any</span></em><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun.module" title="Link to this definition"></a></dt>
 <dd><p>Convenience property that gets the first module. Cannot be used if there is more than
 one module.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.dataflow.models.DataFlowRun.modules">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modules</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ModuleSet</span></em><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun.modules" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">modules</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ModuleSet</span></em><a class="headerlink" href="#composapy.dataflow.models.DataFlowRun.modules" title="Link to this definition"></a></dt>
 <dd><p>A ModuleSet made up of ResultModule’s.</p>
 </dd></dl>
 

@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Api &mdash; Composapy  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -29,11 +30,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> Composapy
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Composapy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -73,7 +78,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="index.html">DataFlow</a></li>
       <li class="breadcrumb-item active">Api</li>
@@ -87,10 +92,10 @@
            <div itemprop="articleBody">
              
   <section id="module-composapy.dataflow.api">
-<span id="api"></span><h1>Api<a class="headerlink" href="#module-composapy.dataflow.api" title="Permalink to this heading"></a></h1>
+<span id="api"></span><h1>Api<a class="headerlink" href="#module-composapy.dataflow.api" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="composapy.dataflow.api.DataFlow">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.dataflow.api.</span></span><span class="sig-name descname"><span class="pre">DataFlow</span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.dataflow.api.</span></span><span class="sig-name descname"><span class="pre">DataFlow</span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow" title="Link to this definition"></a></dt>
 <dd><p>DataFlow static wrapper for the ApplicationService contract. It is used to
 service user-level operations on an application-level library.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.dataflow.api</span> <span class="kn">import</span> <span class="n">DataFlow</span>
@@ -98,7 +103,7 @@ service user-level operations on an application-level library.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.dataflow.api.DataFlow.create">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-dataflow-models/composapy-dataflow-models-dataflowobject.html#composapy.dataflow.models.DataFlowObject" title="composapy.dataflow.models.DataFlowObject"><span class="pre">DataFlowObject</span></a></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.create" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">create</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">json</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-dataflow-models/composapy-dataflow-models-dataflowobject.html#composapy.dataflow.models.DataFlowObject" title="composapy.dataflow.models.DataFlowObject"><span class="pre">DataFlowObject</span></a></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.create" title="Link to this definition"></a></dt>
 <dd><p>Takes a json formatted string <strong>or</strong> a local file path containing a valid json
 (supplying arguments to both will raise exception). Imports the dataflow using the
 dataflow service binding, and returns a DataFlowObject.
@@ -108,13 +113,13 @@ DataFlowObject to save it in your Composable database.</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>json</strong> – a json-formatted string</p></li>
 <li><p><strong>file_path</strong> – path to json-formatted file</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the unsaved Application contract wrapped in a DataFlowObject</p>
 </dd>
 </dl>
@@ -122,16 +127,16 @@ DataFlowObject to save it in your Composable database.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.dataflow.api.DataFlow.get">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-dataflow-models/composapy-dataflow-models-dataflowobject.html#composapy.dataflow.models.DataFlowObject" title="composapy.dataflow.models.DataFlowObject"><span class="pre">DataFlowObject</span></a></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.get" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-dataflow-models/composapy-dataflow-models-dataflowobject.html#composapy.dataflow.models.DataFlowObject" title="composapy.dataflow.models.DataFlowObject"><span class="pre">DataFlowObject</span></a></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.get" title="Link to this definition"></a></dt>
 <dd><p>Returns the wrapped Application contract inside a DataFlowObject.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_object</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>dataflow_id</strong> – a valid(saved) Composable dataflow id</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the Application contract wrapped in a DataFlowObject</p>
 </dd>
 </dl>
@@ -139,15 +144,15 @@ DataFlowObject to save it in your Composable database.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.dataflow.api.DataFlow.get_run">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-dataflow-models/composapy-dataflow-models-dataflowrun.html#composapy.dataflow.models.DataFlowRun" title="composapy.dataflow.models.DataFlowRun"><span class="pre">DataFlowRun</span></a></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.get_run" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-dataflow-models/composapy-dataflow-models-dataflowrun.html#composapy.dataflow.models.DataFlowRun" title="composapy.dataflow.models.DataFlowRun"><span class="pre">DataFlowRun</span></a></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.get_run" title="Link to this definition"></a></dt>
 <dd><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">get_run</span><span class="p">(</span><span class="mi">654321</span><span class="p">)</span>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>run_id</strong> – Composable dataflow run id</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the wrapped ExecutionState contract inside a DataFlowRun</p>
 </dd>
 </dl>
@@ -155,7 +160,7 @@ DataFlowObject to save it in your Composable database.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.dataflow.api.DataFlow.run">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="composapy-dataflow-models/composapy-dataflow-models-dataflowrun.html#composapy.dataflow.models.DataFlowRun" title="composapy.dataflow.models.DataFlowRun"><span class="pre">DataFlowRun</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.run" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataflow_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">external_inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-dataflow-models/composapy-dataflow-models-dataflowrun.html#composapy.dataflow.models.DataFlowRun" title="composapy.dataflow.models.DataFlowRun"><span class="pre">DataFlowRun</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.run" title="Link to this definition"></a></dt>
 <dd><p>Runs a dataflow from the dataflow id (an invalid id will cause this method to return None).
 Any external modules (external int, table, file) that require outside input to run can be
 added using a dictionary with the module input’s name and corresponding contract.</p>
@@ -164,7 +169,7 @@ added using a dictionary with the module input’s name and corresponding contra
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dataflow_id</strong> – a valid(saved) Composable dataflow id</p></li>
 <li><p><strong>external_inputs</strong> – If there are any external inputs in the DataFlow, you can supply
@@ -173,7 +178,7 @@ external input value as value. You can find more about external input modules
 <a class="reference external" href="https://docs.composable.ai/en/latest/DataFlows/06.DataFlow-Reuse/#creation">here</a>.</p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the wrapped ExecutionState contract inside a DataFlowRun</p>
 </dd>
 </dl>
@@ -181,10 +186,10 @@ external input value as value. You can find more about external input modules
 
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.dataflow.api.DataFlow.run_status">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.run_status" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run_status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.run_status" title="Link to this definition"></a></dt>
 <dd><p>Retrieves run status.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>run_id</strong> – Composable dataflow run id</p>
 </dd>
 </dl>
@@ -192,14 +197,14 @@ external input value as value. You can find more about external input modules
 
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.dataflow.api.DataFlow.wait_for_run_execution">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wait_for_run_execution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.wait_for_run_execution" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">wait_for_run_execution</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">run_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#composapy.dataflow.api.DataFlow.wait_for_run_execution" title="Link to this definition"></a></dt>
 <dd><p>Waits until run has finished. Returns a dict with keys “execution_status”
 and “run_id”.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>run_id</strong> – Composable dataflow run id</p>
 </dd>
-<dt class="field-even">Returns</dt>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>status of the execution, ExecutionStatus</p>
 </dd>
 </dl>

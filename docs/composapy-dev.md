@@ -316,6 +316,28 @@ Don't forget to bump the version in `setup.cfg`!
 
 ## Source Control
 
+### Git
+
+TFS is the source of truth for Composapy, but we maintain a git repo too: https://github.com/ComposableAnalytics/Composapy
+
+Pushing to git is necessary when updating docs and generally should be done each time a change is checked into TFS so that the two sources don't get out of sync.
+
+This guide assumes git is already installed on your machine. To set up the git repo, open a shell and do the following:
+1. Change directory: `cd <path-to-repo>\Composapy\Composapy`
+2. Initialize this directory as a git repo with the default branch of main: `git init --initial-branch=main`
+3. Add remote: `git remote add origin https://github.com/ComposableAnalytics/Composapy.git`
+
+Syncing up this local git repo with the remote is a little tricky because the source code is already present locally thanks to TFS. It's especially annoying if TFS is ahead of Git.
+
+The best case scenario is if TFS and Git are in sync. In that case, you should be able to just push new changes without issue. The first time you push, run `git push --set-upstream origin main` to enable future tracking of origin/main.
+
+If Git is behind TFS, the problem is that the heavy-handed approach is as follows:
+1. First, make an initial empty commit: `git commit --allow-empty -m "Empty initial commit"`
+2. Stash local changes: `git stash push --include-untracked`
+3. Pull latest from remote (note: you may have to delete `.setup.env` for this command to work): `git pull origin main --allow-unrelated-histories`
+4. Open Source Control Explorer in Visual Studio and get the latest version of the `$/Composable Analytics/Composapy/Composapy` directory. You may have to follow this article to truly overwrite the composapy files: https://colinmackay.scot/2015/02/28/really-getting-the-latest-changes-with-tfs/
+5. Now you can add, commit, and push to git using the same command as above.
+
 
 ### Visual Studio Project / Team Foundation Server
 

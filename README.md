@@ -24,6 +24,11 @@ Composapy.
   - [Run a Query](#run-a-query)
   - [SQL Magic Commands](#sql-magic-commands)
   - [Run a Saved QueryView](#run-a-saved-queryview)
+- [Interactive Table Output](#interactive-table-output)
+  - [QueryView Driver Output](#queryview-driver-output)
+  - [SQL Cell Magic Output](#sql-cell-magic-output)
+  - [Saved QueryView Output](#saved-queryview-output)
+  - [Table Contract Output](#table-contract-output)
 - [Additional Information](#additional-information)
 
 ## Session
@@ -222,6 +227,58 @@ Note that multi-choice inputs are not currently supported. This feature will be 
 
 ```python
 QueryView.run(123456, inputs={"displayName1": "val1", "displayName2": (100, "!=")})
+```
+
+## Interactive Table Output
+
+Some operations that return Pandas DataFrames can also be run in interactive mode, which renders the data as an interactive DataTable with server-side processing for pagination. There are four main operations that can return interactive tables:
+1. QueryView driver output
+2. `%%sql` cell magic output
+3. Saved QueryView output
+4. Table contract output
+
+
+
+#### QueryView Driver Output
+When creating a QueryView driver, set `interactive=True`:
+
+```python
+from composapy.queryview.api import QueryView
+QueryView.driver(interactive=True)
+driver.run("select * from table")
+```
+
+Note that unlike other QueryView driver settings, `interactive` can only be set when `driver()` is called, not when `run()` is called.
+
+
+#### SQL Cell Magic Output
+Simply pass the `-i` flag to the `%%sql` magic command:
+
+```sql vscode={"languageId": "sql"} magic_args="-i"
+select * from table
+```
+
+#### Saved QueryView Output
+When running a saved QueryView, pass the `interactive=True` argument to `run()`:
+
+```python
+from composapy.queryview.api import QueryView
+QueryView.run(12345, interactive=True)
+```
+
+Note that the paging options set in the QueryView will be respected. If no paging options are set, Auto Paging will be used.
+
+
+#### Table Contract Output
+When a table contract is passed into a DataLab (either via running a DataFlow or as a notebook runner input), it can be viewed interactively by setting a global option. The below example runs a DataFlow that contains an Odbc Query module, which has a Table output: 
+
+```python
+import composapy.interactive.options as iopts
+iopts.SHOW_INTERACTIVE_TABLES = True
+
+from composapy.dataflow.api import DataFlow
+table_contract = DataFlow.run(1234).modules.get(name="Odbc Query").result.value
+table_contract # NOTE: you can also use display(table_contract), but don't use print(table_contract)
 ```
 
 ## Additional Information

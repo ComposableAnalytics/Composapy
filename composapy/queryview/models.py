@@ -3,9 +3,11 @@ import pandas as pd
 
 from composapy.decorators import session_required
 from composapy.session import get_session
+from composapy.key.api import Key
 from composapy.key.models import KeyObject, get_key_object
 from composapy.patch.table import MAP_CS_TYPES_TO_PANDAS_TYPES
 from composapy.queryview.const import QV_BOOLEAN_VALUE_MAP
+from composapy.interactive.itable import IDataSource, ITableResult
 
 from CompAnalytics import Contracts
 
@@ -203,6 +205,56 @@ class QueryViewObject:
             df[col] = df[col].map(lambda x: pd.NA if not x else QV_BOOLEAN_VALUE_MAP[x])
 
         return df.astype(column_dtypes)
+
+
+class QueryViewPagedObject(QueryViewObject):
+
+    def __init__(
+        self,
+        contract: Contracts.QueryView,
+        timeout=None,
+        validate_query=False,
+        saved=False,
+    ):
+        # need to save this before constructing the base class so we can restore it if/when it's overwritten by a globally registered key
+        qv_key_id = contract.DbConnectionId
+
+        super().__init__(contract, timeout, validate_query)
+
+        # if the queryview is saved, automatically connect its key to the driver object
+        # this is so the user doesn't have to manually register it, which they usually don't need to do when running saved qvs
+        if saved:
+            self.contract.DbConnectionId = qv_key_id
+            self._key = Key.get(qv_key_id)
+
+        # if the queryview is saved and already has paging set, just use those settings
+        # otherwise, default to autopaging
+        self._qv_has_saved_paging = saved and (
+            self.contract.PagingOptions.AutoPaging
+            or self.contract.PagingOptions.FullPaging
+            or self.contract.PagingOptions.LimitPaging
+        )
+
+        if not self._qv_has_saved_paging:
+            self.contract.PagingOptions.AutoPaging = True
+            self.contract.PagingOptions.PageLimit = 10
+            self.contract.PagingOptions.PageNum = 1
+            self.contract.PagingOptions.DefaultOrderClause = "1"
+
+        # set PageLimit to 1 initially b/c we need to run the query once just to get the column names
+        self._original_page_limit = self.contract.PagingOptions.PageLimit
+        self.contract.PagingOptions.PageLimit = 1
+
+    @session_required
+    def run(
+        self, query: str, timeout: int = None, validate_query: bool = None
+    ) -> ITableResult:
+        if not self._qv_has_saved_paging:
+            # wrap user query so adding autopaging doesn't conflict (e.g., if user has "top" in their query)
+            query = f"select * from ({query}) r"
+        data = super().run(query, timeout=timeout, validate_query=validate_query)
+        self.contract.PagingOptions.PageLimit = self._original_page_limit
+        return ITableResult(list(data.columns), IDataSource.QUERYVIEW, self.contract)
 
 
 class QueryException(Exception):

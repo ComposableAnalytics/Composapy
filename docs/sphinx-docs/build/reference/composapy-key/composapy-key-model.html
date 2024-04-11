@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Models &mdash; Composapy  documentation</title>
-      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
-        <script src="../../_static/jquery.js"></script>
-        <script src="../../_static/underscore.js"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../../_static/doctools.js"></script>
-        <script src="../../_static/sphinx_highlight.js"></script>
+        <script src="../../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../../_static/doctools.js?v=888ff710"></script>
+        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -29,11 +30,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../../index.html" class="icon icon-home"> Composapy
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Composapy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -76,7 +81,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../index.html" class="icon icon-home"></a></li>
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="../index.html">Reference</a></li>
           <li class="breadcrumb-item"><a href="index.html">Key</a></li>
       <li class="breadcrumb-item active">Models</li>
@@ -90,10 +95,10 @@
            <div itemprop="articleBody">
              
   <section id="module-composapy.key.models">
-<span id="models"></span><h1>Models<a class="headerlink" href="#module-composapy.key.models" title="Permalink to this heading"></a></h1>
+<span id="models"></span><h1>Models<a class="headerlink" href="#module-composapy.key.models" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObject">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#composapy.key.models.KeyObject" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObject</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">contract</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#composapy.key.models.KeyObject" title="Link to this definition"></a></dt>
 <dd><p>KeyObject is a wrapper with a custom load strategy for the Composable Property contract.
 The key attributes are dynamically constructed based on key type retrieved.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.key.api</span> <span class="kn">import</span> <span class="n">Key</span>
@@ -122,7 +127,7 @@ The key attributes are dynamically constructed based on key type retrieved.</p>
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObject.clear_registration">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clear_registration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.key.models.KeyObject.clear_registration" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clear_registration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.key.models.KeyObject.clear_registration" title="Link to this definition"></a></dt>
 <dd><p>Used to unregister the currently registered KeyObject.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">KeyObject</span><span class="o">.</span><span class="n">clear_registration</span><span class="p">()</span>
 </pre></div>
@@ -131,19 +136,19 @@ The key attributes are dynamically constructed based on key type retrieved.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObject.id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.id" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.id" title="Link to this definition"></a></dt>
 <dd><p>Returns the contract member, Id.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObject.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.name" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.name" title="Link to this definition"></a></dt>
 <dd><p>Returns the contract member, Name.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObject.register">
-<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.key.models.KeyObject.register" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.key.models.KeyObject.register" title="Link to this definition"></a></dt>
 <dd><p>Used to register a class instance of KeyObject that is used implicitly across the
 kernel. Only one KeyObject can registered at a time.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">key_object</span> <span class="o">=</span> <span class="n">KeyObject</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
@@ -151,7 +156,7 @@ kernel. Only one KeyObject can registered at a time.</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>save</strong> – If true, saves configuration in local composapy.ini file. Default is false.</p>
 </dd>
 </dl>
@@ -159,7 +164,7 @@ kernel. Only one KeyObject can registered at a time.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObject.type">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.type" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#composapy.key.models.KeyObject.type" title="Link to this definition"></a></dt>
 <dd><p>Returns the contract member, DisplayType.</p>
 </dd></dl>
 
@@ -167,17 +172,17 @@ kernel. Only one KeyObject can registered at a time.</p>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObjectException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObjectException</span></span><a class="headerlink" href="#composapy.key.models.KeyObjectException" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObjectException</span></span><a class="headerlink" href="#composapy.key.models.KeyObjectException" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py exception">
 <dt class="sig sig-object py" id="composapy.key.models.KeyObjectRegistrationException">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObjectRegistrationException</span></span><a class="headerlink" href="#composapy.key.models.KeyObjectRegistrationException" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">KeyObjectRegistrationException</span></span><a class="headerlink" href="#composapy.key.models.KeyObjectRegistrationException" title="Link to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="composapy.key.models.get_key_object">
-<span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">get_key_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raise_exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#composapy.key.models.KeyObject" title="composapy.key.models.KeyObject"><span class="pre">KeyObject</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#composapy.key.models.get_key_object" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">composapy.key.models.</span></span><span class="sig-name descname"><span class="pre">get_key_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raise_exception</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#composapy.key.models.KeyObject" title="composapy.key.models.KeyObject"><span class="pre">KeyObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.key.models.get_key_object" title="Link to this definition"></a></dt>
 <dd><p>Used to get the current registered KeyObject.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.key.api</span> <span class="kn">import</span> <span class="n">get_key_object</span>
 <span class="n">KeyObject</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
@@ -185,7 +190,7 @@ kernel. Only one KeyObject can registered at a time.</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>the currently registered key object</p>
 </dd>
 </dl>

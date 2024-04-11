@@ -36,7 +36,7 @@ from composapy.queryview.api import QueryView
 from composapy.session import Session, get_session
 from composapy.utils import _remove_suffix
 from composapy.key.models import KeyObject
-from composapy.queryview.models import QueryViewObject
+from composapy.queryview.models import QueryViewObject, QueryViewPagedObject
 from composapy.key.api import Key
 from composapy.auth import AuthMode
 
@@ -292,6 +292,11 @@ def file_ref(request) -> Contracts.FileReference:
 @pytest.fixture
 def queryview_driver(default_health_key_object) -> QueryViewObject:
     yield QueryView.driver(default_health_key_object)
+
+
+@pytest.fixture
+def queryview_driver_interactive(default_health_key_object) -> QueryViewPagedObject:
+    yield QueryView.driver(default_health_key_object, interactive=True)
 
 
 @pytest.fixture

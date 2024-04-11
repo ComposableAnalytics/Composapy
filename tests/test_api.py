@@ -5,6 +5,7 @@ import pytest
 import pandas as pd
 
 from composapy.dataflow.models import DataFlowObject
+import composapy.interactive.options as iopt
 
 
 @pytest.mark.parametrize(
@@ -200,3 +201,24 @@ def test_external_input_pandas_df_no_cols(dataflow_object: DataFlowObject):
     with pytest.raises(ValueError) as e:
         dataflow_run = dataflow_object.run(external_inputs={"TableInput": df})
     assert "DataFrame must have at least one column" in str(e)
+
+
+@pytest.mark.parametrize(
+    "dataflow_object",
+    [
+        ("Form", "tablecreator.json"),
+        ("Token", "tablecreator.json"),
+    ],
+    indirect=True,
+)
+def test_convert_table_to_itable(dataflow_object: DataFlowObject):
+    dataflow_run = dataflow_object.run()
+    table_contract = dataflow_run.modules.first_with_name("Table Creator").result.value
+
+    iopt.SHOW_INTERACTIVE_TABLES = True
+    itable_html = table_contract._repr_html_()
+
+    try:
+        assert "<!-- DataTables -->" in itable_html
+    finally:
+        iopt.SHOW_INTERACTIVE_TABLES = False

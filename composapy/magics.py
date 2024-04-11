@@ -37,6 +37,12 @@ def sql(line):
     action="store_true",
     help="Enable the query validation step. This will result in more informative error messages but can be disabled to improve overall performance.",
 )
+@argument(
+    "-i",
+    dest="interactive",
+    action="store_true",
+    help="Enable interactive table output.",
+)
 @register_cell_magic
 def sql(line, cell):
     from keyword import iskeyword
@@ -44,12 +50,11 @@ def sql(line, cell):
 
     args = parse_argstring(sql, line)
 
-    driver = QueryView.driver()
-    data = driver.run(
-        "".join(cell), timeout=args.timeout, validate_query=args.validate_query
-    )
+    driver = QueryView.driver(interactive=args.interactive)
+    query = "".join(cell).replace("\n", " ")
+    data = driver.run(query, timeout=args.timeout, validate_query=args.validate_query)
 
-    if args.variable is not None:
+    if args.variable is not None and not args.interactive:
         name = args.variable
         if name.isidentifier() and not iskeyword(name):
             get_ipython().user_ns[args.variable] = data
@@ -57,6 +62,10 @@ def sql(line, cell):
             print(
                 f"WARNING: Could not capture query output. '{args.variable}' is not a valid Python variable name."
             )
+    elif args.variable is not None and args.interactive:
+        print(
+            f"WARNING: Query output cannot be captured when interactive tables are used."
+        )
 
     if args.silence:  # suppress output
         return None

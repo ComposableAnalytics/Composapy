@@ -2,10 +2,12 @@ from __future__ import annotations
 from typing import Dict, TYPE_CHECKING
 
 from composapy import get_session, session_required
+from composapy.interactive.itable import ITableResult
 from composapy.key.models import KeyObject
 from composapy.queryview.const import QV_ACCEPTABLE_OPERATORS, QV_INPUT_PRIMITIVE_TYPES
 from composapy.queryview.models import (
     QueryViewObject,
+    QueryViewPagedObject,
     QueryException,
     QueryInputException,
 )
@@ -21,7 +23,10 @@ class QueryView:
 
     @staticmethod
     def driver(
-        key: KeyObject = None, timeout: int = None, validate_query: bool = False
+        key: KeyObject = None,
+        timeout: int = None,
+        validate_query: bool = False,
+        interactive: bool = False,
     ) -> QueryViewObject:
         """Retrieve a queryview driver object, key is optional argument, but will need to call
         connect with key as argument to run a query.
@@ -47,15 +52,22 @@ class QueryView:
         :param key: KeyObject retrieved with the Composable Key api
         :param timeout: optional integer timeout value (in seconds) for the query driver. This will apply to all queries executed with this driver unless an alternate timeout value is specified when calling the driver.run() method
         :param validate_query: boolean indicating whether to apply a pre-compilation step to validate SQL queries run with the driver. This often provides more informative error output but can be disabled for maximal query performance.
+        :param interactive: when enabled, query results will be rendered as an interactive DataTable with server-side pagination.
         """
-        qv_object = QueryViewObject(QueryView_(), timeout, validate_query)
+        if interactive:
+            qv_object = QueryViewPagedObject(QueryView_(), timeout, validate_query)
+        else:
+            qv_object = QueryViewObject(QueryView_(), timeout, validate_query)
+
         if key:
             qv_object.connect(key)
         return qv_object
 
     @staticmethod
     @session_required
-    def run(qv_id: int, inputs: Dict[str, any] = None) -> pd.DataFrame:
+    def run(
+        qv_id: int, inputs: Dict[str, any] = None, interactive: bool = False
+    ) -> pd.DataFrame | ITableResult:
         """Run a saved QueryView resource, returning the results as a Pandas DataFrame. Will use
         the currently saved QueryView query and connection settings. Note, this will not use your
         currently registered key as the query connection settings.
@@ -74,6 +86,7 @@ class QueryView:
 
         :param qv_id: QueryView id, can be found in the url of your QueryView resource.
         :param inputs: Dictionary of filter/literal inputs to use for the query execution.
+        :param interactive: when enabled, query results will be rendered as an interactive DataTable with pagination.
         """
         queryview_service = get_session().queryview_service
         qv_contract = queryview_service.Get(qv_id)
@@ -134,6 +147,11 @@ class QueryView:
                     raise QueryInputException(
                         "No input found matching the display name '{name}'"
                     )
+
+        if interactive:
+            return QueryViewPagedObject(qv_contract, saved=True).run(
+                qv_contract.QueryString.replace("\n", " ")
+            )
 
         qv_result = queryview_service.RunQueryDynamic(qv_contract)
 

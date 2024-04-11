@@ -1,22 +1,23 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Session &mdash; Composapy  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
-        <script src="../_static/jquery.js"></script>
-        <script src="../_static/underscore.js"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="../_static/doctools.js"></script>
-        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -29,11 +30,15 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="../index.html" class="icon icon-home"> Composapy
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Composapy
           </a>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -81,7 +86,7 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../index.html" class="icon icon-home"></a></li>
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Reference</a></li>
       <li class="breadcrumb-item active">Session</li>
       <li class="wy-breadcrumbs-aside">
@@ -94,10 +99,10 @@
            <div itemprop="articleBody">
              
   <section id="session">
-<h1>Session<a class="headerlink" href="#session" title="Permalink to this heading"></a></h1>
+<h1>Session<a class="headerlink" href="#session" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="composapy.session.Session">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.session.</span></span><span class="sig-name descname"><span class="pre">Session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AuthMode</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">AuthMode.WINDOWS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#composapy.session.Session" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.session.</span></span><span class="sig-name descname"><span class="pre">Session</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uri</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auth_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">AuthMode</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">AuthMode.WINDOWS</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#composapy.session.Session" title="Link to this definition"></a></dt>
 <dd><p>A valid, registered, session is required to access and use Composable resources.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.session</span> <span class="kn">import</span> <span class="n">Session</span>
 <span class="kn">from</span> <span class="nn">composapy.auth</span> <span class="kn">import</span> <span class="n">AuthMode</span>
@@ -119,7 +124,7 @@ and password.</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>uri</strong> – The Composable application uri used to access your resources. If using
 Composapy within DataLabs, uses the environment variable “APPLICATION_URI” that it sets
@@ -135,19 +140,19 @@ generated in the Composable application.</p></li>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.session.Session.app_service">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IApplicationService</span></em><a class="headerlink" href="#composapy.session.Session.app_service" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IApplicationService</span></em><a class="headerlink" href="#composapy.session.Session.app_service" title="Link to this definition"></a></dt>
 <dd><p>A Composable csharp binding to the IServices.IApplicationService.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.session.Session.auth_mode">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auth_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">AuthMode</span></em><a class="headerlink" href="#composapy.session.Session.auth_mode" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">auth_mode</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">AuthMode</span></em><a class="headerlink" href="#composapy.session.Session.auth_mode" title="Link to this definition"></a></dt>
 <dd><p>The current auth mode associated with this Session object instance.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.session.Session.clear_registration">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clear_registration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.session.Session.clear_registration" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clear_registration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.session.Session.clear_registration" title="Link to this definition"></a></dt>
 <dd><p>Used to unregister the currently registered session.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Session</span><span class="o">.</span><span class="n">clear_registration</span><span class="p">()</span>
 </pre></div>
@@ -156,25 +161,25 @@ generated in the Composable application.</p></li>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.session.Session.file_upload_service">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_upload_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IFileUploadService</span></em><a class="headerlink" href="#composapy.session.Session.file_upload_service" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">file_upload_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IFileUploadService</span></em><a class="headerlink" href="#composapy.session.Session.file_upload_service" title="Link to this definition"></a></dt>
 <dd><p>A Composable csharp binding to the IServices.IFileUploadService object.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.session.Session.property_service">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IPropertyService</span></em><a class="headerlink" href="#composapy.session.Session.property_service" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">property_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IPropertyService</span></em><a class="headerlink" href="#composapy.session.Session.property_service" title="Link to this definition"></a></dt>
 <dd><p>A Composable csharp binding to the IServices.IPropertyService.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.session.Session.queryview_service">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">queryview_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IQueryViewService</span></em><a class="headerlink" href="#composapy.session.Session.queryview_service" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">queryview_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">IQueryViewService</span></em><a class="headerlink" href="#composapy.session.Session.queryview_service" title="Link to this definition"></a></dt>
 <dd><p>A Composable csharp binding to the IServices.IQueryViewService object.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.session.Session.register">
-<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.session.Session.register" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">register</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#composapy.session.Session.register" title="Link to this definition"></a></dt>
 <dd><p>Used to register a class instance of session that is used implicitly across the
 kernel. Only one session can registered at a time.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">session</span> <span class="o">=</span> <span class="n">Session</span><span class="p">(</span><span class="n">auth_mode</span><span class="o">=</span><span class="n">AuthMode</span><span class="o">.</span><span class="n">WINDOWS</span><span class="p">)</span>
@@ -182,7 +187,7 @@ kernel. Only one session can registered at a time.</p>
 </pre></div>
 </div>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>save</strong> – If true, saves configuration in local composapy.ini file. Default is false.</p>
 </dd>
 </dl>
@@ -190,19 +195,19 @@ kernel. Only one session can registered at a time.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.session.Session.resource_manager">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resource_manager</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ResourceManager</span></em><a class="headerlink" href="#composapy.session.Session.resource_manager" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">resource_manager</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ResourceManager</span></em><a class="headerlink" href="#composapy.session.Session.resource_manager" title="Link to this definition"></a></dt>
 <dd><p>A Composable csharp binding to the IServices.Deploy.ResourceManager object.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.session.Session.table_service">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ITableService</span></em><a class="headerlink" href="#composapy.session.Session.table_service" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">table_service</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ITableService</span></em><a class="headerlink" href="#composapy.session.Session.table_service" title="Link to this definition"></a></dt>
 <dd><p>A Composable csharp binding to the IServices.ITableService object.</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="composapy.session.Session.uri">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uri</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#composapy.session.Session.uri" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uri</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#composapy.session.Session.uri" title="Link to this definition"></a></dt>
 <dd><p>Sometimes referred to as ‘application uri’.</p>
 </dd></dl>
 
