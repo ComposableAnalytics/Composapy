@@ -9,6 +9,12 @@ from composapy.bindings import configure_binding
 from System import Uri, Net
 from CompAnalytics import IServices
 
+import clr
+from System import Exception
+from System.Net.Sockets import SocketException
+from System.ServiceModel import EndpointNotFoundException
+from System.Net import WebException
+
 
 class Session:
     """A valid, registered, session is required to access and use Composable resources.
@@ -129,6 +135,9 @@ class Session:
             )
 
         uri = uri if uri is not None else os.getenv("APPLICATION_URI")
+        if not uri.endswith("/"):
+            uri += "/"
+
         self._auth_mode = auth_mode
         self._credentials = credentials
 
@@ -148,9 +157,12 @@ class Session:
         elif auth_mode == AuthMode.WINDOWS:
             self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Windows
 
-        self.ResourceManager = IServices.Deploy.ResourceManager(
-            self.connection_settings
-        )
+        try:
+            self.ResourceManager = IServices.Deploy.ResourceManager(
+                self.connection_settings
+            )
+        except Exception as e:
+            handle_connection_exception(e)
 
         self._bind_services()
 
@@ -206,6 +218,20 @@ class Session:
     @staticmethod
     def _parse_service_name(method):
         return str(method).split(".")[-1][1:]
+
+
+def handle_connection_exception(e):
+    """Handles exceptions related to URI issues."""
+    if (isinstance(e, EndpointNotFoundException)) or (isinstance(e, WebException)):
+        inner_exception = e.InnerException
+        while inner_exception is not None:
+            if isinstance(inner_exception, SocketException):
+                raise ConnectionError(
+                    "Unable to connect to URI. Common issues include incorrect URI scheme "
+                    "(http or https) or a typo in your URI. Please verify that you are using "
+                    "the correct scheme for your server."
+                ) from None
+            inner_exception = inner_exception.InnerException
 
 
 def get_session(raise_exception=True) -> Optional[Session]:

@@ -10,6 +10,9 @@ from composapy.dataflow.api import DataFlow
 from composapy.config import get_config_session, read_config
 from composapy.session import Session
 
+username = os.getenv("TEST_USERNAME")
+password = os.getenv("TEST_PASSWORD")
+
 
 @pytest.mark.parametrize("session", ["Token", "Form"], indirect=True)
 def test_session(session: Session):
@@ -59,3 +62,29 @@ def test_register_session_save_true_form(session: Session):
     assert config_session.uri == session.uri
     assert getattr(config_session, "username") == session._credentials[0]
     assert getattr(config_session, "password") == session._credentials[1]
+
+
+def test_session_invalid_uri_error_message():
+    """Test that the improved error message is displayed when an invalid URI is provided."""
+    invalid_uri = "https://localhost/CompApp/"
+    with pytest.raises(ConnectionError) as exc_info:
+        session = Session(
+            auth_mode=AuthMode.FORM, credentials=(username, password), uri=invalid_uri
+        )
+    expected_message = (
+        "Unable to connect to URI. Common issues include incorrect URI scheme "
+        "(http or https) or a typo in your URI. Please verify that you are using "
+        "the correct scheme for your server."
+    )
+    assert expected_message in str(exc_info.value)
+
+
+def test_session_uri_trailing_slash():
+    """Test that a URI without a trailing slash is automatically corrected."""
+    uri_without_slash = "http://localhost/CompApp"
+    session = Session(
+        auth_mode=AuthMode.FORM, credentials=(username, password), uri=uri_without_slash
+    )
+    assert session.uri.endswith(
+        "/"
+    ), "The session URI should end with a trailing slash."

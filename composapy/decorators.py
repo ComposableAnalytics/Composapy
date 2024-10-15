@@ -1,6 +1,10 @@
 import functools
 
-from composapy.session import SessionRegistrationException, get_session
+from composapy.session import (
+    SessionRegistrationException,
+    get_session,
+    handle_connection_exception,
+)
 
 
 def session_required(function):
@@ -15,6 +19,9 @@ def session_required(function):
                 f"Please register a session by creating a session object and calling it's "
                 f"register() method."
             )
+        except Exception as e:
+            handle_connection_exception(e)
+            raise
         return result
 
     return inner
