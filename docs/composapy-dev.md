@@ -8,6 +8,7 @@
       - [Activated Environment](#activated-environment)
   - [Composapy](#composapy)
     - [Update local .env files](#update-local-env-files)
+    - [Git](#git)
     - [Tox](#tox)
       - [Black](#black)
       - [Docs](#docs)
@@ -21,6 +22,7 @@
     - [PyCharm](#pycharm)
   - [PyPI](#pypi)
   - [Source Control](#source-control)
+    - [Git](#git-setup)
     - [Visual Studio Project / Team Foundation Server](#visual-studio-project--team-foundation-server)
     - [Catastrophic Failure](#catastrophic-failure)
 
@@ -110,6 +112,8 @@ TEST_API_KEY="yourApiKeyHere"
 TF_EXE_PATH="C:/Path/To/tf.exe"
 ```
 
+### Git
+Now is a good time to set up Git. See below: [Git Setup](#git-setup)
 
 ### Tox
 
@@ -316,7 +320,6 @@ Don't forget to bump the version in `setup.cfg`!
 
 ## Source Control
 
-
 ### Visual Studio Project / Team Foundation Server
 
 After making changes and confirming tests are passing...
@@ -330,6 +333,15 @@ After making changes and confirming tests are passing...
 3. After check-in to TFS, git push to master (TFS is source of truth, git is for external 
    reference).
 
+### Git Setup
+It is imperative that you push to git every time you check in a change to TFS. This ensures that the two repositories remain in sync, which makes it MUCH easier to set up git for future devs.
+
+In a terminal, navigate to the `C:\<path-to-repo>\Composapy\Composapy` directory and run the following commands:
+1. `git init`
+2. `git remote add origin https://github.com/ComposableAnalytics/Composapy.git`
+3. `git checkout -f main`
+
+If these succeed, you should be good to go. Run `git status` to confirm that your local branch is up to date with the remote and there are no changes at all (either unstaged or staged).
 
 ### Catastrophic Failure
 
