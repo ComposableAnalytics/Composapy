@@ -56,7 +56,9 @@ def _load_dlls() -> None:
 
     exclude_dirs = []
     if DATALAB_DLL_DIR_EXCLUDE:
-        exclude_dirs = [Path(p) for p in DATALAB_DLL_DIR_EXCLUDE.rstrip(";").split(";")]
+        exclude_dirs = [
+            Path(p) for p in DATALAB_DLL_DIR_EXCLUDE.rstrip(";").split(";")
+        ]
 
     composable_DLLs = _find_dlls(Path(DATALAB_DLL_DIR), exclude=exclude_dirs)
     for dll in composable_DLLs:

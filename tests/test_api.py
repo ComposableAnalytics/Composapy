@@ -65,6 +65,43 @@ def test_convert_table_to_pandas(dataflow_object: DataFlowObject):
         ("Int", pd.Int64Dtype(), ["-2147483648", "2147483647"]),
         ("Long", pd.Int64Dtype(), ["-9223372036854774784", "9223372036854774784"]),
         ("DatetimeOffset", "datetime64[ns]", ["01/17/2022 06:11:30 PM -05:00"]),
+        ("Datetime", "datetime64[ns]", ["10/01/2021 00:00:00", "10/02/2021 00:00:00"]),
+        ("Datetime", "datetime64[ns]", ["2021-10-01 00:00:00", "2021-10-02 00:00:00"]),
+        ("Datetime", "datetime64[ns]", ["2021/10/01 00:00:00", "2021/10/02 00:00:00"]),
+        (
+            "Datetime",
+            "datetime64[ns]",
+            ["01 Oct 2021 00:00:00", "02 Oct 2021 00:00:00"],
+        ),
+        (
+            "Datetime",
+            "datetime64[ns]",
+            ["October 1, 2021 00:00:00", "October 2, 2021 00:00:00"],
+        ),
+        ("Datetime", "datetime64[ns]", ["2021-10-01", "2021-10-02"]),
+        ("Datetime", "datetime64[ns]", ["10/01/2021 00:00:00", "10/02/2021 00:00:00"]),
+        ("Datetime", "datetime64[ns]", ["10/01/2021", "10/02/2021"]),
+        ("Datetime", "datetime64[ns]", ["01-Oct-2021", "02-Oct-2021"]),
+        (
+            "Datetime",
+            "datetime64[ns]",
+            ["01-Oct-2021 00:00:00", "02-Oct-2021 00:00:00"],
+        ),
+        (
+            "Datetime",
+            "datetime64[ns]",
+            ["2021-10-01T04:00:00Z", "2021-10-02T04:00:00Z"],
+        ),
+        (
+            "Datetime",
+            "datetime64[ns]",
+            ["2021-09-30T23:00:00-0500", "2021-10-01T23:00:00-0500"],
+        ),
+        (
+            "Datetime",
+            "datetime64[ns]",
+            ["Fri, 01 Oct 2021 04:00:00 GMT", "Sat, 02 Oct 2021 04:00:00 GMT"],
+        ),
     ],
 )
 def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject, data):
@@ -82,9 +119,28 @@ def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject, data):
     assert type(df) == type(pd.DataFrame())
     if data[0] == "DatetimeOffset":
         assert str(df.dtypes["x"]) == data[1]
+    elif data[0] == "Datetime":
+        expected_datetimes = [
+            pd.Timestamp("2021-10-01 00:00:00"),
+            pd.Timestamp("2021-10-02 00:00:00"),
+        ]
+        print(expected_datetimes)
+        df_values = df["x"][:-1].reset_index(
+            drop=True
+        )  # Exclude the last row if the dataflow adds a null value
+        print(df_values)
+        expected_series = pd.Series(expected_datetimes, name="x")
+        pd.testing.assert_series_equal(
+            df_values,
+            expected_series,
+            check_names=False,
+        )
     else:
         assert df.dtypes["x"] == data[1]
         assert [str(val) for val in df["x"][:-1]] == data[2]
+    print(df["x"])
+    print("Number of NaNs:", df["x"].isna().sum())
+    print("DataFrame length:", len(df))
     assert df["x"].isna().sum() == 1
 
 

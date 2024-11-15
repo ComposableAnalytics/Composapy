@@ -223,7 +223,7 @@ If the QueryView has literal or filter inputs, you can optionally pass values an
 1. [LITERAL, FILTER] A single Python primitive (`int`, `bool`, `str`, `float`). The default operator will be used for filter inputs in this case.
 2. [FILTER] A tuple of size two in the form `(val, operator)` where `val` is the primitive input value and `operator` is one of the acceptable QueryView input operators (=, !=, >, <, >=, <=, LIKE)
 
-Note that multi-choice inputs are not currently supported. This feature will be added in a subsequent version of Composapy.
+As of Composapy 0.13.1, multi-choice inputs are supported. To pass a multi-choice input, sets, tuples, and lists that contain primitive values are accepted. Due to the current nature of filter inputs requiring tuple format, literal multi-choice inputs must be passed as a tuple containing a set, tuple, or list of primitive values, like so, for instance: [{item1,item2}]. This is in order to preserve parsing logic for filter inputs, which would follow a similar format: [{item1,item2},operator].
 
 ```python
 QueryView.run(123456, inputs={"displayName1": "val1", "displayName2": (100, "!=")})

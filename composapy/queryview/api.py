@@ -98,21 +98,28 @@ class QueryView:
                 )
 
             for name in inputs:
-                # Unpack/validate input value or value-operator pair
-                if type(inputs[name]) in (list, tuple):
-                    if len(inputs[name]) != 2:
+                if isinstance(inputs[name], (list, tuple)):
+                    if len(inputs[name]) == 1:
+                        value, operator = inputs[name][0], None
+                    elif len(inputs[name]) == 2:
+                        value, operator = inputs[name][0], inputs[name][1]
+                    else:
                         raise QueryInputException(
-                            f"Value-operator pair must have length 2 for input '{name}'."
+                            f"Value-operator pair must have length 2 for input '{name}'. If you are trying to pass a multichoice input, please pass it as an iterable within an iterable, \
+                            followed by an optional operator. Composapy expects an iterable to contain a value followed by an operator indicating a search input, and new support for multichoice \
+                            involves writing the value as a set, list, or tuple within the encompassing iterable to maintain this structure."
                         )
-                    value, operator = inputs[name]
                 else:
                     value, operator = inputs[name], None
 
                 value = QueryView._format_qv_value(value)
 
                 if operator is not None and operator not in QV_ACCEPTABLE_OPERATORS:
+
                     raise QueryInputException(
-                        f"Operator '{operator}' is not an acceptable option for input '{name}'"
+                        f"Operator '{operator}' is not an acceptable option for input '{name}'. If you are trying to pass a multichoice input, please pass it as an iterable within an iterable, \
+                            followed by an optional operator. Composapy expects an iterable to contain a value followed by an operator indicating a search input, and new support for multichoice \
+                            involves writing the value as a set, list, or tuple within the encompassing iterable to maintain this structure."
                     )
 
                 # Look for a matching literal input in qv_contract for this name
@@ -120,6 +127,8 @@ class QueryView:
                 for lit in qv_contract.LiteralInputs:
                     if lit.DisplayName == name:
                         lit.Value = value
+                        if isinstance(value, (set, list, tuple)):
+                            lit.IsMultiChoice = True
                         match = True
                         break
 
@@ -128,6 +137,8 @@ class QueryView:
                     for srch in qv_contract.SearchInputs:
                         if srch.DisplayName == name:
                             srch.Value = value
+                            if isinstance(value, (set, list, tuple)):
+                                srch.IsMultiChoice = True
                             if operator:
                                 # Only update operator if the "allow operator changes" setting is enabled
                                 # If the setting is disabled but the same default operator is passed in, no need to trigger an error
@@ -162,11 +173,38 @@ class QueryView:
 
     @staticmethod
     def _format_qv_value(val: any):
-        """Checks that the given QueryView input value is primitive and converts it to a string."""
+        """Checks that the given QueryView input value is primitive or an iterable of primitives and converts it to a string or a comma-separated string."""
         if type(val) not in QV_INPUT_PRIMITIVE_TYPES:
-            raise QueryInputException(
-                f"Input value must be of type int, bool, str, or float, not '{type(val)}'. Support for multi-choice inputs will be added in a subsequent version of Composapy."
-            )
+            if isinstance(val, (list, tuple, set)):  # If it is multichoice
+                flat_val = (
+                    list(val) if isinstance(val, (list, tuple)) else val
+                )  # remove duplicates
+                for item in flat_val:
+                    if type(item) not in QV_INPUT_PRIMITIVE_TYPES:
+                        raise QueryInputException(
+                            f"All elements in the input iterable must be of type int, bool, str, or float, not '{type(item)}'."
+                        )
+                    return (
+                        "["
+                        + ",".join(
+                            (
+                                f'"{str(item)}"'
+                                if isinstance(item, str)
+                                else (
+                                    str(item).lower()
+                                    if isinstance(item, bool)
+                                    else str(item)
+                                )
+                            )
+                            for item in flat_val
+                        )
+                        + "]"
+                    )
+
+            else:
+                raise QueryInputException(
+                    f"Iterable type must be of type list, tuple, or set, not'{type(val)}'."
+                )
 
         if isinstance(val, bool):
             return str(val).lower()

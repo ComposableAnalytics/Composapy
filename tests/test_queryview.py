@@ -291,6 +291,39 @@ def test_queryview_run_with_id_and_inputs(
 
 
 @pytest.mark.parametrize("session", ["Form"], indirect=True)
+def test_queryview_run_with_id_and_multichoice_inputs(
+    session: Session, queryview_input_driver, default_health_key_object
+):
+    qv_contract = (
+        queryview_input_driver.contract
+    )  # driver sets up contract with inputs in conftest.py
+    qv_contract.DbConnectionId = default_health_key_object.id
+    qv_contract.QueryString = """
+        select 
+            top 50 * 
+        from 
+            syndromic_events 
+        where 
+            gender IN {{genderLiteralInput}} AND age IN {{ageLiteralInput}}
+    """
+    qv_id = 0
+
+    try:
+        qv_id = session.queryview_service.Save(qv_contract).Id
+        qv_inputs = {
+            "genderLiteralInput": [{"M", "U"}],
+            "ageLiteralInput": [{33, 34, 45}],
+        }
+        df = QueryView.run(qv_id, inputs=qv_inputs)
+        assert len(df) <= 50
+        assert all(df["gender"].isin(["M", "U"]))
+        assert all(df["age"].isin([33, 34, 45]))
+    finally:
+        if qv_id != 0:
+            session.queryview_service.Delete(qv_id)
+
+
+@pytest.mark.parametrize("session", ["Form"], indirect=True)
 def test_queryview_run_with_id_and_invalid_inputs_arg(
     session: Session, queryview_input_driver, default_health_key_object
 ):
@@ -396,7 +429,9 @@ def test_queryview_run_with_id_and_invalid_input_value(
     try:
         qv_id = session.queryview_service.Save(qv_contract).Id
         with pytest.raises(QueryInputException):
-            QueryView.run(qv_id, inputs={"genderSearchInput": ({"M"}, "<=")})
+            QueryView.run(
+                qv_id, inputs={"genderSearchInput": ({"M": True}, "<=")}
+            )  # something like a dict would be an invalid input value
     finally:
         if qv_id != 0:
             session.queryview_service.Delete(qv_id)

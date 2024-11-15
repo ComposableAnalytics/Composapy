@@ -30,6 +30,7 @@ SUPPORTED_TYPES = (
     ImageReference,
     Table,
     pd.DataFrame,
+    float,
 )
 
 
@@ -53,6 +54,7 @@ marshall_actions = {
     ImageReference: is_file_ref,
     Table: is_table,
     pd.DataFrame: lambda x, y: to_table(x, y),
+    float: lambda x, y: System.Double(x),
 }
 
 

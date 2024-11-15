@@ -341,8 +341,24 @@ def queryview_input_driver(default_health_key_object) -> QueryViewObject:
     date_input.DefaultOperator = "<"
     date_input.OperatorOptional = True
 
+    gender_literal_input = LiteralInput()
+    gender_literal_input.DisplayName = "genderLiteralInput"
+    gender_literal_input.TemplateName = "genderLiteralInput"
+    gender_literal_input.DataType = "String"
+    gender_literal_input.IsMultiChoice = True
+    gender_literal_input.ChoiceQuery = "SELECT DISTINCT gender FROM syndromic_events"
+
+    age_literal_input = LiteralInput()
+    age_literal_input.DisplayName = "ageLiteralInput"
+    age_literal_input.TemplateName = "ageLiteralInput"
+    age_literal_input.DataType = "Number"
+    age_literal_input.IsMultiChoice = True
+    age_literal_input.ChoiceQuery = "SELECT DISTINCT age FROM syndromic_events"
+
     driver.contract.LiteralInputs.Add(race_input)
     driver.contract.LiteralInputs.Add(red_input)
+    driver.contract.LiteralInputs.Add(gender_literal_input)
+    driver.contract.LiteralInputs.Add(age_literal_input)
     driver.contract.SearchInputs.Add(age_input)
     driver.contract.SearchInputs.Add(gender_input)
     driver.contract.SearchInputs.Add(date_input)

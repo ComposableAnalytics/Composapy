@@ -51,6 +51,7 @@ def test_find_dlls_exclude_dirs():
         ]
     )
     assert len(composapy_dlls) == len(file_dlls)
+    assert not any(dll.parent.name == "plugins" for dll in composapy_dlls)
 
 
 def test_find_dlls_no_exclude_dirs():
