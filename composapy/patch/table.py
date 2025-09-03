@@ -234,7 +234,7 @@ def to_pandas(self) -> pd.DataFrame:
             raise ValueError(
                 "Error converting table to pandas DataFrame: "
                 "One or more columns contain invalid datetime values. "
-                "Please ensure all datetime columns are in a valid format. If DateTime is formatted as 'DateTime(unixtime)', pandas will not be able to parse it. Please preprocess to an appropriate datetime format."
+                "Please ensure all datetime columns are in a valid format. Please preprocess to an appropriate datetime format."
             )
         else:
             raise
@@ -246,84 +246,92 @@ def to_pandas(self) -> pd.DataFrame:
     for key in dtypes_dict.keys():
         if dtypes_dict[key] == "float64":
             df[key] = df[key].apply(lambda x: System.Convert.ToDouble(x))
-        elif dtypes_dict[key] == "datetime64[ns]":
+        elif is_datetime(dtypes_dict[key]):
             df[key] = df[key].apply(parse_datetime_string)
-            if df[key].dt.tz is not None:
-                df[key] = df[key].dt.tz_localize(None)
+
+            if df[key].dt is not None and df[key].dt.tz is not None:
+                df[key] = df[key].dt.tz_localize(
+                    None
+                )  # Drop timezone information as dtype is tz-naive
+
     return df.astype(dtypes_dict)
 
 
 def parse_datetime_string(x):
-    print(f"parse_datetime_string called with x={repr(x)}")
-
     if x is None or pd.isna(x):
-        print("Value is None or NaN")
         return pd.NaT
 
     if isinstance(x, (int, float)):
         try:
-            parsed_datetime = pd.to_datetime(x, unit="s")
-            print(f"Parsed datetime from Unix timestamp: {parsed_datetime}")
+            parsed_datetime = pd.to_datetime(
+                x, unit="s", utc=True
+            )  # Interpreted as unix time; by default UTC
             return parsed_datetime
         except Exception as e:
-            print(f"Error parsing Unix timestamp: {e}")
             return pd.NaT
 
     if isinstance(x, str):
-        print(f"Value is a string: {x}")
         match = re.match(r"DateTime\((\d+)\)", x)
         if match:
             unixtime = int(match.group(1))
-            dt = pd.to_datetime(unixtime, unit="s")
-            print(f"Parsed datetime from 'DateTime(...)' format: {dt}")
+            dt = pd.to_datetime(
+                unixtime, unit="s", utc=True
+            )  # Interpreted as unix time; by default UTC
             return dt
-        else:
-            # Try parsing '/Date(<milliseconds><timezone>)/' format, seems like that was how it was being converted
-            match = re.match(r"/Date\((\d+)([+-]\d{4})?\)/", x)
-            if match:
-                millis = int(match.group(1))
-                tz_offset_str = match.group(2)
-                dt = pd.to_datetime(millis, unit="ms", utc=True)
-                if tz_offset_str:
-                    # Parse timezone offset
-                    sign = 1 if tz_offset_str[0] == "+" else -1
-                    hours_offset = int(tz_offset_str[1:3])
-                    minutes_offset = int(tz_offset_str[3:5])
-                    tz_offset = (
-                        timedelta(hours=hours_offset, minutes=minutes_offset) * sign
-                    )
-                    dt = dt + tz_offset
-                print(f"Parsed datetime from '/Date(...)' format: {dt}")
-                return dt
-            else:
-                # Trying some common date formats
-                date_formats = [
-                    "%Y-%m-%d %H:%M:%S",
-                    "%Y-%m-%d",
-                    "%m/%d/%Y %H:%M:%S",
-                    "%m/%d/%Y",
-                    "%d-%b-%Y",
-                    "%d-%b-%Y %H:%M:%S",
-                    "%Y-%m-%dT%H:%M:%SZ",  # ISO 8601 UTC
-                    "%Y-%m-%dT%H:%M:%S%z",  # ISO 8601 with timezone
-                    "%a, %d %b %Y %H:%M:%S %Z",  # RFC 1123
-                ]
-                for fmt in date_formats:
-                    try:
-                        parsed_datetime = pd.to_datetime(x, format=fmt)
-                        print(f"Parsed datetime with format '{fmt}': {parsed_datetime}")
-                        return parsed_datetime
-                    except ValueError:
-                        continue
-                try:
-                    parsed_datetime = pd.to_datetime(x)
-                    print(f"Parsed datetime with flexible parser: {parsed_datetime}")
-                    return parsed_datetime
-                except Exception as e:
-                    print(
-                        f"Error parsing datetime with flexible parser: {e}. Please ensure datetime is in one of the following formats: {date_formats}. Note that it will incorrectly parse if day and month are both numerical and day preceeds month."
-                    )
-                    return pd.NaT
+
+        # Parse '/Date(<milliseconds><timezone>)/' format
+        match = re.match(r"/Date\((\d+)([+-]\d{4})?\)/", x)
+        if match:
+            millis = int(match.group(1))
+            dt = pd.to_datetime(millis, unit="ms", utc=True)
+
+            tz_offset_str = match.group(2)
+            if tz_offset_str:
+                # Parse timezone offset
+                sign = 1 if tz_offset_str[0] == "+" else -1
+                hours_offset = int(tz_offset_str[1:3])
+                minutes_offset = int(tz_offset_str[3:5])
+                tz_offset = timedelta(hours=hours_offset, minutes=minutes_offset) * sign
+                dt = dt + tz_offset
+
+            return dt
+
+        # Trying some common date formats
+        date_formats = [
+            "%Y-%m-%d %H:%M:%S",
+            "%Y-%m-%d",
+            "%m/%d/%Y %H:%M:%S",
+            "%m/%d/%Y",
+            "%d-%b-%Y",
+            "%d-%b-%Y %H:%M:%S",
+            "%Y-%m-%dT%H:%M:%SZ",  # ISO 8601 UTC
+            "%Y-%m-%dT%H:%M:%S%z",  # ISO 8601 with timezone
+            "%a, %d %b %Y %H:%M:%S %Z",  # RFC 1123
+        ]
+        for fmt in date_formats:
+            try:
+                parsed_datetime = pd.to_datetime(x, format=fmt)
+                if parsed_datetime.tz is not None:  # if tz-aware, convert to UTC.
+                    parsed_datetime = parsed_datetime.tz_convert("UTC")
+                else:  # if tz-naive, localize to UTC.
+                    parsed_datetime = parsed_datetime.tz_localize("UTC")
+                return parsed_datetime
+            except ValueError:
+                continue
+        try:
+            parsed_datetime = pd.to_datetime(x)
+            if pd.isna(parsed_datetime):
+                return pd.NaT
+            if parsed_datetime.tz is not None:  # if tz-aware, convert to UTC.
+                parsed_datetime = parsed_datetime.tz_convert("UTC")
+            else:  # if tz-naive, localize to UTC.
+                parsed_datetime = parsed_datetime.tz_localize("UTC")
+            return parsed_datetime
+        except Exception as e:
+            print(
+                f"Error parsing datetime: {e}. Please ensure datetime is in an appropriate format. Note that it will incorrectly parse if day and month are both numerical and day preceeds month."
+            )
+            return pd.NaT
     else:
         print(f"Unsupported type: {type(x)}")
         return pd.NaT

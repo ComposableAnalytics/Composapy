@@ -39,7 +39,7 @@ def sync_project():
 
     compile_docs()
 
-    upgrade_composapy_wheel()
+    # upgrade_composapy_wheel()
 
     _write_unittests_test_data()
     _add_test_data_tfs()
@@ -196,6 +196,7 @@ def upgrade_wheels(new_wheels_dir: Path, python_versions: list):
         ).make_upgrade(python_versions)
 
 
+# TODO: Fix `upgrade_wheels`
 def upgrade_composapy_wheel() -> None:
     wheel_dir = COMPOSAPY_ROOT_DIR.joinpath(".tox", "dist")
     upgrade_wheels(wheel_dir, _DATALAB_SUPPORTED_PYTHON_VERSIONS)
@@ -216,7 +217,8 @@ if __name__ == "__main__":
         sync_project()
 
     elif "sync-composapy" in arg:
-        upgrade_composapy_wheel()
+        print("upgrade composapy wheel is not currently implemented correctly.")
+        # upgrade_composapy_wheel()
 
     elif "docs" in arg:
         compile_docs()

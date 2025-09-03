@@ -120,7 +120,7 @@ def create_token_auth_session() -> Session:
     user = user_service.GetCurrentUser()
     token_expiration_date = DateTime.UtcNow + TimeSpan.FromDays(3)
     api_key = user_service.GenerateUserToken(
-        user.Id, user.UserName, 'DataLab Unit Test', token_expiration_date
+        user.Id, user.UserName, "DataLab Unit Test", token_expiration_date
     )
     os.environ["TEST_API_KEY"] = api_key
 

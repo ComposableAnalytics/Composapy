@@ -21,9 +21,11 @@ dist/*
 .tox/*
 build/*
 dev/*
+docs/sphinx-docs/build/*
 
 #test artifacts
 tests/.local_files
 
 #misc
 .tfignore
+/.vs
