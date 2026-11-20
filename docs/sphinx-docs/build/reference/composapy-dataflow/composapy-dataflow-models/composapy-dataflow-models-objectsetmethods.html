@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../../">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ObjectSet Methods &mdash; Composapy  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../_static/css/theme.css?v=9edc463e" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
@@ -64,9 +62,11 @@
 <li class="toctree-l2"><a class="reference internal" href="../../composapy-queryview/index.html">QueryView</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../composapy-session.html">Session</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../composapy-utils.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../composapy-contracts-table.html">Tables.Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../composapy-contracts-table.html">Table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../composapy-contracts-filereference.html">FileReference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../composapy-contracts-values.html">Contract values</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../environment-variables.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../migrating-to-1-0.html">Migrating to 1.0</a></li>
 </ul>
 </li>
 </ul>
@@ -101,7 +101,7 @@
   <section id="objectset-methods">
 <h1>ObjectSet Methods<a class="headerlink" href="#objectset-methods" title="Link to this heading"></a></h1>
 <p>Set-objects (ModuleSet/InputSet/ResultSet) all have similar behaviors.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.dataflow.models</span> <span class="kn">import</span> <span class="n">ModuleSet</span><span class="p">,</span> <span class="n">InputSet</span><span class="p">,</span> <span class="n">ResultSet</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composapy.dataflow.models</span><span class="w"> </span><span class="kn">import</span> <span class="n">ModuleSet</span><span class="p">,</span> <span class="n">InputSet</span><span class="p">,</span> <span class="n">ResultSet</span>
 </pre></div>
 </div>
 <p><strong>ModuleSet</strong></p>
@@ -123,12 +123,12 @@
 <li><p>x.filter(key=value) -&gt; SetType</p></li>
 </ul>
 <p>Return all keys with value as a set.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">calculator_modules</span> <span class="o">=</span> <span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;Calculator&quot;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">calculator_modules</span> <span class="o">=</span> <span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"Calculator"</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">module</span> <span class="ow">in</span> <span class="n">calculator_modules</span><span class="p">:</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">module</span><span class="p">)</span>
 
-<span class="c1"># print -&gt; Module(name=&#39;Calculator&#39;, type=Calculator)</span>
-<span class="c1"># print -&gt; Module(name=&#39;Calculator&#39;, type=Calculator)</span>
+<span class="c1"># print -&gt; Module(name='Calculator', type=Calculator)</span>
+<span class="c1"># print -&gt; Module(name='Calculator', type=Calculator)</span>
 </pre></div>
 </div>
 </section>
@@ -139,8 +139,8 @@
 </ul>
 <p>Return expects exactly one key with result, otherwise will raise exception (FoundMultipleError /
 NoneFoundError).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;String Input&quot;</span><span class="p">)</span>                                             <span class="c1"># Module(name=&#39;String Input&#39;, type=String Input)</span>
-<span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;String Input&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">&quot;This is a test string&quot;</span><span class="p">)</span>  <span class="c1"># Result(name=&#39;Result&#39;, type=String, value=&#39;This is a test string&#39;)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"String Input"</span><span class="p">)</span>                                             <span class="c1"># Module(name='String Input', type=String Input)</span>
+<span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"String Input"</span><span class="p">)</span><span class="o">.</span><span class="n">results</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">value</span><span class="o">=</span><span class="s2">"This is a test string"</span><span class="p">)</span>  <span class="c1"># Result(name='Result', type=String, value='This is a test string')</span>
 </pre></div>
 </div>
 </section>
@@ -150,7 +150,7 @@ NoneFoundError).</p>
 <li><p>x[index] -&gt; SingularType</p></li>
 </ul>
 <p>Indexing works as you would expect it to.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># Module(name=&#39;String Formatter&#39;, type=String Formatter)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>  <span class="c1"># Module(name='String Formatter', type=String Formatter)</span>
 </pre></div>
 </div>
 </section>
@@ -160,13 +160,13 @@ NoneFoundError).</p>
 <li><p>x.first() -&gt; SingularType</p></li>
 </ul>
 <p>For convenience, instead of accessing with an index, you can also get the first result of any set with the first method.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>  <span class="c1"># Module(name=&#39;Calculator&#39;, type=Calculator)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span>  <span class="c1"># Module(name='Calculator', type=Calculator)</span>
 
 <span class="c1">## dataflow_object.module, module.result, module.input (singular nouns)</span>
 </pre></div>
 </div>
 <p>Instead of accessing <cite>results</cite> and using <cite>first()</cite> or <cite>[0]</cite>, you can instead use <cite>result</cite>. This works for <cite>module</cite>, <cite>result</cite> and <cite>input</cite>. Attempts to use these when there are more than one will raise an exception.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;String Formatter&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">result</span>  <span class="c1"># Result(name=&#39;Result&#39;, type=String, value=&#39;This is a test format&#39;)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dataflow_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"String Formatter"</span><span class="p">)</span><span class="o">.</span><span class="n">result</span>  <span class="c1"># Result(name='Result', type=String, value='This is a test format')</span>
 </pre></div>
 </div>
 </section>

@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
 import os
 from pathlib import Path
 import pytest
@@ -12,6 +11,9 @@ from composapy.session import Session
 
 username = os.getenv("TEST_USERNAME")
 password = os.getenv("TEST_PASSWORD")
+
+# The server the tests run against; a local one when nothing says otherwise
+APPLICATION_URI = os.getenv("APPLICATION_URI") or "http://localhost/CompApp/"
 
 
 @pytest.mark.parametrize("session", ["Token", "Form"], indirect=True)
@@ -66,7 +68,12 @@ def test_register_session_save_true_form(session: Session):
 
 def test_session_invalid_uri_error_message():
     """Test that the improved error message is displayed when an invalid URI is provided."""
-    invalid_uri = "https://localhost/CompApp/"
+    # The right server with the wrong scheme: nothing answers there
+    invalid_uri = (
+        APPLICATION_URI.replace("http://", "https://", 1)
+        if APPLICATION_URI.startswith("http://")
+        else APPLICATION_URI.replace("https://", "http://", 1)
+    )
     with pytest.raises(ConnectionError) as exc_info:
         session = Session(
             auth_mode=AuthMode.FORM, credentials=(username, password), uri=invalid_uri
@@ -81,10 +88,10 @@ def test_session_invalid_uri_error_message():
 
 def test_session_uri_trailing_slash():
     """Test that a URI without a trailing slash is automatically corrected."""
-    uri_without_slash = "http://localhost/CompApp"
-    session = Session(
+    uri_without_slash = APPLICATION_URI.rstrip("/")
+    with Session(
         auth_mode=AuthMode.FORM, credentials=(username, password), uri=uri_without_slash
-    )
-    assert session.uri.endswith(
-        "/"
-    ), "The session URI should end with a trailing slash."
+    ) as session:
+        assert session.uri.endswith(
+            "/"
+        ), "The session URI should end with a trailing slash."

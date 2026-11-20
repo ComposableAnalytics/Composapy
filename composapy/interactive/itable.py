@@ -4,10 +4,9 @@ from typing import List
 import uuid
 
 from composapy.decorators import session_required
-from composapy.session import get_session
+from composapy.session import get_session, _ResourceManager
 from composapy.utils import _urljoin, _read_static_resource
-
-from CompAnalytics.IServices.Deploy import ResourceManager
+from composapy._wire.codec import encode
 
 
 class IDataSource(Enum):
@@ -79,7 +78,7 @@ class ITableResult:
         self.template_params["DATA_SERVICE_URI"] = self._create_service_endpoint_uri(
             mgr, data_service_name, data_endpoint
         )
-        self.template_params["REQUEST_ARGS"] = json.dumps(request_args)
+        self.template_params["REQUEST_ARGS"] = encode(request_args)
         self.template_params["COLUMN_NAMES"] = json.dumps(
             [{"title": col, "name": col} for col in self.columns]
         )
@@ -94,7 +93,7 @@ class ITableResult:
         return html
 
     def _create_service_endpoint_uri(
-        self, mgr: ResourceManager, service: str, endpoint: str
+        self, mgr: _ResourceManager, service: str, endpoint: str
     ) -> str:
         return _urljoin(str(mgr.CreateServiceEndpointUri(service)), endpoint)
 

@@ -3,20 +3,13 @@ import pytest
 from pathlib import Path, PureWindowsPath
 from dotenv import load_dotenv
 import warnings
-from urllib.parse import urlparse
-import shutil
+import json
+import uuid
+from datetime import datetime, timedelta, timezone
 
 # does not override environment variables, this is essentially a failsafe for local dev environment
 for env_file in sorted(Path().rglob(".test*.env")):
     load_dotenv(env_file)
-
-# set DATALAB_DLL_DIR environment variable separately
-if not os.getenv("DATALAB_DLL_DIR"):
-    os.environ["DATALAB_DLL_DIR"] = str(
-        Path(__file__).parent.parent.parent.parent.joinpath(
-            "Product", "CompAnalytics.DataLabService", "bin", "Debug"
-        )
-    )
 
 FIXTURE_DIR: Path = Path(os.path.join(os.path.dirname(os.path.realpath(__file__))))
 LOCAL_FILES_DIR: Path = FIXTURE_DIR.joinpath(".local_files")
@@ -26,7 +19,8 @@ os.environ["COMPOSAPY_INI_DIR"] = str(LOCAL_FILES_DIR)
 def _clean_testing_local_files():
     LOCAL_FILES_DIR.mkdir(exist_ok=True)
     for child in LOCAL_FILES_DIR.iterdir():
-        child.unlink()
+        if child.is_file():
+            child.unlink()
 
 
 _clean_testing_local_files()
@@ -34,18 +28,13 @@ _clean_testing_local_files()
 from composapy.dataflow.api import DataFlow
 from composapy.queryview.api import QueryView
 from composapy.session import Session, get_session
-from composapy.utils import _remove_suffix
-from composapy.key.models import KeyObject
+from composapy.key.models import KeyObject, get_key_object
 from composapy.queryview.models import QueryViewObject, QueryViewPagedObject
 from composapy.key.api import Key
 from composapy.auth import AuthMode
-
-from CompAnalytics import Contracts
-from CompAnalytics.Contracts import Property
-from CompAnalytics.Contracts.QueryView import LiteralInput, SearchInput
-from CompAnalytics.Extension.Sql import SqlConnectionSettings
-from System import Uri, Guid
-from CompAnalytics.Utils import WinAuthUtils
+from composapy._wire.objects import ContractObject
+from composapy.contracts.file_reference import FileReference
+from composapy.contracts.queryview import LiteralInput, SearchInput
 
 
 class TestSetupException(Exception):
@@ -54,27 +43,6 @@ class TestSetupException(Exception):
 
 class InvalidTestConfigError(TestSetupException):
     pass
-
-
-@pytest.fixture(scope="function", autouse=False)
-def dll_exclude(monkeypatch):
-    DATALAB_DLL_DIR = os.getenv("DATALAB_DLL_DIR")
-    temp_dll_subfolder_path = Path(DATALAB_DLL_DIR, "testDllExclude")
-    mock_dll = "CompAnalytics.MockExclude.dll"
-    mock_dll_src_path = Path(os.path.dirname(Path(__file__)), "TestFiles", mock_dll)
-    mock_dll_target_path = temp_dll_subfolder_path.joinpath(mock_dll)
-
-    # setup
-    temp_dll_subfolder_path.mkdir(exist_ok=True)
-    shutil.copyfile(mock_dll_src_path, mock_dll_target_path)
-    monkeypatch.setenv("DATALAB_DLL_DIR_EXCLUDE", str(temp_dll_subfolder_path) + ";")
-
-    yield
-
-    # cleanup
-    mock_dll_target_path.unlink()
-    temp_dll_subfolder_path.rmdir()
-    monkeypatch.delenv("DATALAB_DLL_DIR_EXCLUDE", raising=False)
 
 
 @pytest.fixture(scope="function", autouse=True)
@@ -97,33 +65,21 @@ def create_token_auth_session() -> Session:
         )
 
     warnings.warn(
-        "TEST_API_KEY is not setup inside of your .test.env file. A temporary api key will "
+        "TEST_API_KEY is not set in the environment or in a .test*.env file. A temporary api key will "
         "be created with your (TEST_USERNAME, TEST_PASSWORD) for this test run, but will not be "
-        "set in your .local.env file. To remove this warning -- add a valid TEST_API_KEY to your "
-        ".local.env config file."
+        "saved. To remove this warning -- add a valid TEST_API_KEY to tests/.test.local.env."
     )
 
-    from CompAnalytics import IServices
-    from System import Net, Uri, DateTime, TimeSpan
-
-    connection_settings = IServices.Deploy.ConnectionSettings()
-    connection_settings.Uri = Uri(os.getenv("APPLICATION_URI"))
-    connection_settings.AuthMode = IServices.Deploy.AuthMode.Form
-    connection_settings.FormCredential = Net.NetworkCredential(
-        os.getenv("TEST_USERNAME"), os.getenv("TEST_PASSWORD")
-    )
-
-    resource_manager = IServices.Deploy.ResourceManager(connection_settings)
-    user_service = resource_manager.CreateAuthChannel[IServices.IUserService](
-        "UserService"
-    )
+    session = create_form_auth_session()  # registers a Form session
+    user_service = session.services["UserService"]
     user = user_service.GetCurrentUser()
-    token_expiration_date = DateTime.UtcNow + TimeSpan.FromDays(3)
+    expires = datetime.now(timezone.utc) + timedelta(
+        days=3
+    )  # written as /Date(ms)/, as the DateTime? parameter needs
     api_key = user_service.GenerateUserToken(
-        user.Id, user.UserName, "DataLab Unit Test", token_expiration_date
+        user.Id, user.UserName, "DataLab Unit Test", expires
     )
     os.environ["TEST_API_KEY"] = api_key
-
     session = Session(auth_mode=AuthMode.TOKEN, credentials=api_key)
     session.register()
     return session
@@ -150,40 +106,34 @@ def create_form_auth_session() -> Session:
     return session
 
 
-def enable_windows_auth():
-    """Csharp DataLabs tests are expected to manage windows authorization configuration."""
-    if not os.getenv("JUPYTER_ENVIRONMENT_FLAG"):
-        uri = os.getenv("APPLICATION_URI")
-        virtual_path = _remove_suffix(urlparse(uri).path, "/")
-        WinAuthUtils.EnableWindowsAuth(True, virtual_path)
-
-
-def disable_windows_auth():
-    """Csharp DataLabs tests are expected to manage windows authorization configuration."""
-    if not os.getenv("JUPYTER_ENVIRONMENT_FLAG"):
-        uri = os.getenv("APPLICATION_URI")
-        virtual_path = _remove_suffix(urlparse(uri).path, "/")
-        WinAuthUtils.EnableWindowsAuth(False, virtual_path)
-
-
 @pytest.fixture(scope="module", autouse=True)
 def windows_auth(request):
-    if not "test_windows_auth.py" in request.keywords:
+    # Inside a DataLab the C# suites manage IIS, and they copy only the test files and conftest.py into its working
+    # directory, so conftest.py is a top-level module there and iis.py is not beside it. iis is imported here, where
+    # tox runs it with `tests` as a package, and nowhere else.
+    if "test_windows_auth.py" not in request.keywords or os.getenv(
+        "JUPYTER_ENVIRONMENT_FLAG"
+    ):
         yield
     else:
-        enable_windows_auth()
-        yield
-        disable_windows_auth()
+        from .iis import windows_auth_enabled
+
+        with windows_auth_enabled(os.getenv("APPLICATION_URI")):
+            yield
 
 
 @pytest.fixture
 def session(request):
-    if request.param == "Windows":
-        yield create_windows_auth_session()
-    elif request.param == "Form":
-        yield create_form_auth_session()
-    elif request.param == "Token":
-        yield create_token_auth_session()
+    creators = {
+        "Windows": create_windows_auth_session,
+        "Form": create_form_auth_session,
+        "Token": create_token_auth_session,
+    }
+    created = creators[request.param]()
+    try:
+        yield created
+    finally:
+        created.close()
 
 
 @pytest.fixture
@@ -216,19 +166,45 @@ def dataflow_object(request):
         )
 
 
+SQL_TYPE = (
+    "CompAnalytics.Extension.Sql.SqlConnectionSettings, CompAnalytics.Extension.Sql, "
+    "Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9"
+)
+
+
+def make_sql_property(
+    name, host, username, password, database=None, port=None, connection_parameters=None
+):
+    settings = {
+        "Password": password,
+        "ConnectionParameters": connection_parameters or [],
+        "Database": database,
+        "Host": host,
+        "Port": port,
+        "Username": username,
+        "UseMultipleActiveResultSets": None,
+    }
+    return ContractObject(
+        [
+            ("__type", "Property:#CompAnalytics.Contracts"),
+            ("AssemblyQualifiedType", SQL_TYPE),
+            ("DisplayType", "SqlConnectionSettings"),
+            ("DisplayTypeName", "Database Connection Settings"),
+            ("Name", name),
+            ("Value", json.dumps(settings)),
+            ("EnvironmentValues", []),
+        ]
+    )
+
+
 @pytest.fixture
-def property() -> Contracts.Property:
+def property():
     create_form_auth_session()
     property_service = get_session().property_service
 
-    connection_settings = SqlConnectionSettings()
-    connection_settings.Host = "host.com"
-    connection_settings.Port = 1234
-    connection_settings.Username = "user"
-    connection_settings.Password = "password"
-
-    property = Property(connection_settings)
-    property.Name = Guid.NewGuid().ToString("N")
+    property = make_sql_property(
+        uuid.uuid4().hex, "host.com", "user", "password", port=1234
+    )
 
     saved_property = property_service.SaveProperty(property)
 
@@ -242,21 +218,26 @@ def default_health_key_object() -> KeyObject:
     create_form_auth_session()
     property_service = get_session().property_service
 
-    connection_settings = SqlConnectionSettings()
-    connection_settings.Host = "."
-    connection_settings.Port = None
-    connection_settings.Database = "Health"
-    connection_settings.Username = "CompAnalyticsPublicUser"
-    connection_settings.Password = "c0mpanalytics!"
-
-    property = Property(connection_settings)
-    property.Name = "Test Health Db Key"
+    # A name of its own, so a run that died before it cleaned up, or another run on the same server, can't collide with it
+    property = make_sql_property(
+        f"Test Health Db Key {uuid.uuid4().hex}",
+        ".",
+        "CompAnalyticsPublicUser",
+        "c0mpanalytics!",
+        database="Health",
+        connection_parameters=[{"Key": "TrustServerCertificate", "Value": "yes"}],
+    )
 
     saved_property = property_service.SaveProperty(property)
 
-    yield Key.get(saved_property.Id)
-
-    property_service.DeleteProperty(saved_property.Id)
+    try:
+        yield Key.get(saved_property.Id)
+    finally:
+        # A test may have registered the Key, and it is about to stop existing
+        registered = get_key_object(raise_exception=False)
+        if registered is not None and registered.id == saved_property.Id:
+            KeyObject.clear_registration()
+        property_service.DeleteProperty(saved_property.Id)
 
 
 # used when a fixture needs another copy of parameterized fixture
@@ -281,11 +262,9 @@ def file_path_string(request) -> str:
 
 
 @pytest.fixture
-def file_ref(request) -> Contracts.FileReference:
+def file_ref(request):
     file_path = Path(os.path.dirname(Path(__file__)), "TestFiles", request.param)
-    file_ref = Contracts.FileReference.CreateWithAbsoluteUri[Contracts.FileReference](
-        str(file_path), Uri(str(file_path))
-    )
+    file_ref = FileReference.CreateWithAbsoluteUri(str(file_path), file_path.as_uri())
     return file_ref
 
 
@@ -299,68 +278,87 @@ def queryview_driver_interactive(default_health_key_object) -> QueryViewPagedObj
     yield QueryView.driver(default_health_key_object, interactive=True)
 
 
+def new_input(kind, **members):
+    factory = SearchInput if kind == "SearchInput" else LiteralInput
+    return factory(**members)
+
+
 @pytest.fixture
 def queryview_input_driver(default_health_key_object) -> QueryViewObject:
     driver = QueryView.driver(default_health_key_object)
 
     # set up literal/search inputs
-    race_input = LiteralInput()
-    race_input.DisplayName = "raceLiteralInput"
-    race_input.TemplateName = "raceLiteralInput"
-    race_input.DataType = "String"
-    race_input.Default = "White"
+    race_input = new_input(
+        "LiteralInput",
+        DisplayName="raceLiteralInput",
+        TemplateName="raceLiteralInput",
+        DataType="String",
+        Default="White",
+    )
 
-    red_input = LiteralInput()
-    red_input.DisplayName = "redLiteralInput"
-    red_input.TemplateName = "redLiteralInput"
-    red_input.DataType = "Boolean"
-    red_input.Default = "true"
+    red_input = new_input(
+        "LiteralInput",
+        DisplayName="redLiteralInput",
+        TemplateName="redLiteralInput",
+        DataType="Boolean",
+        Default="true",
+    )
 
-    age_input = SearchInput()
-    age_input.DisplayName = "ageSearchInput"
-    age_input.TemplateName = "ageSearchInput"
-    age_input.DataType = "Number"
-    age_input.Column = "age"
-    age_input.Default = "50"
-    age_input.DefaultOperator = ">"
+    age_input = new_input(
+        "SearchInput",
+        DisplayName="ageSearchInput",
+        TemplateName="ageSearchInput",
+        DataType="Number",
+        Column="age",
+        Default="50",
+        DefaultOperator=">",
+    )
 
-    gender_input = SearchInput()
-    gender_input.DisplayName = "genderSearchInput"
-    gender_input.TemplateName = "genderSearchInput"
-    gender_input.DataType = "String"
-    gender_input.Column = "gender"
-    gender_input.Default = "M"
-    gender_input.DefaultOperator = "="
-    gender_input.OperatorOptional = True
+    gender_input = new_input(
+        "SearchInput",
+        DisplayName="genderSearchInput",
+        TemplateName="genderSearchInput",
+        DataType="String",
+        Column="gender",
+        Default="M",
+        DefaultOperator="=",
+        OperatorOptional=True,
+    )
 
-    date_input = SearchInput()
-    date_input.DisplayName = "dateSearchInput"
-    date_input.TemplateName = "dateSearchInput"
-    date_input.DataType = "Date"
-    date_input.Column = "visit_date"
-    date_input.DefaultOperator = "<"
-    date_input.OperatorOptional = True
+    date_input = new_input(
+        "SearchInput",
+        DisplayName="dateSearchInput",
+        TemplateName="dateSearchInput",
+        DataType="Date",
+        Column="visit_date",
+        DefaultOperator="<",
+        OperatorOptional=True,
+    )
 
-    gender_literal_input = LiteralInput()
-    gender_literal_input.DisplayName = "genderLiteralInput"
-    gender_literal_input.TemplateName = "genderLiteralInput"
-    gender_literal_input.DataType = "String"
-    gender_literal_input.IsMultiChoice = True
-    gender_literal_input.ChoiceQuery = "SELECT DISTINCT gender FROM syndromic_events"
+    gender_literal_input = new_input(
+        "LiteralInput",
+        DisplayName="genderLiteralInput",
+        TemplateName="genderLiteralInput",
+        DataType="String",
+        IsMultiChoice=True,
+        ChoiceQuery="SELECT DISTINCT gender FROM syndromic_events",
+    )
 
-    age_literal_input = LiteralInput()
-    age_literal_input.DisplayName = "ageLiteralInput"
-    age_literal_input.TemplateName = "ageLiteralInput"
-    age_literal_input.DataType = "Number"
-    age_literal_input.IsMultiChoice = True
-    age_literal_input.ChoiceQuery = "SELECT DISTINCT age FROM syndromic_events"
+    age_literal_input = new_input(
+        "LiteralInput",
+        DisplayName="ageLiteralInput",
+        TemplateName="ageLiteralInput",
+        DataType="Number",
+        IsMultiChoice=True,
+        ChoiceQuery="SELECT DISTINCT age FROM syndromic_events",
+    )
 
-    driver.contract.LiteralInputs.Add(race_input)
-    driver.contract.LiteralInputs.Add(red_input)
-    driver.contract.LiteralInputs.Add(gender_literal_input)
-    driver.contract.LiteralInputs.Add(age_literal_input)
-    driver.contract.SearchInputs.Add(age_input)
-    driver.contract.SearchInputs.Add(gender_input)
-    driver.contract.SearchInputs.Add(date_input)
+    driver.contract.LiteralInputs.append(race_input)
+    driver.contract.LiteralInputs.append(red_input)
+    driver.contract.LiteralInputs.append(gender_literal_input)
+    driver.contract.LiteralInputs.append(age_literal_input)
+    driver.contract.SearchInputs.append(age_input)
+    driver.contract.SearchInputs.append(gender_input)
+    driver.contract.SearchInputs.append(date_input)
 
     yield driver

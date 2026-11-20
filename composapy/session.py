@@ -1,19 +1,23 @@
 from __future__ import annotations
 from typing import Optional
 import os
+from types import SimpleNamespace
+import requests
 
 from composapy.config import write_config_session
 from composapy.auth import AuthMode
-from composapy.bindings import configure_binding
-
-from System import Uri, Net
-from CompAnalytics import IServices
-
-import clr
-from System import Exception
-from System.Net.Sockets import SocketException
-from System.ServiceModel import EndpointNotFoundException
-from System.Net import WebException
+from composapy._transport.client import ServiceClient
+from composapy._transport.proxy import ServiceProxy, load_operations
+from composapy.exceptions import (
+    InvalidAuthModeAction,
+    SessionException,
+    UriNotConfiguredError,
+    InvalidTokenConfigError,
+    InvalidFormConfigError,
+    InvalidWindowsConfigError,
+    SessionRegistrationException,
+    CONNECTION_ERROR_MESSAGE,
+)
 
 
 class Session:
@@ -27,33 +31,27 @@ class Session:
     """
 
     @property
-    def property_service(self) -> IServices.IPropertyService:
-        """A Composable csharp binding to the IServices.IPropertyService."""
+    def property_service(self) -> ServiceProxy:
         return self.services["PropertyService"]
 
     @property
-    def app_service(self) -> IServices.IApplicationService:
-        """A Composable csharp binding to the IServices.IApplicationService."""
+    def app_service(self) -> ServiceProxy:
         return self.services["ApplicationService"]
 
     @property
-    def table_service(self) -> IServices.ITableService:
-        """A Composable csharp binding to the IServices.ITableService object."""
+    def table_service(self) -> ServiceProxy:
         return self.services["TableService"]
 
     @property
-    def file_upload_service(self) -> IServices.IFileUploadService:
-        """A Composable csharp binding to the IServices.IFileUploadService object."""
+    def file_upload_service(self) -> ServiceProxy:
         return self.services["FileUploadService"]
 
     @property
-    def queryview_service(self) -> IServices.IQueryViewService:
-        """A Composable csharp binding to the IServices.IQueryViewService object."""
+    def queryview_service(self) -> ServiceProxy:
         return self.services["QueryViewService"]
 
     @property
-    def resource_manager(self) -> IServices.Deploy.ResourceManager:
-        """A Composable csharp binding to the IServices.Deploy.ResourceManager object."""
+    def resource_manager(self) -> _ResourceManager:
         return self.ResourceManager
 
     @property
@@ -100,6 +98,11 @@ class Session:
             FORM takes a tuple of (username, password), and TOKEN takes a string token that can be
             generated in the Composable application.
         """
+        if not isinstance(auth_mode, AuthMode):
+            raise TypeError(
+                f"auth_mode must be an AuthMode, not {type(auth_mode).__name__}."
+            )
+
         if uri is None and os.environ.get("APPLICATION_URI") is None:
             raise UriNotConfiguredError(
                 "A uri must be configured by either setting an "
@@ -113,15 +116,16 @@ class Session:
                 "AuthMode.WINDOWS authorization does not "
                 "use any credentials kwarg input value, "
                 "and expected credentials input to be (None), "
-                f"but instead received ({credentials}). Please "
-                "remove any credentials input vaules if using AuthMode.WINDOWS "
+                "but instead received credentials, which are not "
+                "accepted for this mode (their values are not shown). Please "
+                "remove any credentials input values if using AuthMode.WINDOWS "
                 "authentication scheme."
             )
 
         if auth_mode == AuthMode.TOKEN and not isinstance(credentials, str):
             raise InvalidTokenConfigError(
                 "For AuthMode.TOKEN authorization, "
-                "you must pass a string (token) value to the"
+                "you must pass a string (token) value to the "
                 "credentials initialization kwargs."
             )
 
@@ -130,7 +134,7 @@ class Session:
         ):
             raise InvalidFormConfigError(
                 "For AuthMode.FORM authorization, "
-                "you must pass a tuple (username, password) value to the"
+                "you must pass a tuple (username, password) value to the "
                 "credentials initialization kwargs."
             )
 
@@ -141,30 +145,14 @@ class Session:
         self._auth_mode = auth_mode
         self._credentials = credentials
 
-        self.connection_settings = IServices.Deploy.ConnectionSettings()
-        self.connection_settings.Uri = Uri(uri)
+        self.connection_settings = SimpleNamespace(Uri=uri, AuthMode=auth_mode)
 
-        if auth_mode == AuthMode.TOKEN:
-            self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Api
-            self.connection_settings.ApiKey = credentials
+        self.ResourceManager = _ResourceManager(self)
 
-        elif auth_mode == AuthMode.FORM:
-            self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Form
-            self.connection_settings.FormCredential = Net.NetworkCredential(
-                credentials[0], credentials[1]
-            )
-
-        elif auth_mode == AuthMode.WINDOWS:
-            self.connection_settings.AuthMode = IServices.Deploy.AuthMode.Windows
-
-        try:
-            self.ResourceManager = IServices.Deploy.ResourceManager(
-                self.connection_settings
-            )
-        except Exception as e:
-            handle_connection_exception(e)
-
-        self._bind_services()
+        self._client = ServiceClient(uri, auth_mode, credentials)
+        self.services = {
+            name: ServiceProxy(self._client, name) for name in load_operations()
+        }
 
     @classmethod
     def clear_registration(cls) -> None:
@@ -196,42 +184,20 @@ class Session:
         if save:
             write_config_session(self)
 
-    def _bind_services(self) -> None:
-        self.services = {}
-        for service in self.ResourceManager.AvailableServices():
-            service_name = self._parse_service_name(service)
-            uri = self.ResourceManager.CreateServiceEndpointUri(service_name)
+    def close(self):
+        self._client.close()
 
-            binding = configure_binding(
-                service_name, self.ResourceManager.CreateAuthBinding(uri)
-            )
+    def __enter__(self):
+        return self
 
-            try:  # enable web scripting = True
-                self.services[service_name] = self.ResourceManager.CreateAuthChannel[
-                    service
-                ](uri, binding, True)
-            except:  # enable web scripting = False
-                self.services[service_name] = self.ResourceManager.CreateAuthChannel[
-                    service
-                ](uri, binding, False)
-
-    @staticmethod
-    def _parse_service_name(method):
-        return str(method).split(".")[-1][1:]
+    def __exit__(self, exc_type, exc, tb):
+        self.close()
 
 
 def handle_connection_exception(e):
-    """Handles exceptions related to URI issues."""
-    if (isinstance(e, EndpointNotFoundException)) or (isinstance(e, WebException)):
-        inner_exception = e.InnerException
-        while inner_exception is not None:
-            if isinstance(inner_exception, SocketException):
-                raise ConnectionError(
-                    "Unable to connect to URI. Common issues include incorrect URI scheme "
-                    "(http or https) or a typo in your URI. Please verify that you are using "
-                    "the correct scheme for your server."
-                ) from None
-            inner_exception = inner_exception.InnerException
+    """Turn a connection failure into the friendly ConnectionError; anything else is left alone."""
+    if isinstance(e, requests.ConnectionError):
+        raise ConnectionError(CONNECTION_ERROR_MESSAGE) from None
 
 
 def get_session(raise_exception=True) -> Optional[Session]:
@@ -261,29 +227,16 @@ class _SessionSingleton:
         return cls.instance
 
 
-class SessionException(Exception):
-    pass
+class _ResourceManager:
 
+    def __init__(self, session):
+        self._session = session
 
-class UriNotConfiguredError(SessionException):
-    pass
+    def AvailableServices(self):
+        return list(load_operations())
 
+    def CreateServiceEndpointUri(self, name):
+        return f"{self._session.uri}Services/{name}.svc"
 
-class InvalidTokenConfigError(SessionException):
-    pass
-
-
-class InvalidFormConfigError(SessionException):
-    pass
-
-
-class InvalidWindowsConfigError(SessionException):
-    pass
-
-
-class InvalidAuthModeAction(SessionException):
-    pass
-
-
-class SessionRegistrationException(SessionException):
-    pass
+    def Dispose(self):
+        self._session.close()

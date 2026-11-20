@@ -1,12 +1,14 @@
-Tables.Table
-============
+Table
+=====
 
 .. code-block:: python
 
-    from CompAnalytics.Contracts.Tables import Table
+    from composapy.contracts import Table, to_table
 
-Table objects are container objects for queries. For convenience, their results are displayed
-as a pandas DataFrame when inside a notebook environment.
+A ``Table`` is what a DataFlow result or input of type Table holds: a table name, a SQL
+query, its columns, and the execution handle it belongs to. The rows stay on the platform
+until you ask for them. For convenience, a table is displayed as a pandas DataFrame when it
+is the last value of a notebook cell.
 
 .. code-block:: python
 
@@ -25,11 +27,47 @@ as a pandas DataFrame when inside a notebook environment.
     # |  2 | e   |     |     |
     # +----+-----+-----+-----+
 
-You can also retrieve the value of the pandas DataFrame Table object with to_pandas().
+to_pandas
+---------
+
+- table.to_pandas() -> pandas.DataFrame
+
+Reads every row of the table and returns a pandas DataFrame whose column dtypes follow the
+table's column types.
 
 .. code-block:: python
 
-    table = table_run.modules.first().result.value  # CompAnalytics.Contracts.Tables.Table
+    table = table_run.modules.first().result.value  # composapy.contracts.Table
     table_df = table.to_pandas()                    # pandas.DataFrame
 
-You can find more information on the CompAnalytics.Contracts.Tables.Table contract `here <https://dev.composable.ai/api/CompAnalytics.Contracts.Tables.Table.html>`_.
+Members
+-------
+
+A table carries the members of its contract:
+
+- ``table.TableName``: the name of the table.
+- ``table.Headers``: the column names, in order. A list with a few extra helper members
+  (``Count``, ``Contains``, and others); see :doc:`composapy-contracts-values`.
+- ``table.Columns``: the columns. Each has a ``Name`` and a ``Type``, and the collection can be
+  indexed by name or by position.
+
+to_table
+--------
+
+- to_table(df: pandas.DataFrame, execution_handle: ExecutionHandle, external_input_handles: list = None) -> Table
+
+Creates a table on the platform from a pandas DataFrame, within the execution that
+``execution_handle`` names, and returns its contract. This is how a script or notebook run by
+a DLNBR module hands a DataFrame back to the platform.
+
+.. code-block:: python
+
+    import pandas as pd
+    from composapy.contracts import to_table
+
+    table = to_table(pd.DataFrame({"a": [1, 2, 3]}), execution_handle)
+
+A DataFrame whose index is not the default range index keeps it as columns. Column names are
+made valid for the platform: an empty name becomes ``col<position>``, runs of whitespace
+become one space, and a name repeated, ignoring case, gets ``_2``, ``_3``, and so on. A
+DataFrame with no columns raises ``ValueError``.

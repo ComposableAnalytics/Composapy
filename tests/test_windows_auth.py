@@ -8,9 +8,7 @@ from pathlib import Path
 from composapy.auth import AuthMode
 from composapy.dataflow.api import DataFlow
 from composapy.config import get_config_session, read_config
-
-
-from CompAnalytics.Contracts import FileReference
+from composapy.contracts.file_reference import FileReference
 
 if TYPE_CHECKING:
     from composapy.dataflow.models import DataFlowObject
@@ -70,10 +68,7 @@ def test_convert_table_to_pandas(dataflow_object: DataFlowObject):
     ],
 )
 def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject, data):
-    from composapy.patch.table import _init_cs_list
-    from System import Object
-
-    ext_inputs = {"ColumnType": data[0], "ColumnData": _init_cs_list(Object, data[2])}
+    ext_inputs = {"ColumnType": data[0], "ColumnData": data[2]}
 
     # the dataflow automatically adds a null value to the column data to test support for nullable types
     dataflow_run = dataflow_object.run(external_inputs=ext_inputs)

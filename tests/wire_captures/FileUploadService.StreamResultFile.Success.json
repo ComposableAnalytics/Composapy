@@ -1,0 +1,15 @@
+{
+  "Row": 6,
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/FileUploadService.svc/StreamResultFile",
+  "RequestBody": {
+    "encoding": "text",
+    "value": "{\"resourceId\": 685721}"
+  },
+  "StatusCode": 200,
+  "ContentType": "application/octet-stream",
+  "ResponseBody": {
+    "encoding": "text",
+    "value": "success"
+  }
+}

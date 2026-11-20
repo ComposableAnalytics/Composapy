@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../../">
 <head>
@@ -5,19 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Api &mdash; Composapy  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
@@ -58,9 +56,11 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="../composapy-session.html">Session</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../composapy-utils.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../composapy-contracts-table.html">Tables.Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../composapy-contracts-table.html">Table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../composapy-contracts-filereference.html">FileReference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../composapy-contracts-values.html">Contract values</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../environment-variables.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../migrating-to-1-0.html">Migrating to 1.0</a></li>
 </ul>
 </li>
 </ul>
@@ -95,15 +95,15 @@
 <h1>Api<a class="headerlink" href="#api" title="Link to this heading"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="composapy.queryview.api.QueryView">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">composapy.queryview.api.</span></span><span class="sig-name descname"><span class="pre">QueryView</span></span><a class="headerlink" href="#composapy.queryview.api.QueryView" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">composapy.queryview.api.</span></span><span class="sig-name descname"><span class="pre">QueryView</span></span><a class="headerlink" href="#composapy.queryview.api.QueryView" title="Link to this definition"></a></dt>
 <dd><p>A wrapper class for queryview operations.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.queryview.api.QueryView.driver">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">driver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../composapy-key/composapy-key-model.html#composapy.key.models.KeyObject" title="composapy.key.models.KeyObject"><span class="pre">KeyObject</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interactive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-queryview-model.html#composapy.queryview.models.QueryViewObject" title="composapy.queryview.models.QueryViewObject"><span class="pre">QueryViewObject</span></a></span></span><a class="headerlink" href="#composapy.queryview.api.QueryView.driver" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">driver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../composapy-key/composapy-key-model.html#composapy.key.models.KeyObject" title="composapy.key.models.KeyObject"><span class="pre">KeyObject</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timeout</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">validate_query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interactive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="composapy-queryview-model.html#composapy.queryview.models.QueryViewObject" title="composapy.queryview.models.QueryViewObject"><span class="pre">QueryViewObject</span></a></span></span><a class="headerlink" href="#composapy.queryview.api.QueryView.driver" title="Link to this definition"></a></dt>
 <dd><p>Retrieve a queryview driver object, key is optional argument, but will need to call
 connect with key as argument to run a query.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.key.api</span> <span class="kn">import</span> <span class="n">Key</span>
-<span class="kn">from</span> <span class="nn">composapy.queryview.api</span> <span class="kn">import</span> <span class="n">QueryView</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composapy.key.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">Key</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">composapy.queryview.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">QueryView</span>
 
 <span class="n">key</span> <span class="o">=</span> <span class="n">Key</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>  <span class="c1"># KeyObject(id=123456)</span>
 
@@ -132,18 +132,18 @@ connect with key as argument to run a query.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="composapy.queryview.api.QueryView.run">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qv_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interactive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pd.DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ITableResult</span></span></span><a class="headerlink" href="#composapy.queryview.api.QueryView.run" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">qv_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inputs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">any</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interactive</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pd.DataFrame</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">ITableResult</span></span></span><a class="headerlink" href="#composapy.queryview.api.QueryView.run" title="Link to this definition"></a></dt>
 <dd><p>Run a saved QueryView resource, returning the results as a Pandas DataFrame. Will use
 the currently saved QueryView query and connection settings. Note, this will not use your
 currently registered key as the query connection settings.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy.queryview.api</span> <span class="kn">import</span> <span class="n">QueryView</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composapy.queryview.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">QueryView</span>
 
 <span class="n">df</span> <span class="o">=</span> <span class="n">QueryView</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">123456</span><span class="p">)</span>
 
 <span class="c1"># Or, if the QueryView has inputs, you can pass them in as an optional argument</span>
-<span class="c1"># Literal inputs should be a string-string key-value pair: &quot;Display Name&quot;: &quot;Value&quot;</span>
-<span class="c1"># Filter inputs can be a string-string key-value pair or a string-tuple pair: &quot;Display Name&quot;: (&quot;Value&quot;, &quot;Operator&quot;)</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">QueryView</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">123456</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Display Name 1&quot;</span><span class="p">:</span> <span class="s2">&quot;Value 1&quot;</span><span class="p">,</span> <span class="s2">&quot;Display Name 2&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;Value 2&quot;</span><span class="p">,</span> <span class="s2">&quot;&gt;=&quot;</span><span class="p">)})</span>
+<span class="c1"># Literal inputs should be a string-string key-value pair: "Display Name": "Value"</span>
+<span class="c1"># Filter inputs can be a string-string key-value pair or a string-tuple pair: "Display Name": ("Value", "Operator")</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">QueryView</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="mi">123456</span><span class="p">,</span> <span class="n">inputs</span><span class="o">=</span><span class="p">{</span><span class="s2">"Display Name 1"</span><span class="p">:</span> <span class="s2">"Value 1"</span><span class="p">,</span> <span class="s2">"Display Name 2"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"Value 2"</span><span class="p">,</span> <span class="s2">"&gt;="</span><span class="p">)})</span>
 </pre></div>
 </div>
 <dl class="field-list simple">

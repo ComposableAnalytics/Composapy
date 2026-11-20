@@ -1,0 +1,15 @@
+{
+  "Row": 11,
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/UserService.svc/GenerateUserToken",
+  "RequestBody": {
+    "userId": 739,
+    "name": "test",
+    "purpose": "testing"
+  },
+  "StatusCode": 200,
+  "ContentType": "application/json; charset=utf-8",
+  "ResponseBody": {
+    "d": "eyJh<omitted>"
+  }
+}

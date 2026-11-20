@@ -1,0 +1,53 @@
+{
+  "Row": 8,
+  "Method": "GET",
+  "URL": "http://localhost/CompApp/Services/AclService.svc/GetAcl?resourceId=685752",
+  "RequestBody": {
+    "resourceId": 685752,
+    "aclType": null,
+    "securableResourceType": null
+  },
+  "StatusCode": 200,
+  "ContentType": "application/json; charset=utf-8",
+  "ResponseBody": {
+    "d": {
+      "__type": "Acl:#CompAnalytics.Contracts.Security",
+      "AclEntries": [],
+      "Owner": {
+        "__type": "User:#CompAnalytics.Contracts.Security",
+        "DefaultSearchType": null,
+        "Email": "<omitted>",
+        "FirstName": null,
+        "Id": null,
+        "LastName": null,
+        "Organization": null,
+        "RequiresPasswordReset": false,
+        "Theme": null,
+        "UserId": "<omitted>",
+        "UserName": "<omitted>"
+      },
+      "PossiblePermissions": [
+        "Add-Comment",
+        "Clone",
+        "Delete",
+        "Delete-Run",
+        "Discover",
+        "Discover-Run",
+        "Execute",
+        "Execute-Run",
+        "Grant-Control",
+        "Moderate-Comment",
+        "Read",
+        "Read-Metrics",
+        "Read-Private",
+        "Read-Run",
+        "Write",
+        "Write-Run"
+      ],
+      "ResourceId": 685752,
+      "ResourceName": "",
+      "SecurableResourceType": null,
+      "Type": null
+    }
+  }
+}

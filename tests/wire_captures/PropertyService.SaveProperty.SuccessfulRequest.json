@@ -1,0 +1,43 @@
+{
+  "Row": 10,
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/PropertyService.svc/SaveProperty",
+  "RequestBody": {
+    "property": {
+      "__type": "Property:#CompAnalytics.Contracts",
+      "AssemblyQualifiedType": "CompAnalytics.Extension.Sql.SqlConnectionSettings, CompAnalytics.Extension.Sql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9",
+      "CreatedById": "<omitted>",
+      "CreatedByUserName": "<omitted>",
+      "DeletePermitted": true,
+      "Description": null,
+      "DisplayType": "SqlConnectionSettings",
+      "DisplayTypeName": "Database Connection Settings",
+      "EnvironmentValues": [],
+      "Id": 685015,
+      "Name": "HealthConnection3bb472b2-a2aa-4ffb-9c04-b6ebb5c0a11b",
+      "ReadPermitted": true,
+      "Value": "{\"Password\":\"<omitted>\",\"ConnectionParameters\":[{\"Key\":\"TrustServerCertificate\",\"Value\":\"yes\"}],\"Database\":\"Health\",\"Host\":\".\",\"Port\":null,\"Username\":\"<omitted>\",\"UseMultipleActiveResultSets\":null}",
+      "WritePermitted": true
+    }
+  },
+  "StatusCode": 200,
+  "ContentType": "application/json; charset=utf-8",
+  "ResponseBody": {
+    "d": {
+      "__type": "Property:#CompAnalytics.Contracts",
+      "AssemblyQualifiedType": "CompAnalytics.Extension.Sql.SqlConnectionSettings, CompAnalytics.Extension.Sql, Version=1.0.0.0, Culture=neutral, PublicKeyToken=792cfbd70dcd13a9",
+      "CreatedById": "<omitted>",
+      "CreatedByUserName": "<omitted>",
+      "DeletePermitted": true,
+      "Description": null,
+      "DisplayType": "SqlConnectionSettings",
+      "DisplayTypeName": "Database Connection Settings",
+      "EnvironmentValues": [],
+      "Id": 685015,
+      "Name": "HealthConnection3bb472b2-a2aa-4ffb-9c04-b6ebb5c0a11b",
+      "ReadPermitted": true,
+      "Value": "{\"Password\":\"<omitted>\",\"ConnectionParameters\":[{\"Key\":\"TrustServerCertificate\",\"Value\":\"yes\"}],\"Database\":\"Health\",\"Host\":\".\",\"Port\":null,\"Username\":\"<omitted>\",\"UseMultipleActiveResultSets\":null}",
+      "WritePermitted": true
+    }
+  }
+}

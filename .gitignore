@@ -29,3 +29,8 @@ tests/.local_files
 #misc
 .tfignore
 /.vs
+
+#parity harness scratch
+tools/parity/envs/
+tools/parity/results/
+tools/parity/work/

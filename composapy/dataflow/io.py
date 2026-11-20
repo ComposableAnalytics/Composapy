@@ -1,72 +1,67 @@
 from __future__ import annotations
-from typing import TYPE_CHECKING
-from pathlib import PureWindowsPath
-import json
 
-from System import Uri
-from CompAnalytics.IServices import FileUploadClient
-from CompAnalytics.Contracts import FileReference
-from CompAnalytics.Core import ContractSerializer
+import base64
+import uuid
+from pathlib import Path, PureWindowsPath
+from typing import TYPE_CHECKING
 
 from composapy.decorators import session_required
 from composapy.session import get_session
-from composapy.utils import _urljoin
 
 if TYPE_CHECKING:
+    from composapy.contracts import ExecutionHandle
     from composapy.dataflow.models import Module
-    from CompAnalytics.Contracts import ExecutionHandle
+
+
+def _multipart_file_body(file_path):
+    """One Base64 part named FileUpload, as in the UploadFile capture. Returns (body, content_type)."""
+    path = Path(file_path)
+    if any(c in path.name for c in '"\r\n'):
+        raise ValueError(
+            f"The file {path.name!r} can't be uploaded: its name contains a double quote or a line break. Rename it first."
+        )
+    boundary = uuid.uuid4().hex
+    head = (
+        f"--{boundary}\r\n"
+        f'Content-Disposition: form-data; name="FileUpload"; filename="{path.name}"\r\n'
+        "Content-Type: text/plain\r\n"
+        "Content-Transfer-Encoding: Base64\r\n\r\n"
+    ).encode("utf-8")
+    body = (
+        head
+        + base64.b64encode(path.read_bytes())
+        + f"\r\n--{boundary}--\r\n".encode("ascii")
+    )
+    return body, f"multipart/form-data; boundary={boundary}"
+
+
+def _run_query(execution_handle):
+    return {"HandleId": str(execution_handle.HandleId), "Id": str(execution_handle.Id)}
 
 
 @session_required
 def upload_files_as_external_input(
-    execution_handle: ExecutionHandle,
-    module: Module,
-    external_inputs: dict,
+    execution_handle: ExecutionHandle, module: Module, external_inputs: dict
 ) -> None:
-    """Uploads a file to the runs directory in an execution context that has been created but has
-    not yet run. Then, add it as an external module input.
-
-    Parameters:
-    (ExecutionHandle) execution_handle: contract from composable dll library
-    (Module) module: module from composapy models
-    (dict[str, any]) external_inputs: example => {input_name: value, ...}
-    """
-    session_uri = get_session().uri
-    session_login_type = get_session().ResourceManager.Login
-
     module_name = module.contract.ModuleInputs["Name"]
     module_input = module.contract.ModuleInputs["Input"]
-
-    uri = Uri(_urljoin(session_uri, "Services/FileUploadService.svc"))
-
     file_path = str(PureWindowsPath(external_inputs[module_name.ValueObj]))
 
-    client = FileUploadClient(uri, session_login_type, execution_handle)
-    client.UploadFiles(file_path, module.contract.UiHandle, module_input.UiHandle)
+    body, content_type = _multipart_file_body(file_path)
+    query = {
+        **_run_query(execution_handle),
+        "ModuleHandleId": module.contract.UiHandle,
+        "ModuleInputHandleId": module_input.UiHandle,
+    }
+    get_session().file_upload_service.UploadFile(
+        body, _content_type=content_type, _query=query
+    )
 
 
 @session_required
-def upload_files_to_runs_dir(
-    execution_handle: ExecutionHandle, file_path: PureWindowsPath
-) -> FileReference:
-    """Uploads a file to the runs directory an execution context that has been created but has
-    not yet run.
-
-    Parameters:
-    (ExecutionHandle) execution_handle: contract from composable dll library
-    (PureWindowsPath) file_path: file to upload
-    """
-    session_uri = get_session().uri
-    session_login_type = get_session().ResourceManager.Login
-
-    uri = Uri(_urljoin(session_uri, "Services/FileUploadService.svc"))
-
-    client = FileUploadClient(uri, session_login_type, execution_handle)
-    http_response = client.UploadFilesToRuns(file_path)
-    serialized_file_ref = _extract_serialized_file_ref(http_response)
-    file_ref = ContractSerializer.Deserialize[FileReference](serialized_file_ref)
-    return file_ref
-
-
-def _extract_serialized_file_ref(json_file_ref: str) -> str:
-    return json.dumps(json.loads(json_file_ref)["d"][0])
+def upload_files_to_runs_dir(execution_handle: ExecutionHandle, file_path):
+    body, content_type = _multipart_file_body(file_path)
+    result = get_session().file_upload_service.UploadFilesToRuns(
+        body, _content_type=content_type, _query=_run_query(execution_handle)
+    )
+    return result[0]

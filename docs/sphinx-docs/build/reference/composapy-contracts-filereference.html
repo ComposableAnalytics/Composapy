@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -5,24 +7,20 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FileReference &mdash; Composapy  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="Environment Variables" href="environment-variables.html" />
-    <link rel="prev" title="Tables.Table" href="composapy-contracts-table.html" /> 
+    <link rel="next" title="Contract values" href="composapy-contracts-values.html" />
+    <link rel="prev" title="Table" href="composapy-contracts-table.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -51,13 +49,16 @@
 <li class="toctree-l2"><a class="reference internal" href="composapy-queryview/index.html">QueryView</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-session.html">Session</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-utils.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-table.html">Tables.Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-table.html">Table</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">FileReference</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#members">Members</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#to-file">to_file</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#file-ref">file_ref</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-values.html">Contract values</a></li>
 <li class="toctree-l2"><a class="reference internal" href="environment-variables.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migrating-to-1-0.html">Migrating to 1.0</a></li>
 </ul>
 </li>
 </ul>
@@ -89,23 +90,36 @@
              
   <section id="filereference">
 <h1>FileReference<a class="headerlink" href="#filereference" title="Link to this heading"></a></h1>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">CompAnalytics.Contracts</span> <span class="kn">import</span> <span class="n">FileReference</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composapy.contracts</span><span class="w"> </span><span class="kn">import</span> <span class="n">FileReference</span>
 </pre></div>
 </div>
 <p>For DataFlows that contain values of type FileReference, the value property contains the
-necessary information needed to retrieve the file. Composapy adds a convenience method,
-to_file(), directly on the FileReference class. This gives you the ability to call to_file()
-directly on your FileReference object, which downloads the file to your local workspace
-and returns a FileReference pointing to the newly created file.</p>
+necessary information needed to retrieve the file. A FileReference has a to_file() method,
+which downloads the file to your local workspace and returns a FileReference pointing to the
+newly created file.</p>
+<p>A file reference can be one of its subclasses, which the platform picks from the file’s
+extension: <code class="docutils literal notranslate"><span class="pre">CsvFileReference</span></code>, <code class="docutils literal notranslate"><span class="pre">ImageReference</span></code>, <code class="docutils literal notranslate"><span class="pre">KmlReference</span></code>, <code class="docutils literal notranslate"><span class="pre">KmzReference</span></code>,
+<code class="docutils literal notranslate"><span class="pre">StlReference</span></code>, <code class="docutils literal notranslate"><span class="pre">Mp3Reference</span></code>, <code class="docutils literal notranslate"><span class="pre">WavReference</span></code>, <code class="docutils literal notranslate"><span class="pre">VideoReference</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">AudioReference</span></code>. They are all in <code class="docutils literal notranslate"><span class="pre">composapy.contracts</span></code>.</p>
+<section id="members">
+<h2>Members<a class="headerlink" href="#members" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">file_reference.Uri</span></code>: where the file is. A string that also has members for the parts of
+a URI (<code class="docutils literal notranslate"><span class="pre">Scheme</span></code>, <code class="docutils literal notranslate"><span class="pre">LocalPath</span></code>, and others); see <a class="reference internal" href="composapy-contracts-values.html"><span class="doc">Contract values</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">file_reference.LocalFile</span></code>: the path of a file on this machine, when there is one.</p></li>
+</ul>
+</section>
 <section id="to-file">
 <h2>to_file<a class="headerlink" href="#to-file" title="Link to this heading"></a></h2>
 <ul class="simple">
-<li><p>file_reference.to_file(save_dir: pathlib.Path | str = None, file_name: str = None) -&gt; CompAnalytics.Contracts.FileReference</p></li>
+<li><p>file_reference.to_file(save_dir: pathlib.Path | str = None, file_name: str = None) -&gt; FileReference</p></li>
 </ul>
 <p>If no save_dir kwarg is provided, it uses the current working directory. If no file_name kwarg is
-provided, it will use the source file name.</p>
+provided, it will use the source file name. Pass an absolute <code class="docutils literal notranslate"><span class="pre">save_dir</span></code>: a relative one
+downloads the file and then raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>, because the returned reference has to
+point at an absolute path.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">run</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">get_run</span><span class="p">(</span><span class="mi">654321</span><span class="p">)</span>
-<span class="n">run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">save_dir</span><span class="o">=</span><span class="s2">&quot;optional/relative/path/to/dir&quot;</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">&quot;optional_name.txt&quot;</span><span class="p">)</span>
+<span class="n">run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">save_dir</span><span class="o">=</span><span class="s2">"C:/path/to/dir"</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="s2">"optional_name.txt"</span><span class="p">)</span>
 </pre></div>
 </div>
 </section>
@@ -114,13 +128,15 @@ provided, it will use the source file name.</p>
 <p>If you need to create a new file reference (to pass as external inputs to a DataFlow), you can
 use the file_ref utility.</p>
 <ul class="simple">
-<li><p>file_ref(path_like: pathlib.Path | str) -&gt; CompAnalytics.Contracts.FileReference</p></li>
+<li><p>file_ref(path_like: pathlib.Path | str) -&gt; FileReference</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">composapy</span> <span class="kn">import</span> <span class="n">file_ref</span>
-<span class="n">_ref</span> <span class="o">=</span> <span class="n">file_ref</span><span class="p">(</span><span class="s2">&quot;path/to/file.txt&quot;</span><span class="p">)</span>  <span class="c1"># CompAnalytics.Contracts.FileReference</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composapy</span><span class="w"> </span><span class="kn">import</span> <span class="n">file_ref</span>
+<span class="n">_ref</span> <span class="o">=</span> <span class="n">file_ref</span><span class="p">(</span><span class="s2">"path/to/file.txt"</span><span class="p">)</span>  <span class="c1"># composapy.contracts.FileReference</span>
 </pre></div>
 </div>
-<p>You can find more information on the CompAnalytics.Contracts.FileReference contract <a class="reference external" href="https://dev.composable.ai/api/CompAnalytics.Contracts.FileReference.html">here</a>.</p>
+<p>The path is made absolute, so the reference points at the file where it is now. Uploading the
+file to the platform happens when the reference is passed to a DataFlow, and the file’s bytes
+are stored exactly as they are on disk.</p>
 </section>
 </section>
 
@@ -128,8 +144,8 @@ use the file_ref utility.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="composapy-contracts-table.html" class="btn btn-neutral float-left" title="Tables.Table" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="environment-variables.html" class="btn btn-neutral float-right" title="Environment Variables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="composapy-contracts-table.html" class="btn btn-neutral float-left" title="Table" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="composapy-contracts-values.html" class="btn btn-neutral float-right" title="Contract values" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

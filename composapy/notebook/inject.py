@@ -1,25 +1,24 @@
 import pandas as pd
-from typing import Dict
+from pathlib import Path
 
-import System
-from System import Object
-from System.Collections.Generic import List, KeyValuePair
-from CompAnalytics.Core import ContractSerializer
-from CompAnalytics.Contracts import (
+from composapy._wire import codec
+from composapy.contracts.table import Table
+from composapy.contracts.execution_handle import ExecutionHandle
+from composapy.contracts.file_reference import (
     FileReference,
     CsvFileReference,
     ImageReference,
-    ExecutionHandle,
 )
-from CompAnalytics.Contracts.Tables import Table
-
 from composapy.dataflow.io import upload_files_to_runs_dir
 from composapy.patch.table import to_table
+from composapy._wire.objects import ContractObject
 
 
 class TypeNotSupportedError(Exception):
     pass
 
+
+KEY_VALUE_PAIR_TYPE = "KeyValuePairOfstringanyType:#System.Collections.Generic"
 
 SUPPORTED_TYPES = (
     str,
@@ -34,6 +33,15 @@ SUPPORTED_TYPES = (
 )
 
 
+def _plain(value, execution_handle):
+    return value
+
+
+def _float(value, execution_handle):
+    # .NET wrote an integral double without ".0" (3.0 as 3), which the C# side reads as an Int32.
+    return int(value) if value.is_integer() and abs(value) < 1e16 else value
+
+
 def is_file_ref(file_ref: FileReference, execution_handle: ExecutionHandle):
     if file_ref.LocalFile:
         return upload_files_to_runs_dir(execution_handle, file_ref.LocalFile)
@@ -45,29 +53,32 @@ def is_table(table, *args):
 
 
 marshall_actions = {
-    str: lambda x, y: System.String(x),
-    int: lambda x, y: System.Int32(x),
-    bool: lambda x, y: System.Boolean(x),
-    None: lambda x, y: None,
+    None: _plain,
+    str: _plain,
+    int: _plain,
+    bool: _plain,
+    float: _float,
     FileReference: is_file_ref,
     CsvFileReference: is_file_ref,
     ImageReference: is_file_ref,
     Table: is_table,
     pd.DataFrame: lambda x, y: to_table(x, y),
-    float: lambda x, y: System.Double(x),
 }
 
 
-def serialize_return_values(
-    execution_handle: ExecutionHandle, return_values: Dict[str, any], output_path: str
-) -> None:
-    clr_return_values = List[KeyValuePair[str, Object]]()
-    for n, (k, v) in enumerate(return_values.items()):
-        if v is not None and type(v) not in SUPPORTED_TYPES:
-            raise TypeNotSupportedError(f"'{type(v)}' is not currently supported.")
+def serialize_return_values(execution_handle, return_values, output_path):
+    for value in return_values.values():
+        if value is not None and type(value) not in SUPPORTED_TYPES:
+            raise TypeNotSupportedError(f"'{type(value)}' is not currently supported.")
 
-        type_value = v if v is None else type(v)
-        clr_value = marshall_actions[type_value](v, execution_handle)
-        clr_return_values.Add(KeyValuePair[str, Object](k, clr_value))
-
-    ContractSerializer.SerializeToFile(clr_return_values, output_path)
+    entries = []
+    for key, value in return_values.items():
+        marshalled = marshall_actions[None if value is None else type(value)](
+            value, execution_handle
+        )
+        entries.append(
+            ContractObject(
+                [("__type", KEY_VALUE_PAIR_TYPE), ("key", key), ("value", marshalled)]
+            )
+        )
+    Path(output_path).write_text(codec.encode(entries, compact=True), encoding="utf-8")

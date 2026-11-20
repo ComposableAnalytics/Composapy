@@ -1,4 +1,5 @@
 from __future__ import annotations
+import json
 from typing import Dict, TYPE_CHECKING
 
 from composapy import get_session, session_required
@@ -11,11 +12,18 @@ from composapy.queryview.models import (
     QueryException,
     QueryInputException,
 )
-
-from CompAnalytics.Contracts.QueryView import QueryView as QueryView_
+from composapy.contracts.queryview import QueryView as QueryView_
 
 if TYPE_CHECKING:
     import pandas as pd
+
+
+def _json_string(text: str) -> str:
+    return (
+        json.dumps(text, ensure_ascii=False)
+        .replace("[", "\\u005b")
+        .replace("]", "\\u005d")
+    )
 
 
 class QueryView:
@@ -105,14 +113,14 @@ class QueryView:
                         value, operator = inputs[name][0], inputs[name][1]
                     else:
                         raise QueryInputException(
-                            f"Value-operator pair must have length 2 for input '{name}'. If you are trying to pass a multichoice input, please pass it as an iterable within an iterable, \
+                            f"Input '{name}' takes a value, or a (value, operator) pair, but got a {type(inputs[name]).__name__} of length {len(inputs[name])}. If you are trying to pass a multichoice input, please pass it as an iterable within an iterable, \
                             followed by an optional operator. Composapy expects an iterable to contain a value followed by an operator indicating a search input, and new support for multichoice \
                             involves writing the value as a set, list, or tuple within the encompassing iterable to maintain this structure."
                         )
                 else:
                     value, operator = inputs[name], None
 
-                value = QueryView._format_qv_value(value)
+                value = QueryView._format_qv_value(value, name)
 
                 if operator is not None and operator not in QV_ACCEPTABLE_OPERATORS:
 
@@ -127,8 +135,6 @@ class QueryView:
                 for lit in qv_contract.LiteralInputs:
                     if lit.DisplayName == name:
                         lit.Value = value
-                        if isinstance(value, (set, list, tuple)):
-                            lit.IsMultiChoice = True
                         match = True
                         break
 
@@ -137,8 +143,6 @@ class QueryView:
                     for srch in qv_contract.SearchInputs:
                         if srch.DisplayName == name:
                             srch.Value = value
-                            if isinstance(value, (set, list, tuple)):
-                                srch.IsMultiChoice = True
                             if operator:
                                 # Only update operator if the "allow operator changes" setting is enabled
                                 # If the setting is disabled but the same default operator is passed in, no need to trigger an error
@@ -156,7 +160,7 @@ class QueryView:
                 # If still no match was found, raise an exception
                 if not match:
                     raise QueryInputException(
-                        "No input found matching the display name '{name}'"
+                        f"No input found matching the display name '{name}'"
                     )
 
         if interactive:
@@ -172,8 +176,16 @@ class QueryView:
         return QueryViewObject._qv_result_to_df(qv_result)
 
     @staticmethod
-    def _format_qv_value(val: any):
-        """Checks that the given QueryView input value is primitive or an iterable of primitives and converts it to a string or a comma-separated string."""
+    def _format_qv_value(val: any, name: str = None):
+        """Checks that the given QueryView input value is primitive or an iterable of primitives and converts it to a string or a comma-separated string.
+        The name of the input, when it is given, is used in the message for a missing value.
+        """
+        if val is None:
+            of_input = f" for input '{name}'" if name is not None else ""
+            raise QueryInputException(
+                f"A value is needed{of_input}: None is not accepted. Pass a str, int, bool, or float, or an iterable of them for a multichoice input."
+            )
+
         if type(val) not in QV_INPUT_PRIMITIVE_TYPES:
             if isinstance(val, (list, tuple, set)):  # If it is multichoice
                 flat_val = (
@@ -184,22 +196,22 @@ class QueryView:
                         raise QueryInputException(
                             f"All elements in the input iterable must be of type int, bool, str, or float, not '{type(item)}'."
                         )
-                    return (
-                        "["
-                        + ",".join(
-                            (
-                                f'"{str(item)}"'
-                                if isinstance(item, str)
-                                else (
-                                    str(item).lower()
-                                    if isinstance(item, bool)
-                                    else str(item)
-                                )
+                return (
+                    "["
+                    + ",".join(
+                        (
+                            _json_string(item)
+                            if isinstance(item, str)
+                            else (
+                                str(item).lower()
+                                if isinstance(item, bool)
+                                else str(item)
                             )
-                            for item in flat_val
                         )
-                        + "]"
+                        for item in flat_val
                     )
+                    + "]"
+                )
 
             else:
                 raise QueryInputException(

@@ -3,9 +3,7 @@ from typing import TYPE_CHECKING, Optional
 import json
 
 from composapy import config
-
-if TYPE_CHECKING:
-    from CompAnalytics import Contracts
+from composapy._wire.objects import ContractObject
 
 
 class KeyObject:
@@ -40,7 +38,7 @@ class KeyObject:
 
     """
 
-    contract: Contracts.Property
+    contract: ContractObject
 
     @property
     def name(self) -> str:

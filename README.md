@@ -283,4 +283,6 @@ table_contract # NOTE: you can also use display(table_contract), but don't use p
 
 ## Additional Information
 
-Also, if you want to interface with <a href="https://github.com/pythonnet/pythonnet" target="_blank">pythonnet</a> more closely, you can find our csharp documentation <a href="https://dev.composable.ai/api/CompAnalytics.Contracts.html" target="_blank">here</a>.
+The objects a DataFlow or QueryView returns are Python classes in `composapy.contracts`: `Table`, `FileReference`, `ExecutionHandle`, and a generic `ContractObject` for every other contract. See [ReadTheDocs - Contracts](https://composapy.readthedocs.io/reference/composapy-contracts-table.html).
+
+Scripts and pickles written for earlier releases that import `CompAnalytics.Contracts.FileReference`, `CompAnalytics.Contracts.ExecutionHandle`, `CompAnalytics.Contracts.Tables.Table`, `CompAnalytics.Contracts.QueryView.LiteralInput`, `CompAnalytics.Contracts.QueryView.SearchInput`, or `CompAnalytics.Core.ContractSerializer` still work: those names resolve to the classes in `composapy.contracts`. Importing any other name under `CompAnalytics` raises `ImportError`. [ReadTheDocs - Migrating to 1.0](https://composapy.readthedocs.io/reference/migrating-to-1-0.html) lists what else changed.

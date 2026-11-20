@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
@@ -5,23 +7,20 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Environment Variables &mdash; Composapy  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="prev" title="FileReference" href="composapy-contracts-filereference.html" /> 
+    <link rel="next" title="Migrating to 1.0" href="migrating-to-1-0.html" />
+    <link rel="prev" title="Contract values" href="composapy-contracts-values.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -50,14 +49,16 @@
 <li class="toctree-l2"><a class="reference internal" href="composapy-queryview/index.html">QueryView</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-session.html">Session</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-utils.html">Utils</a></li>
-<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-table.html">Tables.Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-table.html">Table</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-contracts-filereference.html">FileReference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-values.html">Contract values</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Environment Variables</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#datalab-dll-dir">DATALAB_DLL_DIR</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#application-uri">APPLICATION_URI</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#composapy-ini-dir">COMPOSAPY_INI_DIR</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#datalab-dll-dir-and-datalab-dll-dir-exclude">DATALAB_DLL_DIR and DATALAB_DLL_DIR_EXCLUDE</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="migrating-to-1-0.html">Migrating to 1.0</a></li>
 </ul>
 </li>
 </ul>
@@ -90,15 +91,9 @@
   <section id="environment-variables">
 <h1>Environment Variables<a class="headerlink" href="#environment-variables" title="Link to this heading"></a></h1>
 <p>If running Composapy in a DataLab, your environment variables will already be set up
-on your running instance. If running outside of a DataLab instance, you will need to
-set “DATALAB_DLL_DIR”. “APPLICATION_URI” can also optionally be set, however it is only
-used to create a Session object and can be passed in as the “uri” argument.</p>
-<section id="datalab-dll-dir">
-<h2>DATALAB_DLL_DIR<a class="headerlink" href="#datalab-dll-dir" title="Link to this heading"></a></h2>
-<p>The value of this should be a path to the required Composable dll’s needed to run
-Composapy. Composapy uses the <a class="reference external" href="https://github.com/pythonnet/pythonnet">PythonNet</a>
-package to bind to the Composable project dll’s.</p>
-</section>
+on your running instance. If running outside of a DataLab instance, “APPLICATION_URI” can
+optionally be set, however it is only used to create a Session object and can be passed in
+as the “uri” argument.</p>
 <section id="application-uri">
 <h2>APPLICATION_URI<a class="headerlink" href="#application-uri" title="Link to this heading"></a></h2>
 <p>See <a class="reference internal" href="composapy-session.html"><span class="doc">Session</span></a>.</p>
@@ -108,13 +103,20 @@ package to bind to the Composable project dll’s.</p>
 <p>This can be set to change the read/write location of the “composapy.ini” configuration file. If
 not specified, defaults to current working directory.</p>
 </section>
+<section id="datalab-dll-dir-and-datalab-dll-dir-exclude">
+<h2>DATALAB_DLL_DIR and DATALAB_DLL_DIR_EXCLUDE<a class="headerlink" href="#datalab-dll-dir-and-datalab-dll-dir-exclude" title="Link to this heading"></a></h2>
+<p>Composapy does not read these. Earlier releases needed them to find the Composable assemblies;
+a process or a saved configuration that still sets them keeps working, and the settings are
+ignored. The same applies to the <code class="docutils literal notranslate"><span class="pre">[environment]</span></code> section of “composapy.ini”.</p>
+</section>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="composapy-contracts-filereference.html" class="btn btn-neutral float-left" title="FileReference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="composapy-contracts-values.html" class="btn btn-neutral float-left" title="Contract values" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="migrating-to-1-0.html" class="btn btn-neutral float-right" title="Migrating to 1.0" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

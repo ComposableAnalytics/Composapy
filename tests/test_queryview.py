@@ -121,7 +121,7 @@ def test_query_error_response_default(queryview_driver):
     with pytest.raises(QueryException) as e:
         queryview_driver.run("select column_does_not_exist from syndromic_events")
     # there should be no (line, col) pairs because query validation is disabled by default
-    assert len(re.compile("\(\d+, \d+\)").findall(str(e.value))) == 0
+    assert len(re.compile(r"\(\d+, \d+\)").findall(str(e.value))) == 0
     assert "Invalid column name" in str(e)
 
 
@@ -131,7 +131,7 @@ def test_query_error_response_with_query_validation(queryview_driver):
             "select top 5 * from syndromic_events where", validate_query=True
         )
     # there should be 3 errors and thus 3 (line, col) pairs
-    assert len(re.compile("\(\d+, \d+\)").findall(str(e.value))) == 3
+    assert len(re.compile(r"\(\d+, \d+\)").findall(str(e.value))) == 3
 
 
 def test_query_error_response_no_query_validation(queryview_driver):
@@ -140,7 +140,7 @@ def test_query_error_response_no_query_validation(queryview_driver):
             "select top 5 * from syndromic_events where", validate_query=False
         )
     # there should be no (line, col) pairs because validation is disabled
-    assert len(re.compile("\(\d+, \d+\)").findall(str(e.value))) == 0
+    assert len(re.compile(r"\(\d+, \d+\)").findall(str(e.value))) == 0
 
 
 def test_query_validation_ignores_warnings(queryview_driver):
@@ -279,7 +279,7 @@ def test_queryview_run_with_id_and_inputs(
             "dateSearchInput": ("2010-05-17", "="),
         }
         df = QueryView.run(qv_id, inputs=qv_inputs)
-        assert len(df) <= 50
+        assert 0 < len(df) <= 50, "The Health data has rows for these inputs."
         assert all(df["race"] == "Asian")
         assert all(df["age"] > 60)
         assert all(df["gender"] == "F")
@@ -315,7 +315,7 @@ def test_queryview_run_with_id_and_multichoice_inputs(
             "ageLiteralInput": [{33, 34, 45}],
         }
         df = QueryView.run(qv_id, inputs=qv_inputs)
-        assert len(df) <= 50
+        assert 0 < len(df) <= 50, "The Health data has rows for these inputs."
         assert all(df["gender"].isin(["M", "U"]))
         assert all(df["age"].isin([33, 34, 45]))
     finally:

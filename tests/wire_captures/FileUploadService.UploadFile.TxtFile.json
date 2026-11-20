@@ -1,0 +1,14 @@
+{
+  "Row": 5,
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/FileUploadService.svc/UploadFile",
+  "RequestBody": {
+    "HandleId": "a9421050-d32a-430d-90ba-1aaedffc0b51",
+    "Id": 685729,
+    "ModuleHandleId": "module4bd94be4-390d-499f-8553-f7daaf917e66",
+    "ModuleInputHandleId": "input6"
+  },
+  "StatusCode": 200,
+  "ContentType": "text/plain;charset=utf-8",
+  "ResponseBody": "{\"d\":6}"
+}

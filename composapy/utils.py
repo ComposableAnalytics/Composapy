@@ -2,9 +2,6 @@ from __future__ import annotations
 from pathlib import Path
 import pkgutil
 
-from System import Uri
-from CompAnalytics.Contracts import FileReference
-
 
 def _urljoin(*args):
     """
@@ -22,8 +19,8 @@ def _remove_suffix(input_string, suffix):
     return input_string
 
 
-def file_ref(path: str | Path) -> FileReference:
-    """Returns a CompAnalytics.Contracts.FileReference object, which can then be passed
+def file_ref(path: str | Path):
+    """Returns a composapy.contracts.FileReference object, which can then be passed
     as the external input of a DataFlow.
 
         .. highlight:: python
@@ -38,11 +35,13 @@ def file_ref(path: str | Path) -> FileReference:
 
     :return: the FileReference contract
     """
+    from composapy.contracts.file_reference import FileReference
+
     if isinstance(path, str):
         path = Path(path)
 
-    uri = Uri(str(Path(path).absolute()))
-    file_ref = FileReference.CreateWithAbsoluteUri(uri.LocalPath, uri)
+    abs_path = Path(path).absolute()
+    file_ref = FileReference.CreateWithAbsoluteUri(str(abs_path), abs_path.as_uri())
     return file_ref
 
 

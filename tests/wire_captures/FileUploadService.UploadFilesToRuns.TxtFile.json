@@ -1,0 +1,14 @@
+{
+  "Row": 5,
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/FileUploadService.svc/UploadFilesToRuns",
+  "RequestBody": {
+    "HandleId": "70850f2b-e3a3-48f8-9c44-68c7ad009375",
+    "Id": 685736,
+    "ModuleHandleId": "module4bd94be4-390d-499f-8553-f7daaf917e66",
+    "ModuleInputHandleId": "input6"
+  },
+  "StatusCode": 200,
+  "ContentType": "text/plain;charset=utf-8",
+  "ResponseBody": "{\"d\":[{\"__type\":\"FileReference:#CompAnalytics.Contracts\",\"Uri\":\"\\/CompApp\\/runs\\/70850f2b-e3a3-48f8-9c44-68c7ad009375\\/5f051543-bf10-482a-8be1-7b11e87d2009\\/note.txt\"}]}"
+}

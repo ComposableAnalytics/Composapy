@@ -1,0 +1,154 @@
+{
+  "table.pkl": {
+    "json": {
+      "__type": "Table:#CompAnalytics.Contracts.Tables",
+      "Columns": [
+        {
+          "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+          "Name": "a",
+          "Type": "VARCHAR"
+        },
+        {
+          "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+          "Name": "b",
+          "Type": "INTEGER"
+        }
+      ],
+      "Headers": [
+        "a",
+        "b"
+      ],
+      "RootExecutionHandle": {
+        "__type": "ExecutionHandle:#CompAnalytics.Contracts",
+        "AppId": null,
+        "HandleId": "be733cc6-df15-4cd6-8f37-73d1c8def3f7",
+        "Id": 685692
+      },
+      "SqlQuery": "SELECT * FROM [2b9381e0-9e7a-45dc-b756-c508f1beb3ad]",
+      "TableName": "2b9381e0-9e7a-45dc-b756-c508f1beb3ad"
+    },
+    "dtypes": {
+      "a": "object",
+      "b": "Int64"
+    },
+    "values": {
+      "columns": [
+        "a",
+        "b"
+      ],
+      "index": [
+        0,
+        1
+      ],
+      "data": [
+        [
+          "0",
+          1
+        ],
+        [
+          "a",
+          3
+        ]
+      ]
+    },
+    "loads_in_baseline": false,
+    "loads_as": null,
+    "error": "TypeError: No method matches given arguments for Table..ctor: (<class 'str'>)"
+  },
+  "table_behavior.pkl": {
+    "json": {
+      "__type": "Table:#CompAnalytics.Contracts.Tables",
+      "Columns": [
+        {
+          "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+          "Name": "a",
+          "Type": "VARCHAR"
+        },
+        {
+          "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+          "Name": "b",
+          "Type": "INTEGER"
+        }
+      ],
+      "Headers": [
+        "a",
+        "b"
+      ],
+      "RootExecutionHandle": {
+        "__type": "ExecutionHandle:#CompAnalytics.Contracts",
+        "AppId": null,
+        "HandleId": "be733cc6-df15-4cd6-8f37-73d1c8def3f7",
+        "Id": 685692
+      },
+      "SqlQuery": "SELECT * FROM [2b9381e0-9e7a-45dc-b756-c508f1beb3ad]",
+      "TableName": "2b9381e0-9e7a-45dc-b756-c508f1beb3ad"
+    },
+    "dtypes": {
+      "a": "object",
+      "b": "Int64"
+    },
+    "values": {
+      "columns": [
+        "a",
+        "b"
+      ],
+      "index": [
+        0,
+        1
+      ],
+      "data": [
+        [
+          "0",
+          1
+        ],
+        [
+          "a",
+          3
+        ]
+      ]
+    },
+    "loads_in_baseline": false,
+    "loads_as": null,
+    "error": "TypeError: No method matches given arguments for Table..ctor: (<class 'str'>)"
+  },
+  "file_reference.pkl": {
+    "json": {
+      "__type": "FileReference:#CompAnalytics.Contracts",
+      "Uri": "file:///C:/Users/GuinevereGilman/Documents/Composapy/tests/TestFiles/create_file_ref_target.txt"
+    },
+    "loads_in_baseline": false,
+    "loads_as": null,
+    "error": "TypeError: No method matches given arguments for FileReference..ctor: (<class 'str'>, <class 'str'>)"
+  },
+  "file_reference_behavior.pkl": {
+    "json": {
+      "__type": "FileReference:#CompAnalytics.Contracts",
+      "Uri": "file:///C:/Users/GuinevereGilman/Documents/Composapy/tests/TestFiles/create_file_ref_target.txt"
+    },
+    "loads_in_baseline": false,
+    "loads_as": null,
+    "error": "ArgumentException: Can't create a FileReference using an absolute URI. Please provide a relative URI.\r\nParameter name: uri\r\n   at CompAnalytics.Contracts.FileReference.ValidateFileReferenceParams(String localFile, Uri uri, Boolean allowAbsoluteUri) in C:\\repo\\Product\\CompAnalytics.Contracts\\FileReference.cs:line 187\r\n   at CompAnalytics.Contracts.FileReference.CreateInternal(String localFile, Uri uri, Boolean allowAbsoluteUri) in C:\\repo\\Product\\CompAnalytics.Contracts\\FileReference.cs:line 128\r\n   at CompAnalytics.Contracts.FileReference.Create(String localFile, Uri uri) in C:\\repo\\Product\\CompAnalytics.Contracts\\FileReference.cs:line 115"
+  },
+  "execution_handle.pkl": {
+    "json": {
+      "__type": "ExecutionHandle:#CompAnalytics.Contracts",
+      "AppId": null,
+      "HandleId": "be733cc6-df15-4cd6-8f37-73d1c8def3f7",
+      "Id": 685692
+    },
+    "loads_in_baseline": false,
+    "loads_as": null,
+    "error": "TypeError: No method matches given arguments for ExecutionHandle..ctor: (<class 'str'>)"
+  },
+  "execution_handle_behavior.pkl": {
+    "json": {
+      "__type": "ExecutionHandle:#CompAnalytics.Contracts",
+      "AppId": null,
+      "HandleId": "be733cc6-df15-4cd6-8f37-73d1c8def3f7",
+      "Id": 685692
+    },
+    "loads_in_baseline": false,
+    "loads_as": null,
+    "error": "TypeError: No method matches given arguments for ExecutionHandle..ctor: (<class 'str'>)"
+  }
+}

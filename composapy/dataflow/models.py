@@ -1,5 +1,7 @@
 from __future__ import annotations
+import decimal
 import pandas as pd
+from pathlib import Path, PureWindowsPath
 from typing import Optional, Tuple, Dict
 
 from composapy.decorators import session_required
@@ -10,8 +12,72 @@ from composapy.mixins import (
     ObjectSetMixin,
 )
 from composapy.patch.table import to_table
+from composapy.contracts.execution_handle import ExecutionHandle
+from composapy.contracts.table import Table
+from composapy.contracts.execution_context_options import ExecutionContextOptions
+from composapy._wire.objects import ContractObject
 
-from CompAnalytics import Contracts
+EXTERNAL_INPUT_TYPES = frozenset(
+    value
+    for name, value in vars(ExternalInput).items()
+    if not name.startswith("_") and isinstance(value, str)
+)
+
+
+def _as_float(value):
+    return (
+        float(value)
+        if isinstance(value, (int, float, decimal.Decimal))
+        and not isinstance(value, bool)
+        else value
+    )
+
+
+def _as_decimal(value):
+    return (
+        decimal.Decimal(str(value))
+        if isinstance(value, (int, float)) and not isinstance(value, bool)
+        else value
+    )
+
+
+def _by_declared_type(contract, value):
+    """The .NET serializer writes a double or a decimal that has no fraction as 3, not 3.0, so the number on the wire cannot
+    say which it was, and therefore the contract declares the type"""
+    declared = contract.get("ArgumentTypeName")
+    if declared in ("System.Double", "System.Single"):
+        convert = _as_float
+    elif declared == "System.Decimal":
+        convert = _as_decimal
+    else:
+        return value
+    if contract.get("IsCollection") and isinstance(value, list):
+        # Converted in place: a caller who appends to .value is appending to the stored list, as for any other type
+        value[:] = [convert(item) for item in value]
+        return value
+    return convert(value)
+
+
+# What .NET stored when a script assigned None to an input of a value type, which cannot hold null
+_VALUE_TYPE_DEFAULTS = {
+    **{
+        f"System.{name}": 0
+        for name in (
+            "Int16",
+            "Int32",
+            "Int64",
+            "UInt16",
+            "UInt32",
+            "UInt64",
+            "Byte",
+            "SByte",
+        )
+    },
+    "System.Double": 0.0,
+    "System.Single": 0.0,
+    "System.Decimal": 0,
+    "System.Boolean": False,
+}
 
 
 class ModuleMemberBase:
@@ -24,11 +90,6 @@ class ModuleMemberBase:
         super().__init__(*args, **kwargs)
 
     @property
-    def _type(self) -> any:
-        """Returns the contract member, ArgumentType."""
-        return self.contract.ArgumentType
-
-    @property
     def type(self) -> str:
         """Returns the contract member, ArgumentTypeFriendlyName."""
         return self.contract.ArgumentTypeFriendlyName
@@ -36,7 +97,7 @@ class ModuleMemberBase:
     @property
     def value(self) -> any:
         """Adds contract result id to the ValueObj, then returns the contract member, ValueObj."""
-        value_obj = self.contract.ValueObj
+        value_obj = _by_declared_type(self.contract, self.contract.ValueObj)
         try:
             if hasattr(self.contract, "ResultId"):
                 setattr(value_obj, "_contract__result_id", self.contract.ResultId)
@@ -57,7 +118,7 @@ class ModuleMemberBase:
 class Input(ModuleMemberBase):
     """Wraps ModuleInput contract for a simplified textual user interface."""
 
-    contract: Contracts.ModuleInput
+    contract: ContractObject
 
     def __repr__(self):
         repr_value = self.value
@@ -69,7 +130,7 @@ class Input(ModuleMemberBase):
 class Result(ModuleMemberBase):
     """Wraps ModuleOutput contract for a simplified textual user interface."""
 
-    contract: Contracts.ModuleOutput
+    contract: ContractObject
 
     def __repr__(self):
         repr_value = self.value
@@ -107,9 +168,9 @@ class ModuleResultException(Exception):
 class Module:
     """The object representation of a module inside a dataflow object."""
 
-    contract: Contracts.Module
+    contract: ContractObject
 
-    def __init__(self, contract: Contracts.Module, *args, **kwargs):
+    def __init__(self, contract: ContractObject, *args, **kwargs):
         self.contract = contract
         super().__init__(*args, **kwargs)
 
@@ -192,9 +253,9 @@ class DataFlowRun:
     results.
     """
 
-    contract: Contracts.ExecutionState
+    contract: ContractObject
 
-    def __init__(self, execution_state: Contracts.ExecutionState) -> None:
+    def __init__(self, execution_state: ContractObject) -> None:
         self.contract = execution_state
 
     def __repr__(self):
@@ -260,9 +321,9 @@ class DataFlowObject:
             dataflow_object = DataFlow.create(file_name="path/to/json/dataflow")
     """
 
-    contract: Contracts.Application
+    contract: ContractObject
 
-    def __init__(self, contract: Contracts.Application):
+    def __init__(self, contract: ContractObject):
         self.contract = contract
 
     def __repr__(self):
@@ -304,8 +365,8 @@ class DataFlowObject:
             dataflow_object.save()
             print(dataflow_object.id)  # returns -> 123456 (saved)
         """
-        self.contract: Contracts.Application = (
-            get_session().app_service.SaveApplication(self.contract)
+        self.contract: ContractObject = get_session().app_service.SaveApplication(
+            self.contract
         )
         return self
 
@@ -322,55 +383,89 @@ class DataFlowObject:
         """
         app_service = get_session().app_service
 
+        # nothing is sent to the server, and no module is changed, until every file that is given is known to be there
+        self._check_external_files(external_inputs)
+
         for module in self.modules:
             module.contract.RequestingExecution = True
 
         self._write_external_inputs(external_inputs)
 
-        execution_handle: Contracts.ExecutionHandle = (
-            app_service.CreateExecutionContext(
-                self.contract, Contracts.ExecutionContextOptions()
-            )
+        execution_handle: ExecutionHandle = app_service.CreateExecutionContext(
+            self.contract, ExecutionContextOptions()
         )
 
         self._post_context_setup_steps(external_inputs, execution_handle)
 
         app_service.RunExecutionContext(execution_handle)
-        post_run_execution_state: Contracts.ExecutionState = app_service.GetRun(
+        post_run_execution_state: ContractObject = app_service.GetRun(
             execution_handle.Id
         )
 
         dataflow_run = DataFlowRun(post_run_execution_state)
         return dataflow_run
 
+    def _check_external_files(self, external_inputs: dict):
+        """Raises if a file given as an external input is missing or is not a file, so that run() finds out before the
+        execution context is created. A file input that is not given is left as the DataFlow has it.
+        """
+        if not external_inputs:
+            return
+
+        for module in self.modules:
+            if module.contract.ModuleType.Name != ExternalInput.FILE:
+                continue
+            input_name = module.contract.ModuleInputs["Name"].ValueObj
+            if input_name not in external_inputs:
+                continue
+            # the same path the upload reads
+            path = Path(str(PureWindowsPath(external_inputs[input_name])))
+            if not path.exists():
+                raise FileNotFoundError(
+                    f"The file for the external input '{input_name}' does not exist: {path}"
+                )
+            if not path.is_file():
+                raise ValueError(
+                    f"The external input '{input_name}' takes a file, but {path} is not a file."
+                )
+
     def _write_external_inputs(self, external_inputs: dict):
         """Update any module inputs with required external inputs."""
         if not external_inputs:
             return
 
-        from CompAnalytics.Execution import ExternalInputExecutor
-
         for module in self.modules:
             if module.type == ExternalInput.FILE:
                 # management of external file inputs occurs after context creation
                 pass
-            elif module.contract.ModuleType.ExecutionType.IsSubclassOf(
-                ExternalInputExecutor
-            ):
+            elif module.type in EXTERNAL_INPUT_TYPES:
                 input_name = module.contract.ModuleInputs["Name"].ValueObj
                 if module.type == ExternalInput.TABLE and isinstance(
-                    external_inputs[input_name], pd.DataFrame
+                    external_inputs.get(input_name), pd.DataFrame
                 ):
                     # conversion of pandas dataframe to composable table occurs after context creation
                     pass
                 else:
                     if input_name in external_inputs.keys():
-                        module.contract.ModuleInputs["Input"].ValueObj = (
-                            external_inputs[input_name]
-                        )
+                        value = external_inputs[input_name]
+                        member = module.contract.ModuleInputs["Input"]
+                        if (
+                            module.type == ExternalInput.TABLE
+                            and value is not None
+                            and not isinstance(value, Table)
+                        ):
+                            raise TypeError(
+                                f"The external input '{input_name}' takes a pandas DataFrame or a Table, "
+                                f"not {type(value).__name__}."
+                            )
+                        if value is None:
+                            value = _VALUE_TYPE_DEFAULTS.get(
+                                member.get("ArgumentTypeName"), None
+                            )
+                        member.ValueObj = value
 
     def _post_context_setup_steps(
-        self, external_inputs: dict, execution_handle: Contracts.ExecutionHandle
+        self, external_inputs: dict, execution_handle: ExecutionHandle
     ):
         """Updates necessary post-context setup item for each individual module, such as
         uploading any needed files or converting any pandas dataframes to tables before running the execution context.
@@ -379,13 +474,15 @@ class DataFlowObject:
             return
 
         for module in self.modules:
+            # An input that was not given keeps what the DataFlow has, whatever its kind
             if module.contract.ModuleType.Name == ExternalInput.FILE:
-                upload_files_as_external_input(
-                    execution_handle, module, external_inputs
-                )
+                if module.contract.ModuleInputs["Name"].ValueObj in external_inputs:
+                    upload_files_as_external_input(
+                        execution_handle, module, external_inputs
+                    )
             elif module.contract.ModuleType.Name == ExternalInput.TABLE:
                 input_name = module.contract.ModuleInputs["Name"].ValueObj
-                df = external_inputs[input_name]
+                df = external_inputs.get(input_name)
                 if isinstance(df, pd.DataFrame):
                     module_handle = module.contract.UiHandle
                     module_input_handle = module.contract.ModuleInputs["Input"].UiHandle

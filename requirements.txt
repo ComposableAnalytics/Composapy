@@ -1,9 +1,8 @@
-auto_mix_prep==0.2.0
-pythonnet==3.0.1
-clr-loader==0.2.5
+auto_mix_prep
+build
 numpy
-pandas
-python-dotenv==0.19.2
+pandas<3
+python-dotenv
 pytest
 pytest-xdist
 black
@@ -14,6 +13,7 @@ json-fix
 sphinx
 sphinx_rtd_theme
 termcolor
-wheel-filename
+wheel-filename<2
 pydantic
 ipython
+requests-negotiate-sspi; sys_platform == "win32"

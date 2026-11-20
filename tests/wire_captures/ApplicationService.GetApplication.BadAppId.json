@@ -1,0 +1,13 @@
+{
+  "Row": "2",
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/ApplicationService.svc/GetApplication",
+  "RequestBody": {
+    "appId": 0
+  },
+  "StatusCode": 200,
+  "ContentType": "application/json; charset=utf-8",
+  "ResponseBody": {
+    "d": null
+  }
+}

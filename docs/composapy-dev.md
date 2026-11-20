@@ -1,354 +1,277 @@
-- [Dev Environment Setup](#dev-environment-setup)
-  - [Enable Windows Auth](#enable-windows-auth)
-  - [Python](#python)
-    - [Download Python](#download-python)
-    - [Create/Activate Virtual Environment](#createactivate-virtual-environment)
-    - [Pip install](#pip-install)
-      - [Deactivated Environment](#deactivated-environment)
-      - [Activated Environment](#activated-environment)
-  - [Composapy](#composapy)
-    - [Update local .env files](#update-local-env-files)
-    - [Git](#git)
-    - [Tox](#tox)
-      - [Black](#black)
-      - [Docs](#docs)
-      - [Test](#test)
-      - [Sync Project](#sync-project)
-      - [Sync Composapy](#sync-composapy)
-      - [Jupyter Lab Upgrade Wheels](#jupyter-lab-upgrade-wheels)
-      - [Tox Usage Examples](#tox-usage-examples)
+- [Composapy Development Guide](#composapy-development-guide)
+  - [What you need](#what-you-need)
+  - [Settings files](#settings-files)
+  - [Working environment](#working-environment)
+  - [Tox](#tox)
+    - [Environments](#environments)
+    - [Running a subset](#running-a-subset)
+    - [Constraints](#constraints)
+  - [Tests](#tests)
+    - [Windows authentication tests](#windows-authentication-tests)
+  - [Formatting and docs](#formatting-and-docs)
+  - [Deploying to the DataLabs](#deploying-to-the-datalabs)
+    - [Sync Composapy](#sync-composapy)
+    - [Sync Project](#sync-project)
+    - [TFS sign-in](#tfs-sign-in)
+    - [Copying by hand](#copying-by-hand)
+  - [Trying a change in a DataLab](#trying-a-change-in-a-datalab)
   - [IDE](#ide)
-    - [VSCode](#vscode)
-    - [PyCharm](#pycharm)
-  - [PyPI](#pypi)
-  - [Source Control](#source-control)
-    - [Git](#git-setup)
-    - [Visual Studio Project / Team Foundation Server](#visual-studio-project--team-foundation-server)
-    - [Catastrophic Failure](#catastrophic-failure)
+  - [Source control](#source-control)
+    - [Mirroring to GitHub](#mirroring-to-github)
+  - [Release checklist](#release-checklist)
+  - [Appendix: Installing the older Python versions](#appendix-installing-the-older-python-versions)
 
+# Composapy Development Guide
 
-# Dev Environment Setup
+Composapy is a pure Python package. It talks to a Composable instance over the HTTP services the platform exposes (`*.svc` endpoints), and it carries its own Python versions of the platform's contract objects in `composapy.contracts`. Nothing in it needs .NET, and `pip install composapy` is all a script needs.
 
+The TFS tree (`Composapy\Composapy`, beside the `Product` tree) is the source of truth. The GitHub repository is a mirror (see [Source control](#source-control)).
 
-## Enable Windows Auth
+## What you need
 
-Windows auth is required to run the test suite for Composapy.
+- Python 3.8, 3.9, 3.10, 3.11, 3.12, and 3.13, each reachable through the `py` launcher. `py -0p` lists them. Add each one from [python.org](https://www.python.org/downloads/). For 3.8 to 3.11, see the [appendix](#appendix-installing-the-older-python-versions), because python.org no longer builds installers for their newest releases.
+- [tox](https://tox.wiki/en/latest/) 4 or newer: `py -3.13 -m pip install --upgrade tox`.
+- A local Composable instance and its `unittestadmin` account. The tests create and delete their own Keys, QueryViews, and DataFlows on it.
+- The Team Foundation Server command-line client (`tf.exe`), to deploy to the DataLabs. In a Developer Command Prompt for Visual Studio, `where tf.exe` prints its path.
+- For the Windows authentication tests only: an elevated terminal and the IIS Windows Authentication feature (see [Windows authentication tests](#windows-authentication-tests)).
 
-1. Windows Key -> search for "turn windows features on or off"
-2. `Internet Information Services` -> `World Wide Web Services` -> `Security` -> Ensure that `Windows Authentication` is checked
+## Settings files
 
+Three files hold local settings. `tests\.test.env` is in TFS, because the C# test suites read the copy that `sync-project` puts in `UnitTests\TestData\composapy`; it holds the account for a local development instance, and it stays out of the GitHub mirror. `tests\.test.local.env` and `.local.env` are in neither. None of the three belongs in a document, a chat, or a log.
 
-## Python
-
-
-### Download Python
-
-Click [here](https://www.python.org/downloads/release/python-3910/) for the most recent version of 3.9 at time of writing documentation. Add Python to your system path. _Although 3.9 is specifically linked above, you will need to download Python 3.8, 3.9, 3.10, and 3.11 to run the full suite of tests._
-
-Navigate in command prompt or powershell to the Composapy project directory root folder and verify your python version.
+`tests\.test.env`:
 
 ```
-C:\> cd /your/path/to/Composable Analytics/Composapy/composapy
-C:\..\Composapy\Composapy> python --version
-Python 3.9.X
+APPLICATION_URI="http://localhost/CompApp/"
+TEST_USERNAME="unittestadmin"
+TEST_PASSWORD="yourPasswordHere"
 ```
 
+`tests\.test.local.env`, optional:
 
-### Create/Activate Virtual Environment
-
-```
-C:\..\Composapy\Composapy> python -m venv dev
-C:\..\Composapy\Composapy> .\dev\Scripts\activate
-```
-
-After activating, you should see the `(dev)` tag prefixing your console. When you want to deactivate
-your virtual environment, you can simply type `deactivate`.
-
-**Important: While the dev environment is useful for development and testing on the fly, make sure to deactivate it before running any tox commands. Failure to do so may cause errors with the initial virtualenv that tox needs to create.**
-
-### Pip install
-
-#### Deactivated Environment
-
-Install the following after deactivating your virtual environment.
-
-```
-C:\..\Composapy\Composapy> pip install --upgrade pip build twine tox tox-wheel
-```
-
-#### Activated Environment
-
-Reactivate your environment and install the project requirements here. This environment should be
-used for python packages related to Composapy during development. It can also be used for 
-localized testing, but tox (see below) will do the heavy lifting for automated test environment 
-setup and teardown.
-
-```
-(dev) C:\..\Composapy\Composapy> pip install -r requirements.txt
-```
-
-Keep your virtual environment deactivated for the rest of the readme unless it says otherwise.
-
-## Composapy
-
-
-### Update local .env files
-
-In the Composapy directory, update or create the file `.local.env` (in the same directory as `pyproject.toml`) with your local settings. Include the following in your file:
-
-1. `TEST_API_KEY` : After logging into your development `unittestadmin` on your development instance of Composable, you can generate an api key for the account by going to the unittestadmin [profile](http://localhost/CompApp/UserView.aspx#/?userName=unittestadmin) page and using the `Generate API Token` button to get a new api token.
-
-2. `tf.exe` can be found by hitting windows key, searching for "Developer Command Prompt for VS 
-  20XX" and running the command `where tf.exe` (note: when copy-pasting, back-slashes need to be 
-  changed to forward-slashes).
-
-  - The location of the tf.exe is different depending on a multitude of variables. If anyone has 
-    a script that can be run, which is guaranteed to find the tf.exe, please update to remove 
-    this environment variables and call/use that script within `tox-hook.exe`. 
-
-_example/.test.env_
 ```
 TEST_API_KEY="yourApiKeyHere"
+```
+
+`.local.env`, in the same folder as `pyproject.toml`:
+
+```
 TF_EXE_PATH="C:/Path/To/tf.exe"
 ```
 
-### Git
-Now is a good time to set up Git. See below: [Git Setup](#git-setup)
+- `APPLICATION_URI` is the address of your instance's application. `TEST_USERNAME` and `TEST_PASSWORD` sign in over a Form session.
+- `TEST_API_KEY` is optional. The default test session is a token session. The tests read the key from the shell's environment or from a `.test*.env` file under the folder they run from, such as `tests\.test.local.env`, and never from `.local.env`. When it is absent, the tests sign in with `TEST_USERNAME` and `TEST_PASSWORD`, generate a temporary API token, and print a warning. To keep a token, sign in as `unittestadmin`, open the user's profile page, and use `Generate API Token`.
+- The tests load every `.test*.env` file, `.test.env` first. A variable that is already set in the shell, or in a file loaded earlier, is not replaced.
+- `TF_EXE_PATH` is read only by the commands that deploy to the DataLabs. Use forward slashes.
 
-### Tox
+## Working environment
 
-_Composapy uses [tox](https://tox.wiki/en/latest/) for the management of its 
-build/testing/deployment needs. Tox creates a virtual environment around your tests/builds, 
-separating out any required python versions and environment variables. To run the full suite of 
-commands, you can run the tox command without any `-e` specifiers._
+tox builds its own environments, so you do not need one to run the tests. For editing and quick test runs, make one on the newest Python:
 
-_When installing a new package, make sure to update the requirements.txt. Whenever the
-requirements.txt or any configuration files change (other than `tox.ini`), the `-r` flag will be 
-needed to indicate your dependencies have changed and force the recreation of your virtual 
-environments._
+```
+C:\..\Composapy\Composapy> py -3.13 -m venv dev
+C:\..\Composapy\Composapy> .\dev\Scripts\activate
+(dev) C:\..\Composapy\Composapy> pip install -r requirements.txt -c constraints/py313.txt
+(dev) C:\..\Composapy\Composapy> pip install -e . --no-deps
+(dev) C:\..\Composapy\Composapy> pytest tests/offline
+```
 
-_Each of the tox commands, defined by the `envlist` key (under `[tox]` header), are listed below._
+The `(dev)` environment serves your editor and your own test runs. DataLabService does not use it.
 
-_Any commands involving the upgrading/building/deployment of wheels also install those packages
-into your local Composable python environment. This removes the need to restart the DataLabService
-to update any python packages that were deployed._
+## Tox
 
 ```
 C:\..\Composapy\Composapy> tox
 ```
 
-1. Run Black on source code
-2. Build the distribution wheel
-3. Run tests for python versions...
-   - Python3.8
-   - Python3.9
-   - Python3.10
-   - Python3.11
-4. Copy over required artifacts into the DataLabService csproj directory so that they are able to be copied over to DataLabs notebook directories
-5. Compile `docs\composapy-readme.ipynb` into the `README.md`
-6. Compile the docstrings documentation (sphinx-docs) into html for ReadTheDocs (runs `sphinx-build -a -E -b html source build`)
-7. Update composapy wheel
-   - Copy wheel to Visual Studio project
-   - Remove old wheel(s)
-   - Update tfs tracking to reflect changes (add/delete/undo)
-   - Install wheel inside the local DataLabs environment for continued development
-8. Update UnitTest data
-   - Copy pytest test files into the Visual Studio project (for c# tests)
-   - Add pytest test files to tfs tracking
+runs `black` and then the tests on every Python version. tox builds one wheel and installs it into every environment, so the tests run against the file that gets deployed.
 
-#### Black
+### Environments
 
-_[Black](https://github.com/psf/black) is an uncompromising linting/code formatting library for 
-python._
+| Environment | What it does | Runs by default |
+| --- | --- | --- |
+| `black` | Formats the source with [Black](https://github.com/psf/black). | yes |
+| `py38-test` through `py313-test` | Runs `pytest`, without the Windows authentication tests. | yes |
+| `windows-auth` | Runs `tests/test_windows_auth.py` on Python 3.13. | no |
+| `docs` | Regenerates `README.md` from `docs\composapy-readme.ipynb` and rebuilds the Sphinx HTML in `docs\sphinx-docs\build`. | no |
+| `sync-composapy` | Builds the wheel and deploys it to the DataLabs. | no |
+| `sync-project` | Does `sync-composapy`, then deploys the docs, constraints, and test files. | no |
+
+When `requirements.txt`, `setup.cfg`, or a constraints file changes, add `-r` so tox recreates its environments.
+
+### Running a subset
+
+Everything after `--` goes to `pytest`:
 
 ```
-C:\..\Composapy\Composapy> tox -e black
+C:\..\Composapy\Composapy> tox -e py311-test -- tests/offline
+C:\..\Composapy\Composapy> tox -e py39-test -- tests/test_api.py -k run
 ```
 
-1. Run Black on source code.
+### Constraints
 
-#### Docs
+The `py38`, `py311`, and `py313` environments install under `constraints\py38.txt`, `py311.txt`, and `py313.txt`. Each is the matching `static\requirements<XY>.txt` from the DataLabService project without its `composapy` line, so those environments test the numpy, pandas, and requests versions the DataLabs install. `py39`, `py310`, and `py312` use the newest versions the package allows. `sync-project` refreshes the three files; commit them when they change.
 
-_The docs command uses [jupytext](https://github.com/mwouts/jupytext) and 
-[sphinx](https://github.com/sphinx-doc/sphinx) to generate documentation from 
-composapy-readme.ipynb and python docstrings._
+`pytest` comes from those files too, and its version decides the order: 6.2.5, on `py38` and `py311`, runs the integration test files before `tests/offline`, and newer versions run them after. The tests pass in either order.
 
-```
-C:\..\Composapy\Composapy> tox -e docs
-```
+## Tests
 
-1. Compile `docs\composapy-readme.ipynb` into the `README.md`
-2. Compile the docstrings documentation (sphinx-docs) into html for ReadTheDocs (runs `sphinx-build -a -E -b html source build`)
+| Folder or file | What it tests | Needs an instance |
+| --- | --- | --- |
+| `tests/offline` | The wire codec, contract objects, wrappers, pickles written by 0.13.3, and the tooling in `tools/`. | no |
+| `tests/test_*.py` | The public API: `Session`, `DataFlow`, `Key`, and `QueryView`, against the instance. | yes |
+| `tests/test_windows_auth.py` | Windows authentication sessions. | yes, with Windows Authentication enabled |
 
+All of `tests` except `offline`, `baseline`, and `wire_captures` is also what the DataLabService C# test suites run, so a change to `conftest.py` or `iis.py` reaches them.
 
-#### Test
+`tools/parity` compares composapy 0.13.3 with the current build by running the same scripts under both against one instance. Its scripts document how to run it.
 
-_The test commands (can be run separately or together by using commas between them) run all tests 
-in a virtual environment of the specified python version._
+### Windows authentication tests
 
-```
-C:\..\Composapy\Composapy> tox -e py38-test,py39-test,py310-test,py311-test
-```
+`tox -e windows-auth` turns IIS Windows Authentication on for the application, runs the tests, and puts the original settings back, even when a test fails. It changes IIS through `appcmd.exe`, so:
 
-1. Build the distribution wheel.
-2. Run tests for python versions...
-   - Python3.8
-   - Python3.9
-   - Python3.10
-   - Python3.11
+1. Run the terminal as Administrator. `appcmd` cannot read the configuration otherwise, and the run stops before it changes anything.
+2. Enable the feature `Internet Information Services` -> `World Wide Web Services` -> `Security` -> `Windows Authentication` (`IIS-WindowsAuthentication`). Without it, IIS accepts the setting but never asks for credentials, and the fixture stops with a message naming the feature.
 
-**Note**: _Make sure all tests are passing before doing any development on Composapy._
+The default `tox` run never touches IIS.
 
+## Formatting and docs
 
-#### Sync Project
+Run `tox -e black` before every check-in.
 
-_Deploys required resources from the Composapy project to the csharp project, including any 
-wheels, tests, and documentation._
+`tox -e docs` makes the documentation from two sources:
 
-```
-C:\..\Composapy\Composapy> tox -e sync-project
-```
+- `docs\composapy-readme.ipynb` is the source of `README.md`. Edit the notebook; a change to `README.md` is overwritten.
+- The Sphinx pages in `docs\sphinx-docs\source` and the docstrings in `composapy` build into `docs\sphinx-docs\build`. The build output is checked in, because Read the Docs publishes it unchanged.
 
-1. Build the distribution wheel
-2. Copy over required artifacts into the DataLabService csproj directory so that they are able to be copied over to DataLabs notebook directories
-3. Compile `docs\composapy-readme.ipynb` into the `README.md`
-4. Compile the docstrings documentation (sphinx-docs) into html for ReadTheDocs (runs `sphinx-build -a -E -b html source build`)
-5. Update composapy wheel
-   - Copy wheel to Visual Studio project
-   - Remove old wheel(s)
-   - Update tfs tracking to reflect changes (add/delete/undo)
-   - Install wheel inside the local DataLabs environment for continued development
-6. Update UnitTest data
-   - Copy pytest test files into the Visual Studio project (for c# tests)
-   - Add pytest test files to tfs tracking
+## Deploying to the DataLabs
 
+DataLab environments install from the wheels in `Product\CompAnalytics.DataLabService\static\wheels`, with no internet access. Both commands below work in the TFS tree and need `TF_EXE_PATH`.
 
-**Troubleshooting:** 
-Sometimes when running tox commands that involve interacting with TFS, a TFS30063 authorization error occurs. Usually it fails on on `tfs.exe info /recursive wheels`
-**Solution:**
-   1. Open a command prompt in administrator mode.
-   2. Change directory (cd) to `C:\<repo>\Product\CompAnalytics.DataLabService\static` replacing <repo> as needed for your local setup.
-   3. Locate the path to the `TF.exe` file, which you should have set in the `.local.env` file.
-   4. Run `<PATH TO TF.exe>\tf.exe info /recursive wheels`
-   5. A box will pop up prompting you to select a Microsoft account. Use your Composable account to re-authorize TFS. Once the command completes, you can re-run the tox command.
-
-#### Sync Composapy
-
-_Deploys wheel from the Composapy project, but does not deploy the required resources for tests and documentation._
+### Sync Composapy
 
 ```
 C:\..\Composapy\Composapy> tox -e sync-composapy
 ```
 
-1. Build the distribution wheel
-2. Update composapy wheel
-   - Copy wheel to Visual Studio project
-   - Remove old wheel(s)
-   - Update tfs tracking to reflect changes (add/delete/undo)
-   - Install wheel inside the local DataLabs environment for continued development
+1. Removes `build\`, builds the wheel into `dist\` with `python -m build --wheel`, and stops if the wheel holds any file outside `composapy\` and its own `dist-info`.
+2. Stops when `static\wheels` already holds a wheel with the same version and different contents. Raise `version` in `setup.cfg`; `1.0.0dev7`, `1.0.0dev8`, and so on serve repeated local builds. A rebuild with unchanged contents does nothing.
+3. Removes the old `composapy` wheels from `static\wheels` and from `CompAnalytics.DataLabService.csproj`, through `tf delete` or `tf undo` as each one's state requires, and adds the new wheel the same way.
+4. Installs the new wheel into every shared DataLab environment under `PythonDirectory` (`C:\dataLabsArtifacts\python` unless `App.config` says otherwise) that has a `requirements<XY>.txt`. The running DataLabService needs no restart, and the environments are not deleted.
 
+DataLabService builds new environments from `bin\Debug\static\wheels`, which Visual Studio refreshes only when it builds the `CompAnalytics.DataLabService` project. After `sync-composapy`, build that project and restart the service before you run the C# pool and DataLab executor tests. If you do not, `pip` fails with `Could not find a version that satisfies the requirement composapy==<version>`, and the build output keeps every wheel it has ever held, so the failure message lists the stale versions.
 
-#### Jupyter Lab Upgrade Wheels
-
-_This command downloads the required pinned versions in tox.ini with whatever package 
- is specified inside of the command. It then creates upgrade plans for each wheel in the directory, 
- matching any packages that already currently exist and adding any others that don't. Running this 
- command should be enough to fully update your project, tfs, and the requirements.txt with all 
- needed changes._
-
-_Note: This upgrade command is not run in the default `tox` run command that runs black, tests, and sync-composapy._
+### Sync Project
 
 ```
-C:\..\Composapy\Composapy> tox -e upgrade-wheels -- jupyterlab==3.4.5
+C:\..\Composapy\Composapy> tox -e sync-project
 ```
 
+1. Regenerates `composapy\_wire\operations.json` from the `[ServiceContract]` interfaces in the product tree.
+2. Rewrites `constraints\*.txt` from the product tree.
+3. Runs Sync Composapy.
+4. Copies `composapy-readme.ipynb` and `simple-dataflow.json` into `static`, for every DataLab to hold.
+5. Runs `tox -e docs`.
+6. Copies `tests` to `Product\UnitTests\TestData\composapy`, leaving out `offline`, `baseline`, and `wire_captures`, and adds the new files to TFS. The copy never deletes, so it lists the files in that folder that `tests` no longer produces; remove each with `tf delete`.
 
-#### Tox Usage Examples
+### TFS sign-in
 
-- ```tox -e py39-test -- tests/test_api.py``` : This is equivalent to running 
-`pytest tests/test_api.py` inside of a python3.9 environment. Using `--` allows you to pass 
-arguments to the command (if the command accepts `posargs`).
+A `TFS30063` error, usually on the `tf info` call, means TFS has lost your sign-in. From `Product\CompAnalytics.DataLabService\static`, run the client by its full path from `TF_EXE_PATH`:
 
-- ```tox -e sync-project```
-
-
-
-## IDE 
-
-Do not do your Python development inside of visual studio! You can use one of the following recommendations instead.
-
-
-### VSCode
-
-[VSCode](https://code.visualstudio.com/) is the free option.
-
-1. `file` -> `preferences` -> `settings` -> search for `default interpreter path` -> use the 
-   absolute path to the `python.exe` from the relative Composapy root `dev\Scripts\python.exe`.
-
-2. Click on `Extensions` in the side panel and search/install extension `python-tox`.
-   - You can use this extension by doing the VSCode command palette `ctrl-shift-p`, entering `tox` and selecting `select and run tox environment`, then selecting the command you want from the drop down options.
-
-3. Click on `Testing` in the side panel, select `python run configuration`, then choose pytest from the options that appear. This will display your project tests and enable running/debugging them in the UI.
-
-
-### PyCharm
-
-[PyCharm](https://www.jetbrains.com/pycharm/) is a paid option; for those that happen to have a JetBrains license. _Note: PyCharm and IntelliJ IDEA are essentially the same thing._
-
-1. `file` -> `settings` -> `tools` -> `terminal` -> `application settings`; confirm the `Activate Virtualenv` is checked.
-
-2. Set your python interpreter to the python executable located at `dev\Scripts\python.exe`, now 
-   giving you the ability to run commands inside your interpreter without prefixing with python module (`python -m`) command.
-
-
-## PyPI
-
-_Upload archives under `/dist/*` to PyPI -- you will be prompted for credentials._
 ```
-(dev) C:\..\Composapy\Composapy> python -m twine upload .tox/dist/*
+PS C:\..\static> & "C:\Path\To\tf.exe" info wheels /prompt
 ```
 
-To upload the package on PyPI, you will need a user account for [PyPI](https://pypi.org/). You will also need to request permissions on the project index so that you can upload.
+Choose your Composable ADO account in the window that opens, then run the tox command again.
 
-Note that if you have 2-factor authentication enabled on your PyPI account, you will need to use an API token instead of your password. First, log in to PyPI in your browser, go to Account Settings, generate a token, and save it in a safe place. Then, when the above twine command prompts for credentials, use `__token__` as the username and paste in your API token (including the `pypi-` prefix) as the password.
+### Copying by hand
 
-Although tox will take care of packaging for you, you can read up on packaging 
-[here](https://packaging.python.org/en/latest/tutorials/packaging-projects/#packaging-python-projects).
+If a deploy cannot run, these are the product's dependencies on Composapy:
 
-Don't forget to bump the version in `setup.cfg`!
+- the wheel in `Product\CompAnalytics.DataLabService\static\wheels`, with its item in `CompAnalytics.DataLabService.csproj`;
+- `composapy-readme.ipynb` and `simple-dataflow.json` in `Product\CompAnalytics.DataLabService\static`;
+- `tests` in `Product\UnitTests\TestData\composapy`, without `offline`, `baseline`, `wire_captures`, `__pycache__`, and `.pytest_cache`.
 
+## Trying a change in a DataLab
 
-## Source Control
+For an edit-and-restart loop against your own source, link one DataLab environment to it. Start DataLabService, open a DataLab, and in its kernel run:
 
-### Visual Studio Project / Team Foundation Server
+```
+import sys
+print(sys.executable)
+```
 
-After making changes and confirming tests are passing...
+This should be the DataLab's virtual environment. Then, in a terminal, with the path it printed:
 
-1. Build `composapy-123-xyz.whl`, hook on build should update files inside of Composable 
-   Analytics solution. If it does not, refer to notes at end with mention to "catastrophic failure."
+```
+C:\..\python.exe -m pip install -e C:\<path-to>\Composapy\Composapy --no-deps
+```
 
-2. Write corresponding 2-line tests inside of `NotebookCellExecutionTests.cs`, confirm tests 
-   still passing.
+Note that this will overwrite the installation of `composapy` from the shared base virtual environment. Restart the kernel after each edit. `sync-composapy` replaces the editable install with the deployed wheel.
 
-3. After check-in to TFS, git push to master (TFS is source of truth, git is for external 
-   reference).
+To try the deployed wheel in a new DataLab environment, run `tox -e sync-composapy`. It installs the wheel into each shared environment.
 
-### Git Setup
-It is imperative that you push to git every time you check in a change to TFS. This ensures that the two repositories remain in sync, which makes it MUCH easier to set up git for future devs.
+## IDE
 
-In a terminal, navigate to the `C:\<path-to-repo>\Composapy\Composapy` directory and run the following commands:
-1. `git init`
-2. `git remote add origin https://github.com/ComposableAnalytics/Composapy.git`
-3. `git checkout -f main`
+Do your Python development in an editor, not in Visual Studio.
 
-If these succeed, you should be good to go. Run `git status` to confirm that your local branch is up to date with the remote and there are no changes at all (either unstaged or staged).
+**VS Code.** Set the default interpreter to `dev\Scripts\python.exe`. The `python-tox` extension runs a tox environment from the command palette (`ctrl-shift-p`, `tox`). Under `Testing`, choose `pytest` to run and debug tests in the editor.
 
-### Catastrophic Failure
+**PyCharm.** Set the project interpreter to `dev\Scripts\python.exe`, and confirm that `Activate virtualenv` is checked under `Tools` -> `Terminal`.
 
-In case of catastrophic failure and there is a need to manually update files, the Composable Analytics project solution has the following Composapy dependencies.
+## Source control
 
-- Binary (wheel): `composapy-123-xyz.whl`, needs to be replaced at `/DataLabService/static/wheels`.
+After a change passes the tests:
 
-- Notebook: `composapy-readme.ipynb`, if changed, needs to be replaced at `/DataLabService/static`.
+1. Run `tox -e black` and the default `tox`.
+2. Run `tox -e sync-project`, to deploy and to copy the tests.
+3. Run the C# suites that cover the change: the DLNBR, DataLab cell-execution, and DLAE pool suites.
+4. Check the Composapy tree and the product-tree changes into TFS (`static\wheels`, the requirements files, the `.csproj`, `UnitTests\TestData\composapy`).
+5. Mirror the TFS tree to GitHub.
 
-- Directory: `/tests/*`, needs to be replaced at `/UnitTests/TestData/composapy`. _Note: You can exclude_ `/.pytest_cache` _from_ `/tests`.
+### Mirroring to GitHub
+
+The TFS tree is not a Git working copy. Keep a clone of `https://github.com/ComposableAnalytics/Composapy.git` in its own folder, outside the TFS workspace, and bring it level with the TFS tree after each check-in:
+
+1. Copy the TFS tree's files over the clone, leaving out everything `.gitignore` excludes, and delete clone files that no longer exist in the TFS tree. `.tfignore`, `tests\.test.env`, and `.local.env` stay out.
+2. Run `git status` and `git diff --stat`, and confirm that only the files you changed appear.
+3. `docs/sphinx-docs/build` is listed in `.gitignore` and tracked, because Read the Docs publishes from it. Stage it with `git add -f docs/sphinx-docs/build`.
+4. Commit and push.
+
+The mirror is level when `diff -rq` between the two folders, excluding ignored files, prints nothing.
+
+## Release checklist
+
+1. Set `version` in `setup.cfg`.
+2. Run the default `tox` and `tox -e windows-auth`. Both pass.
+3. Run `tox -e sync-project`.
+4. Run the C# suites listed under [Source control](#source-control), plus the `DataLabCellExecutionTests` and `DataLabCellExecutionWinAuthTests` filters.
+5. Check in to TFS, then mirror to GitHub, and tag `v<version>`.
+6. Build from the tagged clone and upload:
+
+   ```
+   C:\..\Composapy> python -m build --wheel
+   C:\..\Composapy> python -m twine upload dist/composapy-<version>*
+   ```
+
+   Twine asks for credentials. You need a [PyPI](https://pypi.org/) account with upload rights to the project. With two-factor authentication, use `__token__` as the user name and an API token (it begins `pypi-`) as the password; create one under Account Settings in the browser.
+7. Confirm that the PyPI wheel, the wheel in `static\wheels`, and a wheel built from the tag have the same SHA-256 hash (`Get-FileHash`).
+
+## Appendix: Installing the older Python versions
+
+python.org publishes a Windows installer only for the last binary release of each retired Python version. Later patch releases of those versions are source-only, so the newest `3.8.x` or `3.9.x` has no installer to run. Install these releases:
+
+| Python | Install | Release page |
+| --- | --- | --- |
+| 3.8 | 3.8.10 | https://www.python.org/downloads/release/python-3810/ |
+| 3.9 | 3.9.13 | https://www.python.org/downloads/release/python-3913/ |
+| 3.10 | 3.10.11 | https://www.python.org/downloads/release/python-31011/ |
+| 3.11 | 3.11.9 | https://www.python.org/downloads/release/python-3119/ |
+
+For 3.12 and 3.13, use the newest release whose page lists a `Windows installer (64-bit)`.
+
+1. On the release page, download `Windows installer (64-bit)` from the Files table.
+2. Run it. Keep the `py launcher` feature, which is on by default, and leave `Add python.exe to PATH` unticked: tox finds the interpreters through the launcher. A per-user install (`Install Now`, no administrator rights) is enough.
+3. Check each one. `py -0p` lists the installed versions, and `py -3.8 --version` prints one.
+
+These versions no longer receive security fixes. Use them only to run Composapy's tests.

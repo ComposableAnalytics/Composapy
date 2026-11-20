@@ -1,0 +1,4894 @@
+{
+  "AboutVersionService": [
+    {
+      "name": "GetAboutVersion",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetEnabledProductAreas",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetProductAreaRecentCounts",
+      "params": [
+        "recentCutoff"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetProductAreaTotalCounts",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAboutLicense",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetLicenseIsNearExpiration",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetBlogRss",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTutorialJson",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUpdateJson",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "AclService": [
+    {
+      "name": "GetAcl",
+      "params": [
+        "resourceId",
+        "aclTypeStr",
+        "securableResourceType"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetFolderAcls",
+      "params": [
+        "folderId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetInheritedAcls",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetInheritedFolderAcls",
+      "params": [
+        "folderId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveAcl",
+      "params": [
+        "acl"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveFolderAcls",
+      "params": [
+        "folderAcls"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "FindUsers",
+      "params": [
+        "searchText"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetPermissions",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "HasPermission",
+      "params": [
+        "resourceId",
+        "permission"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "ActivityService": [
+    {
+      "name": "GetAllActivities",
+      "params": [
+        "skip",
+        "take",
+        "includeActivities",
+        "includeComments"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetActivitiesForEntity",
+      "params": [
+        "entity",
+        "skip",
+        "take",
+        "onlyUser",
+        "includeActivities",
+        "includeComments"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "AddUserActivity",
+      "params": [
+        "type",
+        "obj",
+        "prepositionalObject"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "HideActivity",
+      "params": [
+        "activity"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveComment",
+      "params": [
+        "comment"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "AlertService": [
+    {
+      "name": "GetAlert",
+      "params": [
+        "alertId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetOrCreateAlert",
+      "params": [
+        "moduleId",
+        "alertName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSubscribers",
+      "params": [
+        "alertId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAllAlerts",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAlerts",
+      "params": [
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAlertInstances",
+      "params": [
+        "alertId",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetInstance",
+      "params": [
+        "instanceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetActivatedRuns",
+      "params": [
+        "instanceId",
+        "skip",
+        "take"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSubscribedInstancesByDateTime",
+      "params": [
+        "startDateTime",
+        "endDateTime",
+        "userId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSubscribedInstancesByDateTimeString",
+      "params": [
+        "startDateTime",
+        "endDateTime",
+        "userId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ModifySubscription",
+      "params": [
+        "alertId",
+        "addSubscriber",
+        "userId",
+        "subscriptionType"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ModifyDescription",
+      "params": [
+        "alertId",
+        "description"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteAlert",
+      "params": [
+        "alertId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchAlerts",
+      "params": [
+        "searchText",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRecentAlertCount",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpdateLastAlertCheck",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRecentAlertInstances",
+      "params": [
+        "alertCount"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "ApplicationService": [
+    {
+      "name": "GetApplication",
+      "params": [
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExportApplication",
+      "params": [
+        "htmlForm"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "DownloadProject",
+      "params": [
+        "htmlForm"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "ImportApplication",
+      "params": [
+        "htmlForm"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "ImportApplicationFromString",
+      "params": [
+        "appStr"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveApplication",
+      "params": [
+        "app"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveApplicationWithMessage",
+      "params": [
+        "appContract",
+        "commitMessage"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteApplication",
+      "params": [
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CloneApplication",
+      "params": [
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetExampleApplication",
+      "params": [
+        "moduleType"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateExecutionContext",
+      "params": [
+        "app",
+        "options"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateAppRefExecutionContext",
+      "params": [
+        "module",
+        "options"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RunExecutionContext",
+      "params": [
+        "handle"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "StepExecutionContext",
+      "params": [
+        "handle"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "StepIntoExecutionContext",
+      "params": [
+        "handle"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ContinueExecutionContext",
+      "params": [
+        "handle"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CancelExecutionContext",
+      "params": [
+        "handle"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "WaitForExecutionContext",
+      "params": [
+        "handle"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "AttachDebugSession",
+      "params": [
+        "handle",
+        "options"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "WaitForModuleCompletion",
+      "params": [
+        "handle",
+        "moduleUiHandle"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAppRuns",
+      "params": [
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetExecutionHandles",
+      "params": [
+        "appId",
+        "startDateTime",
+        "endDateTime"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRunException",
+      "params": [
+        "runId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetInnerMostRunIdWithError",
+      "params": [
+        "runId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRun",
+      "params": [
+        "runId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUnidentifiableRun",
+      "params": [
+        "runId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteRun",
+      "params": [
+        "runId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "FindAppsAsModules",
+      "params": [
+        "searchText",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateAppAsModule",
+      "params": [
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRunnableApplicationView",
+      "params": [
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RearrangeModules",
+      "params": [
+        "application",
+        "verticalArrangement"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpgradeModule",
+      "params": [
+        "module"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpgradeApplication",
+      "params": [
+        "application"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAvailableModuleUpgrades",
+      "params": [
+        "module"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetApplicationHistory",
+      "params": [
+        "request"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetApplicationChange",
+      "params": [
+        "appId",
+        "historyId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetApplicationHistoryEntry",
+      "params": [
+        "appId",
+        "historyId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveApplicationFromHistory",
+      "params": [
+        "application",
+        "message"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetReferenceUpgradeCandidates",
+      "params": [
+        "referenceModules"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetApplicationCode",
+      "params": [
+        "application",
+        "options"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateAppFromSelection",
+      "params": [
+        "selectedHandles",
+        "parentApp"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveApplicationCopy",
+      "params": [
+        "application"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSurrogates",
+      "params": [
+        "module"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "AssetService": [
+    {
+      "name": "GetJavascript",
+      "params": [
+        "scripts",
+        "alreadyLoaded",
+        "min"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetStylesheet",
+      "params": [
+        "stylesheets",
+        "alreadyLoaded",
+        "min"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    }
+  ],
+  "BoardService": [
+    {
+      "name": "GetBoard",
+      "params": [
+        "boardId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveBoard",
+      "params": [
+        "board",
+        "makeThumbnail"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteBoard",
+      "params": [
+        "boardId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "CodeService": [
+    {
+      "name": "GetCompile",
+      "params": [
+        "language",
+        "code"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "InitCompletions",
+      "params": [
+        "language",
+        "code"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpdateCompletions",
+      "params": [
+        "sessionId",
+        "code",
+        "position",
+        "changes"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ShutdownCompletions",
+      "params": [
+        "sessionId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CompileSqlQuery",
+      "params": [
+        "query",
+        "connectionId",
+        "dbName",
+        "paramNames"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "CommentService": [
+    {
+      "name": "SaveComment",
+      "params": [
+        "comment"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetComment",
+      "params": [
+        "commentId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteComment",
+      "params": [
+        "commentId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetComments",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "CustomMetadataService": [
+    {
+      "name": "SaveAttribute",
+      "params": [
+        "attribute"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAttribute",
+      "params": [
+        "id"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteAttribute",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAttributes",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RedirectToLandingPage",
+      "params": [
+        "id"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "DataCatalogService": [
+    {
+      "name": "UpdateCatalog",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateCatalog",
+      "params": [
+        "name",
+        "description"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCatalog",
+      "params": [
+        "catalogId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCatalogMetrics",
+      "params": [
+        "catalogId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteCatalog",
+      "params": [
+        "catalogId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "HardDeleteCatalog",
+      "params": [
+        "catalogId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "AddToCatalog",
+      "params": [
+        "catalogId",
+        "repositoryId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RemoveFromCatalog",
+      "params": [
+        "catalogId",
+        "repositoryId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRepositories",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCatalogs",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SetRefreshRate",
+      "params": [
+        "dataCatalogContainerId",
+        "refreshRate"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SetUsageTrackingEnabled",
+      "params": [
+        "repositoryId",
+        "enabled"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUsage",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUsageRates",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "DataLabService": [
+    {
+      "name": "Get",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetActiveVersion",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetVersionHistory",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "Save",
+      "params": [
+        "dataLab"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "Delete",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetStatus",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "Start",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "Stop",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "Publish",
+      "params": [
+        "dataLabId",
+        "entrypoints",
+        "environmentName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "AbandonLocalChanges",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "PushToNewBranch",
+      "params": [
+        "dataLabId",
+        "entrypoints",
+        "environmentName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetModels",
+      "params": [
+        "searchText"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetModelVersions",
+      "params": [
+        "name"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveTrainingDataFlow",
+      "params": [
+        "dataLabId",
+        "versionNumber",
+        "entrypoint",
+        "trainingFlowId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCurrentMemory",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "Execute",
+      "params": [
+        "dataLabId",
+        "notebook",
+        "parameters"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ListNotebooks",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RenderMinimalWorkspace",
+      "params": [
+        "dataLabId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetDataLabClusterStatus",
+      "params": [
+        "dataLabClusterId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetInstalledPythonVersions",
+      "params": [
+        "datalabClusterId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetDataLabCluster",
+      "params": [
+        "dataLabClusterId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveCluster",
+      "params": [
+        "cluster"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetDataLabClusters",
+      "params": [
+        "searchParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetDataLabsOnCluster",
+      "params": [
+        "searchParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteDataLabCluster",
+      "params": [
+        "dataLabClusterId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExportDataLabVersion",
+      "params": [
+        "dataLabId",
+        "versionNumber"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ImportDataLabVersion",
+      "params": [
+        "dataLabId",
+        "version"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExportModelArtifact",
+      "params": [
+        "dataLabId",
+        "modelArtifactId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ImportModelArtifact",
+      "params": [
+        "dataLabId",
+        "exportedModel"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExportModelFiles",
+      "params": [
+        "dataLabId",
+        "modelArtifactId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "ImportModelFiles",
+      "params": [
+        "content"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    }
+  ],
+  "DataRepositoryService": [
+    {
+      "name": "ListRepositoryTypes",
+      "params": [
+        "offset",
+        "pageSize"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRepository",
+      "params": [
+        "id",
+        "includeMetrics"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpdateRepository",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveRepository",
+      "params": [
+        "repository",
+        "computeMetrics"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteRepository",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "HardDeleteRepository",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCollections",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetLink",
+      "params": [
+        "linkId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetNetwork",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCollection",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCollectionByName",
+      "params": [
+        "repositoryId",
+        "name"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExecuteQuery",
+      "params": [
+        "query"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExecutePartialQuery",
+      "params": [
+        "query",
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAvailableFilterValues",
+      "params": [
+        "filterValueParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExportQueryResult",
+      "params": [
+        "input"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "SaveQuery",
+      "params": [
+        "repositoryId",
+        "query"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetQuery",
+      "params": [
+        "queryId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteQuery",
+      "params": [
+        "queryId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "HardDeleteQuery",
+      "params": [
+        "queryId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetQueries",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ValidateQuery",
+      "params": [
+        "query"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpgradeQuery",
+      "params": [
+        "queryJson",
+        "repositoryId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "EntityHubService": [
+    {
+      "name": "GetEntityHub",
+      "params": [
+        "entityHubId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetEntityHubVersion",
+      "params": [
+        "entityHubId",
+        "versionNumber"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetPublishedEntityHub",
+      "params": [
+        "entityHubId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveEntityHub",
+      "params": [
+        "entityHub"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "PublishEntityHub",
+      "params": [
+        "entityHubId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteEntityHub",
+      "params": [
+        "entityHubId",
+        "deleteDb"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RevertToPreviousVersion",
+      "params": [
+        "entityHubId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "StartSyncingApps",
+      "params": [
+        "entityHubId",
+        "sourceObjectIds"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "StartAllSyncingApps",
+      "params": [
+        "entityHubId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "MatchSourceData",
+      "params": [
+        "matchParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetEntityHubProperties",
+      "params": [
+        "entityHubId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveEntityHubProperty",
+      "params": [
+        "entityHubProperty"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteEntityHubProperty",
+      "params": [
+        "entityHubId",
+        "entityHubPropertyId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetValidationStatus",
+      "params": [
+        "entityHubId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRuleSetMatches",
+      "params": [
+        "entityHubId",
+        "hubObjectName",
+        "sourceDataName",
+        "sourceDataPkColumn",
+        "sourceDataPkValue"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAvailableTemplates",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ImportHubTemplate",
+      "params": [
+        "options"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExportHubTemplate",
+      "params": [
+        "entityHubId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetHubObject",
+      "params": [
+        "entityHubId",
+        "hubObjectId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveEntityHubObject",
+      "params": [
+        "hubObject"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteHubObject",
+      "params": [
+        "entityHubId",
+        "hubObjectId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetHubObjectValues",
+      "params": [
+        "entityHubId",
+        "hubObjectId",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetHubObjectCounts",
+      "params": [
+        "entityHubId",
+        "entityHubVersion"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetHubObjectSources",
+      "params": [
+        "entityHubId",
+        "hubObjectId",
+        "hubObjectInstanceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAvailableHubObjectColumnTypes",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSourceObject",
+      "params": [
+        "entityHubId",
+        "sourceObjectId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveSourceObject",
+      "params": [
+        "sourceObject"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSourceObjectColumnsFromQueryView",
+      "params": [
+        "queryViewId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteSourceObject",
+      "params": [
+        "entityHubId",
+        "sourceObjectId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSourceObjectValues",
+      "params": [
+        "entityHubId",
+        "sourceObjectId",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSourceObjectCounts",
+      "params": [
+        "entityHubId",
+        "entityHubVersion"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRuleSet",
+      "params": [
+        "entityHubId",
+        "ruleSetId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRule",
+      "params": [
+        "entityHubId",
+        "ruleId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveRuleSet",
+      "params": [
+        "ruleSet"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveRule",
+      "params": [
+        "entityHubId",
+        "rule"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteRuleset",
+      "params": [
+        "entityHubId",
+        "entityRuleSetId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteRule",
+      "params": [
+        "entityHubId",
+        "entityRuleId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetExampleRuleFunctionClauses",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "EnvironmentService": [
+    {
+      "name": "GetEnvironment",
+      "params": [
+        "environmentId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveEnvironment",
+      "params": [
+        "environment"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteEnvironment",
+      "params": [
+        "environmentId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ListEnvironments",
+      "params": [
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "FacebookService": [
+    {
+      "name": "SaveAccessToken",
+      "params": [
+        "accessToken",
+        "expirationDateTime"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUserInfo",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUserName",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SavePreferences",
+      "params": [
+        "prefs"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetPreferences",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAppId",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "FileUploadService": [
+    {
+      "name": "UploadFile",
+      "params": [
+        "stream"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "UploadFilesToRuns",
+      "params": [
+        "stream"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "StreamResultFile",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "StreamRunFile",
+      "params": [
+        "handle",
+        "uri"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    }
+  ],
+  "FolderService": [
+    {
+      "name": "FolderExists",
+      "params": [
+        "folder",
+        "parentId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetFolderId",
+      "params": [
+        "folder",
+        "parentId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ModifyFolder",
+      "params": [
+        "resourceId",
+        "folder"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetFolder",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ListFolders",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRootFolderId",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RemoveFolder",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetFolderableTypes",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteFolder",
+      "params": [
+        "folderId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SetPermissionInheritance",
+      "params": [
+        "resourceId",
+        "inheritPerms"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetPermissionInheritance",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "FormCommunityService": [
+    {
+      "name": "GetComponent",
+      "params": [
+        "authToken",
+        "formId",
+        "componentName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetHtml",
+      "params": [
+        "authToken",
+        "formId",
+        "parentComponentName",
+        "parentInstanceId",
+        "componentName"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetCategory",
+      "params": [
+        "authToken",
+        "formId",
+        "categoryType"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetComponentInstances",
+      "params": [
+        "authToken",
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveComponentInstance",
+      "params": [
+        "authToken",
+        "formId",
+        "componentValue"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteComponentInstances",
+      "params": [
+        "authToken",
+        "formId",
+        "componentId",
+        "instanceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "FormService": [
+    {
+      "name": "UploadExcelForm",
+      "params": [
+        "stream"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "GetForm",
+      "params": [
+        "formId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCss",
+      "params": [
+        "formId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "DownloadExcelForm",
+      "params": [
+        "formId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "DownloadExcelComponent",
+      "params": [
+        "formId",
+        "componentId",
+        "instanceId",
+        "fileName"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "UnloadForm",
+      "params": [
+        "formId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteForm",
+      "params": [
+        "formId",
+        "includeDb"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpdateFormKey",
+      "params": [
+        "formId",
+        "keyId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCategory",
+      "params": [
+        "formId",
+        "categoryType"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetComponentValueTree",
+      "params": [
+        "formId",
+        "containerClassName",
+        "instanceId",
+        "includeSoftDeletes"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchComponentValueTrees",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetComponentValues",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSearchResults",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveComponentValue",
+      "params": [
+        "formId",
+        "componentValue"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteComponentInstances",
+      "params": [
+        "formId",
+        "componentId",
+        "instanceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UndeleteComponentInstances",
+      "params": [
+        "formId",
+        "componentId",
+        "instanceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GenerateCreateToken",
+      "params": [
+        "formId",
+        "componentId",
+        "instanceId",
+        "componentToCreateId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateMigrationScript",
+      "params": [
+        "options"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "IssueInstanceOperation",
+      "params": [
+        "operationParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetContainerHistory",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetFieldHistory",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetContainerChanges",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DownloadAssembly",
+      "params": [
+        "formId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetResourceDependencies",
+      "params": [
+        "formId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpdateResourceDependencies",
+      "params": [
+        "dependencies"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetDefinition",
+      "params": [
+        "formId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpdateComponentProperty",
+      "params": [
+        "componentId",
+        "propertyName",
+        "propertyValue"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UploadFileField",
+      "params": [
+        "fileStream"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "DownloadFileField",
+      "params": [
+        "formId",
+        "fileComponentId",
+        "fileId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetFileFieldMetaData",
+      "params": [
+        "formId",
+        "fileComponentId",
+        "fileId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "GoogleOAuthService": [
+    {
+      "name": "ProcessCallback",
+      "params": [
+        "code"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UnAuthorize",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAccessCodeRequestUri",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetEmailAddress",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "GroupService": [
+    {
+      "name": "JoinGroup",
+      "params": [
+        "groupId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "LeaveGroup",
+      "params": [
+        "groupId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "IsInGroup",
+      "params": [
+        "groupId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetGroup",
+      "params": [
+        "groupId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetMembers",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetGroupDescriptor",
+      "params": [
+        "groupId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveGroup",
+      "params": [
+        "group"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteGroup",
+      "params": [
+        "groupId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "AcceptPendingJoin",
+      "params": [
+        "groupId",
+        "userId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RejectPendingJoin",
+      "params": [
+        "groupId",
+        "userId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetPendingRequests",
+      "params": [
+        "groupId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "AddMember",
+      "params": [
+        "groupId",
+        "userId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RemoveMember",
+      "params": [
+        "groupId",
+        "userId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "InterfaceService": [
+    {
+      "name": "GetInterface",
+      "params": [
+        "interfaceId",
+        "excludeFilePaths"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ListInterfaceTemplates",
+      "params": [
+        "offset",
+        "count"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveInterface",
+      "params": [
+        "interfaceObj"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteInterface",
+      "params": [
+        "interfaceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DownloadInterfaceResource",
+      "params": [
+        "interfaceId",
+        "resourcePath"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "BeginInterfaceResourceEditSession",
+      "params": [
+        "interfaceId",
+        "resourcePath",
+        "editorAssemblyQualifiedName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveInterfaceResourceEditSession",
+      "params": [
+        "interfaceId",
+        "resourcePath",
+        "opened",
+        "editorData",
+        "force",
+        "editorAssemblyQualifiedName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "MoveInterfaceResource",
+      "params": [
+        "interfaceId",
+        "fromPath",
+        "toPath"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteInterfaceResource",
+      "params": [
+        "interfaceId",
+        "resourcePath"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateInterfaceResource",
+      "params": [
+        "interfaceId",
+        "parentResourcePath",
+        "metadata"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UploadInterfaceResource",
+      "params": [
+        "filestream"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "ExportInterface",
+      "params": [
+        "interfaceId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "ImportInterface",
+      "params": [
+        "filestream"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "ExecuteAngularCommand",
+      "params": [
+        "command",
+        "interfaceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExecuteNPMCommand",
+      "params": [
+        "command",
+        "interfaceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchInterface",
+      "params": [
+        "options"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    }
+  ],
+  "ModuleTypeService": [
+    {
+      "name": "GetDefaultModules",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetModuleTypes",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetModuleSuggestions",
+      "params": [
+        "currentModule",
+        "currentArgumentName",
+        "currentModuleIsInput"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetPlugins",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveModuleType",
+      "params": [
+        "type"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetModuleArgumentInfo",
+      "params": [
+        "moduleName",
+        "moduleNamespace",
+        "argumentName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRefModuleArgumentInfo",
+      "params": [
+        "nestedAppId",
+        "nestedArgModuleId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetReadme",
+      "params": [
+        "module"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    }
+  ],
+  "PropertyService": [
+    {
+      "name": "GetProperty",
+      "params": [
+        "propertyId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveProperty",
+      "params": [
+        "property"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteProperty",
+      "params": [
+        "propertyId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetPropertyValueChange",
+      "params": [
+        "historyEntryId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchMyProperties",
+      "params": [
+        "query",
+        "offset",
+        "pageSize"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchSharedProperties",
+      "params": [
+        "query",
+        "offset",
+        "pageSize"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchProperties",
+      "params": [
+        "query",
+        "offset",
+        "pageSize"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetPropertyTypes",
+      "params": [
+        "offset",
+        "pageSize"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetPropertyType",
+      "params": [
+        "assemblyQualifiedName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateProperty",
+      "params": [
+        "qualifiedType"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetOdbcDrivers",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetFormProviders",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "QueryViewService": [
+    {
+      "name": "RunQueryDynamic",
+      "params": [
+        "queryView"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RunQuery",
+      "params": [
+        "queryView"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RunChoiceQuery",
+      "params": [
+        "queryView",
+        "inputName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetChoices",
+      "params": [
+        "queryViewId",
+        "inputName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetQueryResultsDownload",
+      "params": [
+        "input"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "GetResultsDownload",
+      "params": [
+        "input"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "GetQueryResultsDownloadWeb",
+      "params": [
+        "queryView",
+        "fileType"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetResultsDownloadWeb",
+      "params": [
+        "queryViewCore",
+        "fileType"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "Template",
+      "params": [
+        "queryView",
+        "fakeValues",
+        "countQuery"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ValidateQuery",
+      "params": [
+        "queryView",
+        "queryToValidate"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CompileQuery",
+      "params": [
+        "queryView",
+        "options"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExportQueryView",
+      "params": [
+        "stream"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "Get",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRunnable",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "Save",
+      "params": [
+        "queryView"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "Delete",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetQueryViewHistory",
+      "params": [
+        "queryView",
+        "skip",
+        "take",
+        "asc"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DiffQueryViews",
+      "params": [
+        "queryViewHistoryBeforeId",
+        "queryViewHistoryAfterId",
+        "currentQueryView"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetQueryViewHistoryEntry",
+      "params": [
+        "historyId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RevertQueryView",
+      "params": [
+        "historyId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetMetadata",
+      "params": [
+        "dbConnectionId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "ResultService": [
+    {
+      "name": "GetResults",
+      "params": [
+        "runId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetResult",
+      "params": [
+        "resultId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteResult",
+      "params": [
+        "resultId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTraceEvents",
+      "params": [
+        "runId",
+        "skip",
+        "take",
+        "eventType",
+        "keywords"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetProgressEvents",
+      "params": [
+        "runId",
+        "skip",
+        "take",
+        "uiHandle",
+        "lastIterationsOnly"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTraceEventsCsv",
+      "params": [
+        "runId",
+        "eventType",
+        "keywords"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    }
+  ],
+  "ReviewService": [
+    {
+      "name": "SubmitReview",
+      "params": [
+        "review"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUserReview",
+      "params": [
+        "appId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "RunRetentionSettingsService": [
+    {
+      "name": "SaveRunRetentionSettings",
+      "params": [
+        "settings"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRunRetentionSettings",
+      "params": [
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetEffectiveRunRetentionSettings",
+      "params": [
+        "appId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CascadeRunRetentionSettings",
+      "params": [
+        "settings"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "RunsService": [
+    {
+      "name": "GetRunsAggregate",
+      "params": [
+        "filters"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRunsList",
+      "params": [
+        "filters"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetClusteredRuns",
+      "params": [
+        "filters"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRunInfo",
+      "params": [
+        "filters"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRunsUiTable",
+      "params": [
+        "appId",
+        "start",
+        "length",
+        "orderCol",
+        "orderDir",
+        "statusSearch",
+        "startTimeFilter",
+        "endTimeFilter",
+        "userSearch"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRunsUiTableAdvanced",
+      "params": [
+        "runsUITableOptions"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteRun",
+      "params": [
+        "runId",
+        "includeResumedRuns"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteRuns",
+      "params": [
+        "runIds"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteAllRuns",
+      "params": [
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetRunsDirectorySize",
+      "params": [
+        "includedRunIds"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "SearchService": [
+    {
+      "name": "SearchAll",
+      "params": [
+        "query",
+        "start",
+        "count"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchAdvanced",
+      "params": [
+        "search"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchWriteable",
+      "params": [
+        "query",
+        "start",
+        "count"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAvailableFilterOptions",
+      "params": [
+        "query",
+        "useFilters"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ParseSearchQuery",
+      "params": [
+        "query"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveSearch",
+      "params": [
+        "query",
+        "name"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSavedSearch",
+      "params": [
+        "id"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "SecurableResourceService": [
+    {
+      "name": "UpdateMetadata",
+      "params": [
+        "srMetaContract",
+        "noEmptyName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetMetadata",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetResourceDisplayNames",
+      "params": [],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetNetwork",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RearrangeNetwork",
+      "params": [
+        "network"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "HasHistory",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetHistory",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetChanges",
+      "params": [
+        "queryParams"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "SlackService": [
+    {
+      "name": "SaveSlackPreferences",
+      "params": [
+        "username",
+        "webhookUrl"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetSlackPreferences",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RemoveSlackPreferences",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DefaultSlackWebhookSet",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "TableService": [
+    {
+      "name": "GetTable",
+      "params": [
+        "resourceId",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetResultFromTable",
+      "params": [
+        "table",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateTable",
+      "params": [
+        "jsonStream"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "PostUiTable",
+      "params": [
+        "form"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "GetUiTable",
+      "params": [
+        "resourceId",
+        "sEcho",
+        "iDisplayStart",
+        "iDisplayLength",
+        "sSearch",
+        "iSortCol_0",
+        "sSortDir_0"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "PostUiTableByHandle",
+      "params": [
+        "form"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "PostUiTableByTable",
+      "params": [
+        "form"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    },
+    {
+      "name": "GetUiTableByHandle",
+      "params": [
+        "runHandleId",
+        "moduleUIHandle",
+        "moduleOutputUIHandle",
+        "sEcho",
+        "iDisplayStart",
+        "iDisplayLength",
+        "sSearch",
+        "iSortCol_0",
+        "sSortDir_0"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUiTableDownload",
+      "params": [
+        "resourceId",
+        "fileType"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetUiTableDownloadByHandle",
+      "params": [
+        "runHandleId",
+        "moduleUIHandle",
+        "moduleOutputUIHandle",
+        "fileType"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    }
+  ],
+  "TagService": [
+    {
+      "name": "AddTags",
+      "params": [
+        "resourceId",
+        "tags"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTags",
+      "params": [
+        "resourceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RemoveTagsByName",
+      "params": [
+        "resourceId",
+        "tags"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SetTags",
+      "params": [
+        "resourceId",
+        "tags"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchTags",
+      "params": [
+        "query",
+        "skip",
+        "limit"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "TestingFrameworkService": [
+    {
+      "name": "GetTestInformation",
+      "params": [
+        "runId",
+        "app"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateSurrogateForModule",
+      "params": [
+        "module"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ComputeTestStatistics",
+      "params": [
+        "testSuite"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ComputeTestStatisticsForBatch",
+      "params": [
+        "batchId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAvailableTests",
+      "params": [
+        "query",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveTestSuite",
+      "params": [
+        "testSuite",
+        "unsavedSuiteIdentifier"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "DeleteTestSuite",
+      "params": [
+        "testSuiteId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ExecuteTestSuite",
+      "params": [
+        "testSuite",
+        "unsavedSuiteIdentifier",
+        "clientHubId",
+        "testFilter"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTestSuite",
+      "params": [
+        "testSuiteId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateTestCase",
+      "params": [
+        "runId",
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CloneTestSuite",
+      "params": [
+        "testSuiteId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTestBatches",
+      "params": [
+        "testSuiteId",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTestBatchesUnsaved",
+      "params": [
+        "unsavedSuiteIdentifier",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTestsInBatch",
+      "params": [
+        "testBatch",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetLatestTestResult",
+      "params": [
+        "appId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTestResult",
+      "params": [
+        "runId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CancelBatch",
+      "params": [
+        "testBatch"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetMaxParallelCount",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetTestBatch",
+      "params": [
+        "batchId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "ThumbnailService": [
+    {
+      "name": "GetThumbnail",
+      "params": [
+        "resourceId",
+        "size"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetThumbnailByUsername",
+      "params": [
+        "username"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetThumbnailByModule",
+      "params": [
+        "name",
+        "moduleNamespace"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "GetThumbnailByExtension",
+      "params": [
+        "location"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "UpdateThumbnail",
+      "params": [
+        "form"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "raw",
+      "response": "json"
+    }
+  ],
+  "TwitterService": [
+    {
+      "name": "CreateAuthorizationToken",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UnAuthorize",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetScreenName",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ProcessTwitterCallback",
+      "params": [
+        "denied",
+        "oauth_token",
+        "oauth_verifier"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "UserManagementService": [
+    {
+      "name": "UnlockUser",
+      "params": [
+        "userName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "LockUser",
+      "params": [
+        "userName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ActivateUser",
+      "params": [
+        "userName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SetPassword",
+      "params": [
+        "userName",
+        "newPassword"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SendPasswordEmail",
+      "params": [
+        "userName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAllUsers",
+      "params": [
+        "orderClauses",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SearchUsers",
+      "params": [
+        "searchPhrase",
+        "isAdmin",
+        "isLocked",
+        "isApproved",
+        "isPasswordResetRequired",
+        "orderClauses",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetAccountEvents",
+      "params": [
+        "userId",
+        "skip",
+        "take"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "UpdateUserName",
+      "params": [
+        "userName",
+        "newUserName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CheckUserNameAvailability",
+      "params": [
+        "newUserName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "AddAdminRole",
+      "params": [
+        "userName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RevokeAdmin",
+      "params": [
+        "userName"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ChangeEmail",
+      "params": [
+        "userName",
+        "newEmail"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RequiresPasswordReset",
+      "params": [
+        "userName",
+        "requirePasswordReset"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "ApproveUser",
+      "params": [
+        "userId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "CreateUser",
+      "params": [
+        "createDetail"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "IsWindowsAuthEnabled",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUserPrincipal",
+      "params": [
+        "name"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "UserService": [
+    {
+      "name": "GetUser",
+      "params": [
+        "user"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUserDetail",
+      "params": [
+        "userId"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SaveUser",
+      "params": [
+        "user"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "SetFavorite",
+      "params": [
+        "securableResourceId",
+        "favorite"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "IsFavorite",
+      "params": [
+        "securableResourceId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetUserDashboardId",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GenerateUserToken",
+      "params": [
+        "userId",
+        "name",
+        "purpose",
+        "expirationDate"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetCurrentUser",
+      "params": [],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "GetValidUserTokens",
+      "params": [
+        "userId",
+        "searchParams"
+      ],
+      "verb": "GET",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    },
+    {
+      "name": "RevokeUserToken",
+      "params": [
+        "tokenId"
+      ],
+      "verb": "POST",
+      "uri": null,
+      "request": "json",
+      "response": "json"
+    }
+  ],
+  "WebActivationService": [
+    {
+      "name": "ProcessGet",
+      "params": [],
+      "verb": "GET",
+      "uri": "/Activate",
+      "request": "json",
+      "response": "raw"
+    },
+    {
+      "name": "ProcessPost",
+      "params": [
+        "message"
+      ],
+      "verb": "POST",
+      "uri": "/Activate",
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "ProcessHead",
+      "params": [
+        "message"
+      ],
+      "verb": "HEAD",
+      "uri": "/Activate",
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "ProcessDelete",
+      "params": [
+        "message"
+      ],
+      "verb": "DELETE",
+      "uri": "/Activate",
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "ProcessPatch",
+      "params": [
+        "message"
+      ],
+      "verb": "PATCH",
+      "uri": "/Activate",
+      "request": "raw",
+      "response": "raw"
+    },
+    {
+      "name": "ProcessPut",
+      "params": [
+        "message"
+      ],
+      "verb": "PUT",
+      "uri": "/Activate",
+      "request": "raw",
+      "response": "raw"
+    }
+  ]
+}

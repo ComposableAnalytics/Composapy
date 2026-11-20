@@ -1,23 +1,21 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="../">
 <head>
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tables.Table &mdash; Composapy  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+  <title>Table &mdash; Composapy  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
-  <!--[if lt IE 9]>
-    <script src="../_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="../_static/jquery.js?v=5d32c60e"></script>
-        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=9a2dae69"></script>
-        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -51,9 +49,16 @@
 <li class="toctree-l2"><a class="reference internal" href="composapy-queryview/index.html">QueryView</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-session.html">Session</a></li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-utils.html">Utils</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Tables.Table</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Table</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#to-pandas">to_pandas</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#members">Members</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#to-table">to_table</a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="composapy-contracts-filereference.html">FileReference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-values.html">Contract values</a></li>
 <li class="toctree-l2"><a class="reference internal" href="environment-variables.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migrating-to-1-0.html">Migrating to 1.0</a></li>
 </ul>
 </li>
 </ul>
@@ -73,7 +78,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
           <li class="breadcrumb-item"><a href="index.html">Reference</a></li>
-      <li class="breadcrumb-item active">Tables.Table</li>
+      <li class="breadcrumb-item active">Table</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../_sources/reference/composapy-contracts-table.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -83,13 +88,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="tables-table">
-<h1>Tables.Table<a class="headerlink" href="#tables-table" title="Link to this heading"></a></h1>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">CompAnalytics.Contracts.Tables</span> <span class="kn">import</span> <span class="n">Table</span>
+  <section id="table">
+<h1>Table<a class="headerlink" href="#table" title="Link to this heading"></a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composapy.contracts</span><span class="w"> </span><span class="kn">import</span> <span class="n">Table</span><span class="p">,</span> <span class="n">to_table</span>
 </pre></div>
 </div>
-<p>Table objects are container objects for queries. For convenience, their results are displayed
-as a pandas DataFrame when inside a notebook environment.</p>
+<p>A <code class="docutils literal notranslate"><span class="pre">Table</span></code> is what a DataFlow result or input of type Table holds: a table name, a SQL
+query, its columns, and the execution handle it belongs to. The rows stay on the platform
+until you ask for them. For convenience, a table is displayed as a pandas DataFrame when it
+is the last value of a notebook cell.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table_run</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">.</span><span class="n">get_run</span><span class="p">(</span><span class="mi">138123</span><span class="p">)</span>
 <span class="n">table_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span>
 
@@ -106,12 +113,48 @@ as a pandas DataFrame when inside a notebook environment.</p>
 <span class="c1"># +----+-----+-----+-----+</span>
 </pre></div>
 </div>
-<p>You can also retrieve the value of the pandas DataFrame Table object with to_pandas().</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">table_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span>  <span class="c1"># CompAnalytics.Contracts.Tables.Table</span>
+<section id="to-pandas">
+<h2>to_pandas<a class="headerlink" href="#to-pandas" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>table.to_pandas() -&gt; pandas.DataFrame</p></li>
+</ul>
+<p>Reads every row of the table and returns a pandas DataFrame whose column dtypes follow the
+table’s column types.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span> <span class="o">=</span> <span class="n">table_run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span>  <span class="c1"># composapy.contracts.Table</span>
 <span class="n">table_df</span> <span class="o">=</span> <span class="n">table</span><span class="o">.</span><span class="n">to_pandas</span><span class="p">()</span>                    <span class="c1"># pandas.DataFrame</span>
 </pre></div>
 </div>
-<p>You can find more information on the CompAnalytics.Contracts.Tables.Table contract <a class="reference external" href="https://dev.composable.ai/api/CompAnalytics.Contracts.Tables.Table.html">here</a>.</p>
+</section>
+<section id="members">
+<h2>Members<a class="headerlink" href="#members" title="Link to this heading"></a></h2>
+<p>A table carries the members of its contract:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">table.TableName</span></code>: the name of the table.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table.Headers</span></code>: the column names, in order. A list with a few extra helper members
+(<code class="docutils literal notranslate"><span class="pre">Count</span></code>, <code class="docutils literal notranslate"><span class="pre">Contains</span></code>, and others); see <a class="reference internal" href="composapy-contracts-values.html"><span class="doc">Contract values</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">table.Columns</span></code>: the columns. Each has a <code class="docutils literal notranslate"><span class="pre">Name</span></code> and a <code class="docutils literal notranslate"><span class="pre">Type</span></code>, and the collection can be
+indexed by name or by position.</p></li>
+</ul>
+</section>
+<section id="to-table">
+<h2>to_table<a class="headerlink" href="#to-table" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>to_table(df: pandas.DataFrame, execution_handle: ExecutionHandle, external_input_handles: list = None) -&gt; Table</p></li>
+</ul>
+<p>Creates a table on the platform from a pandas DataFrame, within the execution that
+<code class="docutils literal notranslate"><span class="pre">execution_handle</span></code> names, and returns its contract. This is how a script or notebook run by
+a DLNBR module hands a DataFrame back to the platform.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">composapy.contracts</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_table</span>
+
+<span class="n">table</span> <span class="o">=</span> <span class="n">to_table</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s2">"a"</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]}),</span> <span class="n">execution_handle</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A DataFrame whose index is not the default range index keeps it as columns. Column names are
+made valid for the platform: an empty name becomes <code class="docutils literal notranslate"><span class="pre">col&lt;position&gt;</span></code>, runs of whitespace
+become one space, and a name repeated, ignoring case, gets <code class="docutils literal notranslate"><span class="pre">_2</span></code>, <code class="docutils literal notranslate"><span class="pre">_3</span></code>, and so on. A
+DataFrame with no columns raises <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>.</p>
+</section>
 </section>
 
 
