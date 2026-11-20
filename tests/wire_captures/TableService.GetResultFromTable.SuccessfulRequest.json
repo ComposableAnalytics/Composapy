@@ -1,0 +1,51 @@
+{
+  "Row": 1,
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/TableService.svc/GetResultFromTable",
+  "RequestBody": {
+    "table": {
+      "__type": "Table:#CompAnalytics.Contracts.Tables",
+      "Columns": [
+        {
+          "__type": "TableColumn:#CompAnalytics.Contracts.Tables",
+          "Name": "testing",
+          "Type": "TEXT"
+        }
+      ],
+      "Headers": [
+        "testing"
+      ],
+      "RootExecutionHandle": {
+        "__type": "ExecutionHandle:#CompAnalytics.Contracts",
+        "AppId": 685752,
+        "HandleId": "e36d44d6-3723-47c8-ab8e-c37afd17c563",
+        "Id": null
+      },
+      "SqlQuery": "SELECT * FROM [a0e801e9-463d-486f-b239-51b7d62cd248]",
+      "TableName": "a0e801e9-463d-486f-b239-51b7d62cd248"
+    },
+    "skip": 0,
+    "take": 10
+  },
+  "StatusCode": 200,
+  "ContentType": "application/json; charset=utf-8",
+  "ResponseBody": {
+    "d": {
+      "__type": "TablePageResult:#CompAnalytics.Contracts.Tables",
+      "LoadTime": 0,
+      "PageNumber": 1,
+      "Results": [
+        [
+          "s"
+        ]
+      ],
+      "Skip": 0,
+      "Take": 10,
+      "TotalCount": 1,
+      "TotalPages": 1,
+      "Headers": [
+        "testing"
+      ]
+    }
+  }
+}

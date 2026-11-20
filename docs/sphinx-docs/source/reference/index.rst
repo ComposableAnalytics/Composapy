@@ -11,4 +11,6 @@ Reference
     composapy-utils
     composapy-contracts-table
     composapy-contracts-filereference
+    composapy-contracts-values
     environment-variables
+    migrating-to-1-0

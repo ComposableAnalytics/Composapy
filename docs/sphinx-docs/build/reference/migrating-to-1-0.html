@@ -1,0 +1,331 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Migrating to 1.0 &mdash; Composapy  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="prev" title="Environment Variables" href="environment-variables.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Composapy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="composapy-dataflow/index.html">DataFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-key/index.html">Key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-queryview/index.html">QueryView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-session.html">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-utils.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-table.html">Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-filereference.html">FileReference</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-values.html">Contract values</a></li>
+<li class="toctree-l2"><a class="reference internal" href="environment-variables.html">Environment Variables</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Migrating to 1.0</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#exceptions">Exceptions</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#an-argument-of-the-wrong-type">An argument of the wrong type</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#contract-objects">Contract objects</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#values">Values</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#numbers">Numbers</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#files">Files</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#the-compatibility-namespace">The compatibility namespace</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#pickles">Pickles</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#notebooks-and-scripts-run-by-a-datalab">Notebooks and scripts run by a DataLab</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#published-datalabs">Published DataLabs</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#installing">Installing</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Composapy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Reference</a></li>
+      <li class="breadcrumb-item active">Migrating to 1.0</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/migrating-to-1-0.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="migrating-to-1-0">
+<h1>Migrating to 1.0<a class="headerlink" href="#migrating-to-1-0" title="Link to this heading"></a></h1>
+<p>Composapy 1.0 talks to the platform over HTTP and carries its own Python versions of the
+contract objects it returns. It no longer loads the Composable assemblies, so it needs no
+.NET runtime, no <code class="docutils literal notranslate"><span class="pre">pythonnet</span></code>, and no <code class="docutils literal notranslate"><span class="pre">DATALAB_DLL_DIR</span></code>. <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">composapy</span></code> takes about
+0.6 seconds on Python 3.8, 3.11, and 3.13, where earlier releases took about 28 seconds.</p>
+<p>The public API is the same: <code class="docutils literal notranslate"><span class="pre">Session</span></code>, <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>, <code class="docutils literal notranslate"><span class="pre">Key</span></code>, <code class="docutils literal notranslate"><span class="pre">QueryView</span></code>, <code class="docutils literal notranslate"><span class="pre">to_table</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">file_ref</span></code> take the same arguments and return objects with the same members. Scripts and
+notebooks that use only those keep working. This page lists what is different.</p>
+<section id="exceptions">
+<h2>Exceptions<a class="headerlink" href="#exceptions" title="Link to this heading"></a></h2>
+<p>A .NET exception type cannot exist without .NET, so the errors that reached your code as .NET
+exceptions are Python exceptions with the same message.</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 45.0%" />
+<col style="width: 55.0%" />
+</colgroup>
+<thead>
+<tr class="row-odd"><th class="head"><p>Before</p></th>
+<th class="head"><p>Now</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">System.ServiceModel.FaultException</span></code> from a service call</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">composapy.exceptions.ServiceFault</span></code>, with the server’s message. It has
+<code class="docutils literal notranslate"><span class="pre">ExceptionType</span></code>, <code class="docutils literal notranslate"><span class="pre">StackTrace</span></code>, and <code class="docutils literal notranslate"><span class="pre">status_code</span></code> members; the message no longer has
+a .NET stack trace appended.</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">System.ServiceModel.Security.MessageSecurityException</span></code> for a bad token or password</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">composapy.exceptions.AuthenticationError</span></code>. A failed sign-in is still reported on the
+first service call.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">System.Net.WebException</span></code> for a connection failure</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ConnectionError</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">System.IO.DirectoryNotFoundException</span></code> for a file that does not exist</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">FileNotFoundError</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">System.UnauthorizedAccessException</span></code> for a directory given as a file</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">PermissionError</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">System.ArgumentOutOfRangeException</span></code> from a list member</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">IndexError</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">System.Collections.Generic.KeyNotFoundException</span></code> for a column name that is not there</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">KeyError</span></code></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">System.ArgumentException</span></code> for a relative <code class="docutils literal notranslate"><span class="pre">to_file</span></code> folder</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">System.InvalidOperationException</span></code> from a member of a relative <code class="docutils literal notranslate"><span class="pre">Uri</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">composapy.contracts.uri.RelativeUriError</span></code>, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code></p></td>
+</tr>
+</tbody>
+</table>
+<p><code class="docutils literal notranslate"><span class="pre">composapy</span></code>’s own exception classes (<code class="docutils literal notranslate"><span class="pre">SessionException</span></code> and its subclasses, <code class="docutils literal notranslate"><span class="pre">QueryException</span></code>,
+and the rest) keep their names and messages. Catch <code class="docutils literal notranslate"><span class="pre">Exception</span></code> or the Python class above; the
+.NET class names no longer exist to catch.</p>
+<section id="an-argument-of-the-wrong-type">
+<h3>An argument of the wrong type<a class="headerlink" href="#an-argument-of-the-wrong-type" title="Link to this heading"></a></h3>
+<p><code class="docutils literal notranslate"><span class="pre">pythonnet</span></code> refused an argument of the wrong type, such as a text id where an integer was
+expected, with a <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> before any request. Composapy 1.0 sends it, the platform refuses
+it, and you get a <code class="docutils literal notranslate"><span class="pre">ServiceFault</span></code> with the platform’s message. <code class="docutils literal notranslate"><span class="pre">QueryView.run</span></code> still raises
+<code class="docutils literal notranslate"><span class="pre">TypeError</span></code> for a query that is not text, and a table input still raises <code class="docutils literal notranslate"><span class="pre">TypeError</span></code> for a
+value that is not a DataFrame or <code class="docutils literal notranslate"><span class="pre">Table</span></code>.</p>
+</section>
+</section>
+<section id="contract-objects">
+<h2>Contract objects<a class="headerlink" href="#contract-objects" title="Link to this heading"></a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">Table</span></code>, <code class="docutils literal notranslate"><span class="pre">FileReference</span></code> and its subclasses, and <code class="docutils literal notranslate"><span class="pre">ExecutionHandle</span></code> are Python classes in
+<code class="docutils literal notranslate"><span class="pre">composapy.contracts</span></code>. Every other contract is a <code class="docutils literal notranslate"><span class="pre">ContractObject</span></code>. Members are read and
+assigned as attributes, as before. The .NET methods and properties a contract class had beyond
+that are gone, except these, which are kept because scripts called them:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">FileReference.Uri</span></code> is a <code class="docutils literal notranslate"><span class="pre">str</span></code> with the members of <code class="docutils literal notranslate"><span class="pre">System.Uri</span></code> (<code class="docutils literal notranslate"><span class="pre">LocalPath</span></code>,
+<code class="docutils literal notranslate"><span class="pre">AbsoluteUri</span></code>, <code class="docutils literal notranslate"><span class="pre">Scheme</span></code>, and the rest). It compares equal to its text, which a
+<code class="docutils literal notranslate"><span class="pre">System.Uri</span></code> did not.</p></li>
+<li><p>A list inside a contract, such as <code class="docutils literal notranslate"><span class="pre">Table.Headers</span></code>, is a <code class="docutils literal notranslate"><span class="pre">list</span></code> with the members of
+<code class="docutils literal notranslate"><span class="pre">List&lt;T&gt;</span></code> (<code class="docutils literal notranslate"><span class="pre">Count</span></code>, <code class="docutils literal notranslate"><span class="pre">Contains</span></code>, <code class="docutils literal notranslate"><span class="pre">IndexOf</span></code>, <code class="docutils literal notranslate"><span class="pre">Add</span></code>, <code class="docutils literal notranslate"><span class="pre">RemoveAt</span></code>, …). Python’s own
+behavior replaces some refusals: negative indexes and slices work, <code class="docutils literal notranslate"><span class="pre">Contains</span></code> of a value of
+another type is <code class="docutils literal notranslate"><span class="pre">False</span></code>, and <code class="docutils literal notranslate"><span class="pre">AddRange</span></code> takes any iterable.</p></li>
+</ul>
+<p>See <a class="reference internal" href="composapy-contracts-values.html"><span class="doc">Contract values</span></a>. <code class="docutils literal notranslate"><span class="pre">isinstance(x,</span> <span class="pre">System.String)</span></code> and the other checks
+against .NET types do not work, because there is no <code class="docutils literal notranslate"><span class="pre">System</span></code>.</p>
+</section>
+<section id="values">
+<h2>Values<a class="headerlink" href="#values" title="Link to this heading"></a></h2>
+<section id="numbers">
+<h3>Numbers<a class="headerlink" href="#numbers" title="Link to this heading"></a></h3>
+<ul class="simple">
+<li><p>A module input or result declared <code class="docutils literal notranslate"><span class="pre">System.Double</span></code> or <code class="docutils literal notranslate"><span class="pre">System.Single</span></code> is a <code class="docutils literal notranslate"><span class="pre">float</span></code>, and one
+declared <code class="docutils literal notranslate"><span class="pre">System.Decimal</span></code> is a <code class="docutils literal notranslate"><span class="pre">decimal.Decimal</span></code>, as are lists of them.</p></li>
+<li><p>A Python <code class="docutils literal notranslate"><span class="pre">float</span></code> written to an input of type Object arrives as <code class="docutils literal notranslate"><span class="pre">System.Decimal</span></code>, where the
+.NET wrappers sent <code class="docutils literal notranslate"><span class="pre">System.Double</span></code>. The platform’s JSON reader chooses the type of a bare
+number, and no form of the number makes it choose <code class="docutils literal notranslate"><span class="pre">Double</span></code>. A typed Double input is not
+affected.</p></li>
+<li><p>An integer that does not fit in 32 bits is sent as a 64-bit integer. A script that returns one
+from a notebook no longer fails with <code class="docutils literal notranslate"><span class="pre">OverflowError</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">inf</span></code>, <code class="docutils literal notranslate"><span class="pre">-inf</span></code>, and <code class="docutils literal notranslate"><span class="pre">nan</span></code> cannot be written in JSON. A DataFrame cell holding one reaches
+the platform as a missing value. Earlier releases stored <code class="docutils literal notranslate"><span class="pre">0.0</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> for an input of a value type, such as an integer, is stored as that type’s default,
+as before.</p></li>
+</ul>
+</section>
+<section id="files">
+<h3>Files<a class="headerlink" href="#files" title="Link to this heading"></a></h3>
+<p>Uploaded files are stored byte for byte. The .NET client read text files (<code class="docutils literal notranslate"><span class="pre">.txt</span></code>, <code class="docutils literal notranslate"><span class="pre">.csv</span></code>, and
+the like) in the system code page and stored them re-encoded as UTF-8, so the stored bytes could
+differ from the file’s. They no longer do.</p>
+</section>
+</section>
+<section id="the-compatibility-namespace">
+<h2>The compatibility namespace<a class="headerlink" href="#the-compatibility-namespace" title="Link to this heading"></a></h2>
+<p>A script or a saved pickle that imports a .NET class by name still works for these names:</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">CompAnalytics.Contracts</span></code>: <code class="docutils literal notranslate"><span class="pre">FileReference</span></code>, its subclasses, and <code class="docutils literal notranslate"><span class="pre">ExecutionHandle</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CompAnalytics.Contracts.Tables</span></code>: <code class="docutils literal notranslate"><span class="pre">Table</span></code>, <code class="docutils literal notranslate"><span class="pre">TableColumn</span></code>, and <code class="docutils literal notranslate"><span class="pre">TableColumnCollection</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CompAnalytics.Contracts.QueryView</span></code>: <code class="docutils literal notranslate"><span class="pre">LiteralInput</span></code> and <code class="docutils literal notranslate"><span class="pre">SearchInput</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">CompAnalytics.Core</span></code>: <code class="docutils literal notranslate"><span class="pre">ContractSerializer</span></code></p></li>
+</ul>
+<p>They resolve to the classes in <code class="docutils literal notranslate"><span class="pre">composapy.contracts</span></code>. <code class="docutils literal notranslate"><span class="pre">LiteralInput()</span></code> and <code class="docutils literal notranslate"><span class="pre">SearchInput()</span></code>
+return contract objects with the members the .NET classes had, so a script that builds an input and
+adds it to <code class="docutils literal notranslate"><span class="pre">driver.contract.LiteralInputs</span></code> or <code class="docutils literal notranslate"><span class="pre">SearchInputs</span></code> runs unchanged. The lists of a
+driver’s contract have the members of <code class="docutils literal notranslate"><span class="pre">List&lt;T&gt;</span></code>, such as <code class="docutils literal notranslate"><span class="pre">Add</span></code> and <code class="docutils literal notranslate"><span class="pre">Clear</span></code>. Importing any other
+module under <code class="docutils literal notranslate"><span class="pre">CompAnalytics</span></code> raises <code class="docutils literal notranslate"><span class="pre">ModuleNotFoundError</span></code> and lists these names. Importing
+another name from one of these modules raises the usual <code class="docutils literal notranslate"><span class="pre">ImportError</span></code>, which names only the
+missing name. A session that loads the real assemblies through <code class="docutils literal notranslate"><span class="pre">pythonnet</span></code> itself gets the real
+types.</p>
+<section id="pickles">
+<h3>Pickles<a class="headerlink" href="#pickles" title="Link to this heading"></a></h3>
+<p>Pickles of <code class="docutils literal notranslate"><span class="pre">Table</span></code>, <code class="docutils literal notranslate"><span class="pre">FileReference</span></code>, and <code class="docutils literal notranslate"><span class="pre">ExecutionHandle</span></code> written by earlier releases load
+in 1.0, including <code class="docutils literal notranslate"><span class="pre">FileReference</span></code> pickles whose URI is absolute. Pickles written by 1.0 cannot
+be read by an earlier release.</p>
+</section>
+</section>
+<section id="notebooks-and-scripts-run-by-a-datalab">
+<h2>Notebooks and scripts run by a DataLab<a class="headerlink" href="#notebooks-and-scripts-run-by-a-datalab" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>A script runs in a single namespace, so a function defined in it can use the script’s own
+imports and variables. Earlier releases raised <code class="docutils literal notranslate"><span class="pre">NameError</span></code> for that.</p></li>
+<li><p>A script parameter, or a DataFlow input, named <code class="docutils literal notranslate"><span class="pre">token</span></code> receives the value it was given. Earlier
+wrappers replaced it with the DataLab’s API token. The session is registered from the token
+without defining a variable.</p></li>
+<li><p>A float parameter arrives as a Python <code class="docutils literal notranslate"><span class="pre">float</span></code> and can be returned from the script. Earlier
+wrappers handed the script a <code class="docutils literal notranslate"><span class="pre">System.Decimal</span></code>, which the step that returns values refused.</p></li>
+</ul>
+<section id="published-datalabs">
+<h3>Published DataLabs<a class="headerlink" href="#published-datalabs" title="Link to this heading"></a></h3>
+<p>A published version of a DataLab runs in a worker that the platform starts and reuses between runs.
+The earlier wrapper started a fresh process for every run, so these differ:</p>
+<ul>
+<li><p>A run started from a DataFlow is made as the DataFlow’s owner. The session is registered from
+that user’s token, so the owner’s permissions decide what the script can read and run.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">composapy.ini</span></code> is not read. The file a DataLab keeps beside its repository is not part of a
+published version, and the worker does not look for one. A script that needs a key registers it
+itself, by name or by id, before anything that uses it:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composapy.key.api</span><span class="w"> </span><span class="kn">import</span> <span class="n">Key</span>
+
+<span class="n">Key</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">"a unique name"</span><span class="p">)</span><span class="o">.</span><span class="n">register</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The owner needs permission to use the key. Put the call at the top of the entrypoint, before it
+imports the script’s own modules. The worker clears the registered key before every run, and a
+module imported on an earlier run is not imported again, so a key registered while a module is
+being imported is gone on the next run in the same worker.</p>
+</li>
+<li><p>Keep per-run state out of code that runs when a module is imported, for the same reason.</p></li>
+</ul>
+<p>An entrypoint parameter that is not passed, or is passed as null, is a variable set to <code class="docutils literal notranslate"><span class="pre">None</span></code>.
+Earlier wrappers defined every parameter they were given, null ones included.</p>
+</section>
+</section>
+<section id="installing">
+<h2>Installing<a class="headerlink" href="#installing" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>Python 3.8 through 3.13 are supported, with <code class="docutils literal notranslate"><span class="pre">pandas</span></code> older than 3. Pandas 3 changes the
+dtypes <code class="docutils literal notranslate"><span class="pre">Table.to_pandas()</span></code> returns.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">papermill</span></code> is imported only by the notebook runner. <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">composapy</span></code> no longer imports
+it, and no longer patches it.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">DATALAB_DLL_DIR</span></code>, <code class="docutils literal notranslate"><span class="pre">DATALAB_DLL_DIR_EXCLUDE</span></code>, and the <code class="docutils literal notranslate"><span class="pre">[environment]</span></code> section of
+<code class="docutils literal notranslate"><span class="pre">composapy.ini</span></code> are accepted and ignored. See <a class="reference internal" href="environment-variables.html"><span class="doc">Environment Variables</span></a>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">composapy.stream</span></code>, <code class="docutils literal notranslate"><span class="pre">configure_binding</span></code>, <code class="docutils literal notranslate"><span class="pre">add_dll_reference</span></code>, and the translator helpers in
+<code class="docutils literal notranslate"><span class="pre">composapy.patch</span></code> are gone.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">composapy.bindings</span></code> is kept for one use: lifting a service’s time limit. A request waits 60 seconds to connect
+and then up to 600 seconds for the reply, except for <code class="docutils literal notranslate"><span class="pre">ApplicationService</span></code> and <code class="docutils literal notranslate"><span class="pre">QueryViewService</span></code>, which
+have no limit on the reply. A notebook written for 0.13 that sets
+<code class="docutils literal notranslate"><span class="pre">bindings._service_binding_configs['TableService']</span> <span class="pre">=</span> <span class="pre">bindings._service_binding_configs['ApplicationService']</span></code>
+still runs and still gives the table service no limit. The dictionary now holds a <code class="docutils literal notranslate"><span class="pre">(connect,</span> <span class="pre">read)</span></code> pair of
+seconds for each service, with <code class="docutils literal notranslate"><span class="pre">None</span></code> for no limit, and nothing else of the old module is there.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Session</span></code> gains <code class="docutils literal notranslate"><span class="pre">close()</span></code> and works as a context manager, because it holds an HTTP session.</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="environment-variables.html" class="btn btn-neutral float-left" title="Environment Variables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Composable Analytics, Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

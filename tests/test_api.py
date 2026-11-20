@@ -87,6 +87,8 @@ def test_convert_table_to_pandas(dataflow_object: DataFlowObject):
             "datetime64[ns]",
             ["01-Oct-2021 00:00:00", "02-Oct-2021 00:00:00"],
         ),
+        # The next three give an instant, which the server shows in its own time zone. 04:00 UTC is midnight, the
+        # expected value, on a server on US Eastern time (UTC-4 on these dates); a server elsewhere needs other expectations.
         (
             "Datetime",
             "datetime64[ns]",
@@ -105,10 +107,7 @@ def test_convert_table_to_pandas(dataflow_object: DataFlowObject):
     ],
 )
 def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject, data):
-    from composapy.patch.table import _init_cs_list
-    from System import Object
-
-    ext_inputs = {"ColumnType": data[0], "ColumnData": _init_cs_list(Object, data[2])}
+    ext_inputs = {"ColumnType": data[0], "ColumnData": data[2]}
 
     # the dataflow automatically adds a null value to the column data to test support for nullable types
     dataflow_run = dataflow_object.run(external_inputs=ext_inputs)
@@ -142,6 +141,44 @@ def test_convert_table_to_pandas_dtypes(dataflow_object: DataFlowObject, data):
     print("Number of NaNs:", df["x"].isna().sum())
     print("DataFrame length:", len(df))
     assert df["x"].isna().sum() == 1
+
+
+@pytest.mark.parametrize(
+    "dataflow_object",
+    [
+        ("Form", "table_column_dtypes.json"),
+        ("Token", "table_column_dtypes.json"),
+    ],
+    indirect=True,
+)
+def test_convert_table_to_pandas_gives_the_utc_instant_of_a_datetimeoffset(
+    dataflow_object: DataFlowObject,
+):
+    # A DATETIMEOFFSET value has a real offset and names an instant, so to_pandas gives it in UTC (the column is then
+    # naive). The offsets below, +02:00 and -05:30, are not the server's, so a value that came back in server time, or with
+    # its offset dropped, would not match. If the dataflow's Column Type Converter applies server time to the text instead
+    # of keeping its offset, this fails and shows that, not a fault in to_pandas.
+    ext_inputs = {
+        "ColumnType": "DatetimeOffset",
+        "ColumnData": [
+            "01/17/2022 06:11:30 PM +02:00",
+            "01/18/2022 06:11:30 PM -05:30",
+        ],
+    }
+
+    dataflow_run = dataflow_object.run(external_inputs=ext_inputs)
+    df = dataflow_run.modules.first_with_name(
+        "Column Type Converter"
+    ).result.value.to_pandas()
+
+    values = df["x"][:-1].reset_index(
+        drop=True
+    )  # the dataflow adds a null value as the last row
+    expected = pd.Series(
+        [pd.Timestamp("2022-01-17 16:11:30"), pd.Timestamp("2022-01-18 23:41:30")],
+        name="x",
+    )
+    pd.testing.assert_series_equal(values, expected, check_names=False)
 
 
 @pytest.mark.parametrize(

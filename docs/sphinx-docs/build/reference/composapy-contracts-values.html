@@ -1,0 +1,180 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contract values &mdash; Composapy  documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Environment Variables" href="environment-variables.html" />
+    <link rel="prev" title="FileReference" href="composapy-contracts-filereference.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            Composapy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="composapy-dataflow/index.html">DataFlow</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-key/index.html">Key</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-queryview/index.html">QueryView</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-session.html">Session</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-utils.html">Utils</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-table.html">Table</a></li>
+<li class="toctree-l2"><a class="reference internal" href="composapy-contracts-filereference.html">FileReference</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Contract values</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#uri">Uri</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#netlist">NetList</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#contractserializer">ContractSerializer</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="environment-variables.html">Environment Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="migrating-to-1-0.html">Migrating to 1.0</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Composapy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Reference</a></li>
+      <li class="breadcrumb-item active">Contract values</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/reference/composapy-contracts-values.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="contract-values">
+<h1>Contract values<a class="headerlink" href="#contract-values" title="Link to this heading"></a></h1>
+<p>The objects a DataFlow or QueryView call returns are contracts: <code class="docutils literal notranslate"><span class="pre">Table</span></code>, <code class="docutils literal notranslate"><span class="pre">FileReference</span></code>
+and its subclasses, and <code class="docutils literal notranslate"><span class="pre">ExecutionHandle</span></code> have their own classes in <code class="docutils literal notranslate"><span class="pre">composapy.contracts</span></code>,
+and every other contract is a <code class="docutils literal notranslate"><span class="pre">ContractObject</span></code>, a dictionary whose members are also
+attributes (<code class="docutils literal notranslate"><span class="pre">module.contract.ModuleType.Name</span></code>). Two kinds of value inside them carry
+members beyond Python’s.</p>
+<section id="uri">
+<h2>Uri<a class="headerlink" href="#uri" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composapy.contracts.uri</span><span class="w"> </span><span class="kn">import</span> <span class="n">Uri</span><span class="p">,</span> <span class="n">RelativeUriError</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FileReference.Uri</span></code> is a <code class="docutils literal notranslate"><span class="pre">Uri</span></code>. It is a <code class="docutils literal notranslate"><span class="pre">str</span></code>: it compares, hashes, and serializes as the
+text the contract carries, so it can be used anywhere a string can. It also has members for the
+parts of the URI:</p>
+<p><code class="docutils literal notranslate"><span class="pre">OriginalString</span></code>, <code class="docutils literal notranslate"><span class="pre">AbsoluteUri</span></code>, <code class="docutils literal notranslate"><span class="pre">AbsolutePath</span></code>, <code class="docutils literal notranslate"><span class="pre">LocalPath</span></code>, <code class="docutils literal notranslate"><span class="pre">Scheme</span></code>, <code class="docutils literal notranslate"><span class="pre">Host</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Port</span></code>, <code class="docutils literal notranslate"><span class="pre">IsFile</span></code>, <code class="docutils literal notranslate"><span class="pre">IsUnc</span></code>, <code class="docutils literal notranslate"><span class="pre">IsAbsoluteUri</span></code>, <code class="docutils literal notranslate"><span class="pre">Query</span></code>, <code class="docutils literal notranslate"><span class="pre">Fragment</span></code>, <code class="docutils literal notranslate"><span class="pre">PathAndQuery</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Segments</span></code>, and <code class="docutils literal notranslate"><span class="pre">ToString()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">uri</span> <span class="o">=</span> <span class="n">run</span><span class="o">.</span><span class="n">modules</span><span class="o">.</span><span class="n">first</span><span class="p">()</span><span class="o">.</span><span class="n">result</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">Uri</span>
+<span class="n">uri</span><span class="o">.</span><span class="n">Scheme</span>          <span class="c1"># "file" or "http"</span>
+<span class="n">uri</span><span class="o">.</span><span class="n">LocalPath</span>       <span class="c1"># the path on disk, for a file URI</span>
+<span class="n">uri</span><span class="o">.</span><span class="n">OriginalString</span>  <span class="c1"># the text exactly as the contract holds it</span>
+<span class="nb">str</span><span class="p">(</span><span class="n">uri</span><span class="p">)</span>            <span class="c1"># the same as uri.ToString(): an absolute URI with its escapes decoded</span>
+</pre></div>
+</div>
+<p>A relative URI, such as the site-relative one the platform returns for an uploaded file,
+answers <code class="docutils literal notranslate"><span class="pre">OriginalString</span></code> and <code class="docutils literal notranslate"><span class="pre">ToString()</span></code> only. Any other member raises
+<code class="docutils literal notranslate"><span class="pre">RelativeUriError</span></code>, a <code class="docutils literal notranslate"><span class="pre">ValueError</span></code>, because a relative URI has no scheme or host to report.</p>
+</section>
+<section id="netlist">
+<h2>NetList<a class="headerlink" href="#netlist" title="Link to this heading"></a></h2>
+<p>A list inside a contract, such as <code class="docutils literal notranslate"><span class="pre">Table.Headers</span></code>, is a <code class="docutils literal notranslate"><span class="pre">NetList</span></code>. It is a <code class="docutils literal notranslate"><span class="pre">list</span></code>: it
+compares, pickles, and serializes as a list, and every list operation works on it. It also has
+these helper members:</p>
+<p><code class="docutils literal notranslate"><span class="pre">Count</span></code>, <code class="docutils literal notranslate"><span class="pre">Contains(item)</span></code>, <code class="docutils literal notranslate"><span class="pre">IndexOf(item)</span></code>, <code class="docutils literal notranslate"><span class="pre">LastIndexOf(item)</span></code>, <code class="docutils literal notranslate"><span class="pre">ToArray()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">GetRange(index,</span> <span class="pre">count)</span></code>, <code class="docutils literal notranslate"><span class="pre">Add(item)</span></code>, <code class="docutils literal notranslate"><span class="pre">AddRange(items)</span></code>, <code class="docutils literal notranslate"><span class="pre">Insert(index,</span> <span class="pre">item)</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Remove(item)</span></code>, <code class="docutils literal notranslate"><span class="pre">RemoveAt(index)</span></code>, <code class="docutils literal notranslate"><span class="pre">Reverse()</span></code>, <code class="docutils literal notranslate"><span class="pre">Sort()</span></code>, and <code class="docutils literal notranslate"><span class="pre">Clear()</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="o">.</span><span class="n">Headers</span><span class="o">.</span><span class="n">Count</span>               <span class="c1"># the same as len(table.Headers)</span>
+<span class="n">table</span><span class="o">.</span><span class="n">Headers</span><span class="o">.</span><span class="n">Contains</span><span class="p">(</span><span class="s2">"a"</span><span class="p">)</span>       <span class="c1"># the same as "a" in table.Headers</span>
+<span class="n">table</span><span class="o">.</span><span class="n">Headers</span><span class="o">.</span><span class="n">RemoveAt</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>         <span class="c1"># the same as del table.Headers[5]; IndexError when there is no item 5</span>
+</pre></div>
+</div>
+<p>A collection of columns, <code class="docutils literal notranslate"><span class="pre">Table.Columns</span></code>, can also be indexed by column name.</p>
+</section>
+<section id="contractserializer">
+<h2>ContractSerializer<a class="headerlink" href="#contractserializer" title="Link to this heading"></a></h2>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">composapy.contracts</span><span class="w"> </span><span class="kn">import</span> <span class="n">ContractSerializer</span><span class="p">,</span> <span class="n">Table</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="n">ContractSerializer</span><span class="o">.</span><span class="n">Serialize</span><span class="p">(</span><span class="n">table</span><span class="p">)</span>
+<span class="n">table</span> <span class="o">=</span> <span class="n">ContractSerializer</span><span class="o">.</span><span class="n">Deserialize</span><span class="p">[</span><span class="n">Table</span><span class="p">](</span><span class="n">text</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Converts a contract to its JSON text and back, in the form the platform exchanges.
+<code class="docutils literal notranslate"><span class="pre">SerializeToFile</span></code> writes the text to a path. The notebook and script runners that DataLab
+launches use it to read parameters and write results.</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="composapy-contracts-filereference.html" class="btn btn-neutral float-left" title="FileReference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="environment-variables.html" class="btn btn-neutral float-right" title="Environment Variables" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Composable Analytics, Inc..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

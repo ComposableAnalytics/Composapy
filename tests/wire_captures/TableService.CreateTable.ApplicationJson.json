@@ -1,0 +1,40 @@
+{
+  "Row": "4",
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/TableService.svc/CreateTable",
+  "RequestBody": {
+    "ExecutionHandle": {
+      "__type": "ExecutionHandle:#CompAnalytics.Contracts",
+      "AppId": 228506,
+      "HandleId": "0153e9ce-520b-44b3-8e42-e967daba21f6",
+      "Id": 685695
+    },
+    "Columns": [
+      {
+        "Name": "testing",
+        "Type": "String"
+      }
+    ],
+    "Rows": [
+      [
+        "s"
+      ]
+    ]
+  },
+  "StatusCode": 500,
+  "ContentType": "application/json; charset=utf-8",
+  "ResponseBody": {
+    "__type": "FaultDetail:#CompAnalytics.Contracts.Fault",
+    "ExceptionDetail": {
+      "__type": "ExceptionDetail:#CompAnalytics.Contracts.Fault",
+      "HelpLink": null,
+      "InnerException": null,
+      "Message": "Incoming message for operation 'CreateTable' (contract 'TableService' with namespace '') contains an unrecognized http body format value 'Json'. The expected body format value is 'Raw'. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.",
+      "StackTrace": "   at System.ServiceModel.Dispatcher.HttpStreamFormatter.GetStreamFromMessage(Message message, Boolean isRequest)\r\n   at System.ServiceModel.Dispatcher.HttpStreamFormatter.DeserializeRequest(Message message, Object[] parameters)\r\n   at System.ServiceModel.Dispatcher.UriTemplateDispatchFormatter.DeserializeRequest(Message message, Object[] parameters)\r\n   at System.ServiceModel.Dispatcher.DispatchOperationRuntime.DeserializeInputs(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.DispatchOperationRuntime.InvokeBegin(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage5(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage11(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.MessageRpc.Process(Boolean isOperationContextSet)",
+      "Type": "System.InvalidOperationException"
+    },
+    "ExceptionType": "System.InvalidOperationException",
+    "Message": "Incoming message for operation 'CreateTable' (contract 'TableService' with namespace '') contains an unrecognized http body format value 'Json'. The expected body format value is 'Raw'. This can be because a WebContentTypeMapper has not been configured on the binding. See the documentation of WebContentTypeMapper for more details.",
+    "StackTrace": "   at System.ServiceModel.Dispatcher.HttpStreamFormatter.GetStreamFromMessage(Message message, Boolean isRequest)\r\n   at System.ServiceModel.Dispatcher.HttpStreamFormatter.DeserializeRequest(Message message, Object[] parameters)\r\n   at System.ServiceModel.Dispatcher.UriTemplateDispatchFormatter.DeserializeRequest(Message message, Object[] parameters)\r\n   at System.ServiceModel.Dispatcher.DispatchOperationRuntime.DeserializeInputs(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.DispatchOperationRuntime.InvokeBegin(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage5(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage11(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.MessageRpc.Process(Boolean isOperationContextSet)"
+  }
+}

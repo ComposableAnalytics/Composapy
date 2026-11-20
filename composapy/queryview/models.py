@@ -8,8 +8,8 @@ from composapy.key.models import KeyObject, get_key_object
 from composapy.patch.table import MAP_CS_TYPES_TO_PANDAS_TYPES
 from composapy.queryview.const import QV_BOOLEAN_VALUE_MAP
 from composapy.interactive.itable import IDataSource, ITableResult
-
-from CompAnalytics import Contracts
+from composapy.contracts.queryview import QueryView, ValidationOptions
+from composapy._wire.objects import ContractObject
 
 
 class QueryViewObject:
@@ -32,11 +32,9 @@ class QueryViewObject:
 
     """
 
-    contract: Contracts.QueryView.QueryView
+    contract: ContractObject
 
-    def __init__(
-        self, contract: Contracts.QueryView, timeout=None, validate_query=False
-    ):
+    def __init__(self, contract, timeout=None, validate_query=False):
         self.contract = contract
         self._key = get_key_object(raise_exception=False)
         if self._key:
@@ -49,17 +47,9 @@ class QueryViewObject:
         QueryViewObject._validate_vq_value(validate_query)
         self.validate_query = validate_query
 
-        properties = [
-            item
-            for item in vars(self.contract.__class__)
-            if not item.startswith("_")
-            and not item.startswith("get")
-            and not item.startswith("set")
-            and not item.startswith("Overloads")
-            and item != "Inputs"
-        ]
-        for _property in properties:
-            setattr(self, _property, getattr(self.contract, _property))
+        for name in self.contract:
+            if name not in ("__type", "Inputs"):
+                setattr(self, name, self.contract[name])
 
     @property
     def key(self) -> KeyObject:
@@ -105,7 +95,9 @@ class QueryViewObject:
     def set_driver_timeout(self, timeout: int):
         """Set the QueryTimeout value for the query driver (in seconds)."""
         QueryViewObject._validate_timeout_value(timeout)
-        self.contract.QueryTimeout = timeout
+        self.contract.QueryTimeout = int(
+            timeout
+        )  # True is stored as 1, as the .NET Int32 property did
 
     def connect(self, key: KeyObject) -> None:
         """Set new key and update contract DbConnectionId.
@@ -147,6 +139,11 @@ class QueryViewObject:
                 "Must first attach key by using method: connect(key_object)."
             )
 
+        if query is not None and not isinstance(
+            query, str
+        ):  # the .NET string property refused anything else
+            raise TypeError(f"The query must be a str, not {type(query).__name__}.")
+
         queryview_service = get_session().queryview_service
         self.contract.QueryString = query
 
@@ -158,7 +155,7 @@ class QueryViewObject:
 
         # optionally pre-compile query to provide better error output
         if validate_query:
-            opts = Contracts.QueryView.ValidationOptions()
+            opts = ValidationOptions()
             result = queryview_service.CompileQuery(self.contract, opts)
             error_msgs = [
                 f"{e.Message} ({e.Start.LineNumber}, {e.Start.ColumnNumber})"
@@ -202,7 +199,9 @@ class QueryViewObject:
         # To avoid data loss, we manually map these values to Python bools before calling df.astype()
         bool_columns = [col for col in column_dtypes if column_dtypes[col] == "boolean"]
         for col in bool_columns:
-            df[col] = df[col].map(lambda x: pd.NA if not x else QV_BOOLEAN_VALUE_MAP[x])
+            df[col] = df[col].map(
+                lambda x: pd.NA if pd.isna(x) or not x else QV_BOOLEAN_VALUE_MAP[x]
+            )
 
         return df.astype(column_dtypes)
 
@@ -211,13 +210,20 @@ class QueryViewPagedObject(QueryViewObject):
 
     def __init__(
         self,
-        contract: Contracts.QueryView,
+        contract,
         timeout=None,
         validate_query=False,
         saved=False,
     ):
         # need to save this before constructing the base class so we can restore it if/when it's overwritten by a globally registered key
         qv_key_id = contract.DbConnectionId
+
+        if saved and qv_key_id is None:
+            raise KeyRequiredException(
+                f"The saved query view '{contract.Name}' has no database key, so there is no connection to run its query on. "
+                "Save the query view with a key, or create a driver with QueryView.driver(key, interactive=True) "
+                "using a key from Key.get()."
+            )
 
         super().__init__(contract, timeout, validate_query)
 

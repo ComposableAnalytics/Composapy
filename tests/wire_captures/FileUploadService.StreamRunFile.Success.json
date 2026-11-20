@@ -1,0 +1,15 @@
+{
+  "Row": 6,
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/FileUploadService.svc/StreamRunFile",
+  "RequestBody": {
+    "encoding": "text",
+    "value": "{\"handle\": {\"__type\": \"ExecutionHandle:#CompAnalytics.Contracts\", \"AppId\": 685697, \"HandleId\": \"70850f2b-e3a3-48f8-9c44-68c7ad009375\", \"Id\": 685736}, \"uri\": \"/CompApp/runs/70850f2b-e3a3-48f8-9c44-68c7ad009375/5f051543-bf10-482a-8be1-7b11e87d2009/note.txt\"}"
+  },
+  "StatusCode": 200,
+  "ContentType": "application/octet-stream",
+  "ResponseBody": {
+    "encoding": "text",
+    "value": "hello\n"
+  }
+}

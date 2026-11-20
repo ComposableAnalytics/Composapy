@@ -8,11 +8,10 @@ from composapy.key.models import get_key_object
 from composapy.config import get_config_path, get_config_key_id, read_config
 
 if TYPE_CHECKING:
-    from CompAnalytics import Contracts
     from composapy.key.models import KeyObject
 
 
-def test_get_key_with_name(property: Contracts.Property):
+def test_get_key_with_name(property):
     key_object = Key.get(name=property.Name)
 
     assert key_object.name == property.Name
@@ -25,7 +24,7 @@ def test_get_key_with_name(property: Contracts.Property):
     assert getattr(key_object, "Password") == property_json["Password"]
 
 
-def test_get_key_with_id(property: Contracts.Property):
+def test_get_key_with_id(property):
     key_object = Key.get(key_id=property.Id)
 
     assert key_object.name == property.Name
@@ -38,7 +37,7 @@ def test_get_key_with_id(property: Contracts.Property):
     assert getattr(key_object, "Password") == property_json["Password"]
 
 
-def test_search_key(property: Contracts.Property):
+def test_search_key(property):
     key_objects = Key.search(property.Name)
 
     assert len(key_objects) == 1

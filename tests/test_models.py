@@ -1,34 +1,34 @@
+import urllib.parse
 from pathlib import Path
 import pytest
 import pandas as pd
 
 import composapy.utils
 from composapy.dataflow.models import DataFlowObject
-
-from System import Uri
-
-from CompAnalytics import Contracts
+from composapy.contracts.file_reference import FileReference
 
 
 @pytest.mark.parametrize(
     "dataflow_object", [("Token", "tablecreator.json")], indirect=True
 )
 def test_singular_noun_retrieval_module(dataflow_object: DataFlowObject):
-    assert isinstance(dataflow_object.module.contract, Contracts.Module)
+    assert (
+        dataflow_object.module.contract.type_name == "Module:#CompAnalytics.Contracts"
+    )
 
 
 @pytest.mark.parametrize(
     "dataflow_object", [("Token", "file_input.json")], indirect=True
 )
-def test_singular_noun_retrieval_result(dataflow_object: DataFlowObject):
-    assert isinstance(dataflow_object.module.input.contract, Contracts.ModuleInput)
+def test_singular_noun_retrieval_input(dataflow_object: DataFlowObject):
+    assert dataflow_object.module.input.contract.type_name.startswith("ModuleInputOf")
 
 
 @pytest.mark.parametrize(
     "dataflow_object", [("Token", "tablecreator.json")], indirect=True
 )
 def test_singular_noun_retrieval_result(dataflow_object: DataFlowObject):
-    assert isinstance(dataflow_object.module.result.contract, Contracts.ModuleOutput)
+    assert dataflow_object.module.result.contract.type_name.startswith("ModuleOutputOf")
 
 
 @pytest.mark.parametrize(
@@ -74,7 +74,7 @@ def test_download_file_result(dataflow_object: DataFlowObject, clean_file_path: 
     dataflow_run = dataflow_object.run()
     file_ref = dataflow_run.modules.first().result.value
 
-    assert isinstance(file_ref, Contracts.FileReference)
+    assert isinstance(file_ref, FileReference)
     assert file_ref.LocalFile is None
 
     new_file_ref = file_ref.to_file(
@@ -90,6 +90,11 @@ def test_download_file_result(dataflow_object: DataFlowObject, clean_file_path: 
 )
 def test_create_file_reference_from_file(file_path_object):
     _file_ref = composapy.utils.file_ref(file_path_object)
-    assert isinstance(_file_ref, Contracts.FileReference)
+    assert type(_file_ref) is FileReference
     assert _file_ref.LocalFile == str(file_path_object)
-    assert str(_file_ref.Uri) == str(Uri(str(file_path_object)))
+    # worked out apart from the code under test, which builds it with Path.as_uri()
+    expected = "file:///" + urllib.parse.quote(
+        Path(file_path_object).absolute().as_posix(), safe="/:"
+    )
+    assert _file_ref.Uri == expected
+    assert _file_ref.Uri.startswith("file:///")

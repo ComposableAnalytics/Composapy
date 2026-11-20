@@ -1,0 +1,15 @@
+return_values = {
+    "int_zero": 0,
+    "int": 7,
+    "int_negative": -3,
+    "int_max32": 2147483647,
+    "float_whole": 3.0,
+    "float_fraction": 2.5,
+    "float_small": 0.00001,
+    "float_large": 1e22,
+    "text": 'it\'s "quoted" \ café 中文',
+    "text_empty": "",
+    "bool_true": True,
+    "bool_false": False,
+    "nothing": None,
+}

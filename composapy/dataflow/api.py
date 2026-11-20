@@ -1,11 +1,9 @@
 from typing import Optional, Dict
+from enum import Enum
 
 from composapy.decorators import session_required
 from composapy.dataflow.models import DataFlowObject, DataFlowRun
-
-import System
-from CompAnalytics import Contracts
-
+from composapy.contracts.execution_status import ExecutionStatus
 from composapy.session import get_session
 
 
@@ -62,7 +60,8 @@ class DataFlow:
             )
 
         if file_path:
-            json = System.IO.File.ReadAllText(file_path)
+            with open(file_path, mode="r", encoding="utf-8-sig") as f:
+                json = f.read()
 
         app = get_session().app_service.ImportApplicationFromString(json)
         return DataFlowObject(app)
@@ -123,7 +122,7 @@ class DataFlow:
         """
 
         run = get_session().app_service.GetRun(run_id)
-        return System.Enum.GetNames(Contracts.ExecutionStatus)[run.Status]
+        return ExecutionStatus(run.Status).name
 
     @staticmethod
     @session_required
@@ -138,13 +137,12 @@ class DataFlow:
         session = get_session()
 
         run = session.app_service.GetRun(run_id)
-        if run.Status == Contracts.ExecutionStatus.Running:
+        if run.Status == ExecutionStatus.Running:
             session.app_service.WaitForExecutionContext(run.Handle)
-        execution_names = System.Enum.GetNames(Contracts.ExecutionStatus)
 
         output = {}
-        output["execution_status"] = execution_names[
+        output["execution_status"] = ExecutionStatus(
             session.app_service.GetRun(run_id).Status
-        ]
+        ).name
         output["run_id"] = run_id
         return output

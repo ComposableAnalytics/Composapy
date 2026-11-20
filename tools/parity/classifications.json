@@ -1,0 +1,341 @@
+[
+  {
+    "script": "errors",
+    "name": "key_get_missing_name",
+    "classification": "intentional",
+    "note": "Same server message. The baseline raised System.ServiceModel.FaultException[FaultDetail] with the .NET stack trace appended; the candidate raises composapy.exceptions.ServiceFault with the server's message (Exceptions, R5's resolution for error types that cannot exist without the CLR)."
+  },
+  {
+    "script": "errors",
+    "name": "key_search_no_match",
+    "classification": "intentional",
+    "note": "Same server message; FaultException[FaultDetail] becomes ServiceFault (Exceptions, R5)."
+  },
+  {
+    "script": "errors",
+    "name": "queryview_run_missing_id",
+    "classification": "intentional",
+    "note": "Same server message; FaultException[FaultDetail] becomes ServiceFault (Exceptions, R5)."
+  },
+  {
+    "script": "errors",
+    "name": "dataflow_create_missing_file",
+    "classification": "intentional",
+    "note": "A file that does not exist raised System.IO.DirectoryNotFoundException with a .NET stack trace; it now raises Python's FileNotFoundError. Same resolution as the faults: a .NET exception type cannot exist without the CLR."
+  },
+  {
+    "script": "file_reference",
+    "name": "str",
+    "classification": "visual",
+    "note": "str(file_reference) was the .NET type name, CompAnalytics.Contracts.FileReference; it is now the contract's text. Nothing reads it."
+  },
+  {
+    "script": "uri_members",
+    "name": "*",
+    "kind": "error differs",
+    "classification": "intentional",
+    "note": "FileReference.Uri is a str subclass (composapy.contracts.uri.Uri) with the System.Uri members scripts use, and every member of an absolute URI returns what System.Uri returned. A System.Uri raised TypeError when compared with a string and the candidate's compares equal to its text; a relative URI raises RelativeUriError where System.Uri raised InvalidOperationException, with the same message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "*",
+    "name": "*",
+    "kind": "error differs",
+    "detail_contains": "different wrapper",
+    "classification": "intentional",
+    "note": "The server's message is the same; the baseline raised System.ServiceModel.FaultException[FaultDetail] with the .NET stack trace appended and the candidate raises composapy.exceptions.ServiceFault with the server's message (Exceptions, R5)."
+  },
+  {
+    "script": "queryview_run_by_id",
+    "name": "inputs_name_does_not_exist",
+    "classification": "fixed",
+    "note": "The baseline's message was the literal text \"'{name}'\" because the original string lacked its f prefix; the candidate names the input."
+  },
+  {
+    "script": "queryview_run_by_id",
+    "name": "run_not_an_id",
+    "classification": "intentional",
+    "note": "An argument of the wrong type was refused by pythonnet's overload resolution with TypeError before any request. The candidate has no overloads to resolve, so the server refuses it and ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "queryview_errors",
+    "name": "query_not_text",
+    "classification": "intentional",
+    "note": "Both raise TypeError. The message was pythonnet's \"'int' value cannot be converted to System.String\" and is now composapy's own."
+  },
+  {
+    "script": "dataflow_files",
+    "name": "input_path_does_not_exist",
+    "classification": "intentional",
+    "note": "A file path that does not exist: System.IO.DirectoryNotFoundException becomes Python's FileNotFoundError (Exceptions, R5)."
+  },
+  {
+    "script": "dataflow_files",
+    "name": "input_is_a_directory",
+    "classification": "intentional",
+    "note": "A directory given as a file input: System.UnauthorizedAccessException becomes Python's PermissionError (Exceptions, R5)."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.int_over32",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.int_big",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.int_huge",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.float_fraction",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.bool_true",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.text_words",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.list",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.dict",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "input_name_does_not_exist",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27). The dataflow has no default for its Int input, so the run fails in both."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "run_with_no_inputs",
+    "classification": "intentional",
+    "note": "Both variants refuse the value. The baseline refused it on the client, in pythonnet's conversion to .NET or in a .NET cast, with System.OverflowError or System.InvalidCastException; the candidate sends it and the server's deserializer refuses it, so ServiceFault carries the server's message (Decision Log, 2026-10-27). The dataflow has no default for its Int input, so the run fails in both."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.float_whole",
+    "classification": "intentional",
+    "note": "The candidate accepts a value the baseline refused: the server's JSON deserializer reads 5.0, written as 5, as an Int32. Nothing that worked before changes."
+  },
+  {
+    "script": "dataflow_inputs",
+    "name": "IntInput.text_number",
+    "classification": "intentional",
+    "note": "The candidate accepts a value the baseline refused: the server's JSON deserializer reads the text \"7\" as an Int32. Nothing that worked before changes."
+  },
+  {
+    "script": "dataframe_inputs",
+    "name": "float_special",
+    "classification": "intentional",
+    "note": "inf, -inf, and nan cannot be written in JSON. The baseline stored 0.0 in every one of those cells, silently; the candidate stores a missing value (NaN). Neither returns what was sent; the migration page says so."
+  },
+  {
+    "script": "dataframe_inputs",
+    "name": "not_a_dataframe",
+    "classification": "intentional",
+    "note": "A list for a table input is refused by both: InvalidCastException in the baseline, TypeError from the candidate before any request."
+  },
+  {
+    "script": "dataframe_inputs",
+    "name": "series",
+    "classification": "intentional",
+    "note": "A Series for a table input is refused by both: InvalidCastException in the baseline, TypeError from the candidate's encoder."
+  },
+  {
+    "script": "dataflow_tables",
+    "name": "tablecreator.headers_type",
+    "classification": "visual",
+    "note": "Table.Headers was a .NET List[String] and is a NetList, a list with the List<T> members a script could call (Count, Contains, IndexOf, LastIndexOf, ToArray, GetRange, Add, AddRange, Insert, Remove, RemoveAt, Reverse, Sort, Clear). The type name differs; net_list_members compares every member against the baseline (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.index_negative",
+    "classification": "intentional",
+    "note": "Python's own behavior is kept where the .NET wrapper refused: a negative index counts from the end; List<T> raised ArgumentOutOfRangeException."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.slice",
+    "classification": "intentional",
+    "note": "Python's own behavior is kept where the .NET wrapper refused: slicing works; the .NET wrapper raised TypeError."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.Contains_wrong_type",
+    "classification": "intentional",
+    "note": "Python's own behavior is kept where the .NET wrapper refused: Contains(5) on a list of strings is False; the .NET wrapper raised TypeError for the wrong element type."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.Add_wrong_type",
+    "classification": "intentional",
+    "note": "Python's own behavior is kept where the .NET wrapper refused: Add(5) to a list of strings is accepted, because a Python list has no element type; the .NET wrapper raised TypeError."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.AddRange",
+    "classification": "intentional",
+    "note": "Python's own behavior is kept where the .NET wrapper refused: AddRange takes a Python list, which the .NET wrapper refused with TypeError; any iterable is accepted."
+  },
+  {
+    "script": "net_list_members",
+    "name": "columns.by_position",
+    "classification": "intentional",
+    "note": "Python's own behavior is kept where the .NET wrapper refused: a column can be read by position as well as by name; the .NET KeyedCollection raised TypeError for an int."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.equals_a_list",
+    "classification": "intentional",
+    "note": "Python's own behavior is kept where the .NET wrapper refused: a NetList equals a list with the same items; the .NET wrapper never equaled one (False)."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.not_equals_a_list",
+    "classification": "intentional",
+    "note": "Python's own behavior is kept where the .NET wrapper refused: the same difference as equals_a_list."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.index_out_of_range",
+    "classification": "intentional",
+    "note": "An index past the end: ArgumentOutOfRangeException becomes IndexError (Exceptions, R5)."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.index_not_an_int",
+    "classification": "intentional",
+    "note": "A non-integer index: both raise TypeError, with Python's message in place of pythonnet's."
+  },
+  {
+    "script": "net_list_members",
+    "name": "columns.missing_name",
+    "classification": "intentional",
+    "note": "A column name that does not exist: KeyNotFoundException becomes KeyError (Exceptions, R5)."
+  },
+  {
+    "script": "wrapper_script_big_ints",
+    "name": "*",
+    "classification": "intentional",
+    "note": "The baseline could not return an int above the Int32 range: System.Int32(x) raised OverflowError in serialize_return_values. The candidate writes it as an Int64 (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "wrapper_script_return_big_int",
+    "name": "*",
+    "classification": "intentional",
+    "note": "The baseline could not return an int above the Int32 range: System.Int32(x) raised OverflowError in serialize_return_values. The candidate writes it as an Int64 (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "wrapper_script_floats",
+    "name": "*",
+    "classification": "intentional",
+    "note": "The .NET deserializer reads a float parameter as System.Decimal, which the baseline's own serialize_return_values refused with TypeNotSupportedError, so a script could not hand a float parameter back. The candidate's parameter is a float and is returned (Risks: a float arrives as Decimal)."
+  },
+  {
+    "script": "wrapper_script_single_namespace",
+    "name": "*",
+    "classification": "intentional",
+    "note": "Under the baseline a function defined in a script could not see the script's own imports: exec(code, globals, locals) raised NameError. The candidate runs the script in one namespace (Execution wrappers)."
+  },
+  {
+    "script": "dataflow_api",
+    "name": "run_status",
+    "classification": "fixed",
+    "note": "DataFlow.run_status raised TypeError in the baseline (\"array index has type ExecutionStatus, expected an integer\"), so the operation never worked in the 0.13.3 build DataLabs run today. The candidate returns the status name."
+  },
+  {
+    "script": "dataflow_api",
+    "name": "wait_for_run_execution",
+    "classification": "fixed",
+    "note": "DataFlow.wait_for_run_execution raised the same TypeError in the baseline, so it never returned; the candidate returns the status name and run id."
+  },
+  {
+    "script": "dataflow_api",
+    "name": "get_not_an_id",
+    "classification": "intentional",
+    "note": "pythonnet refused an argument of the wrong type with TypeError before any request; the candidate has no overloads to resolve, so the server refuses it and ServiceFault carries the server's message (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "queryview_driver_members",
+    "name": "set_timeout.huge",
+    "classification": "intentional",
+    "note": "A timeout above the Int32 range raised OverflowError in the baseline's Int32 property. The candidate stores it and the server refuses it when a query runs (Decision Log, 2026-10-27)."
+  },
+  {
+    "script": "session_members",
+    "name": "resource_manager.AvailableServices",
+    "classification": "fixed",
+    "note": "resource_manager.AvailableServices() raised SystemError (\"error return without exception set\") in the baseline; the candidate returns the 41 service names."
+  },
+  {
+    "script": "session_members",
+    "name": "close",
+    "classification": "intentional",
+    "note": "Session.close() is new: the candidate holds an HTTP session that has to be closed, and the baseline Session had no such method. Nothing that worked changes."
+  },
+  {
+    "script": "session_members",
+    "name": "auth_mode_not_an_enum",
+    "classification": "intentional",
+    "note": "A string for auth_mode failed in the baseline with an incidental AttributeError (the Session was left without a ResourceManager). The candidate refuses it up front with TypeError and a message that names the problem."
+  },
+  {
+    "script": "session_members",
+    "name": "invalid_token_first_call",
+    "classification": "intentional",
+    "note": "The baseline raised the .NET System.ServiceModel.Security.MessageSecurityException wrapping a WebException (401); the candidate raises composapy.exceptions.AuthenticationError with the server's message. Both fail on the first call (Exceptions, R5)."
+  },
+  {
+    "script": "session_members",
+    "name": "invalid_token_through_the_api",
+    "classification": "intentional",
+    "note": "The baseline raised the .NET System.ServiceModel.Security.MessageSecurityException wrapping a WebException (401); the candidate raises composapy.exceptions.AuthenticationError with the server's message. Both fail on the first call (Exceptions, R5)."
+  },
+  {
+    "script": "session_members",
+    "name": "form_wrong_password_first_call",
+    "classification": "intentional",
+    "note": "The baseline raised the .NET System.ServiceModel.Security.MessageSecurityException wrapping a WebException (401); the candidate raises composapy.exceptions.AuthenticationError with the server's message. Both fail on the first call (Exceptions, R5). The candidate's message says the login page issued no .ASPXAUTH cookie."
+  },
+  {
+    "script": "dataflow_files",
+    "name": "to_file_into_a_relative_folder",
+    "classification": "intentional",
+    "note": "A relative folder for to_file is refused by both, as it always was: the baseline raised System.ArgumentException and the candidate raises ValueError, with the same message. (Callers pass an absolute folder, or none, which is the current directory.)"
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.Insert_out_of_range",
+    "classification": "intentional",
+    "note": "An insert index past the end: ArgumentOutOfRangeException becomes IndexError, with the same message (Exceptions, R5)."
+  },
+  {
+    "script": "net_list_members",
+    "name": "headers.RemoveAt_out_of_range",
+    "classification": "intentional",
+    "note": "RemoveAt with an index outside the list: ArgumentOutOfRangeException becomes IndexError, with the same message (Exceptions, R5)."
+  }
+]

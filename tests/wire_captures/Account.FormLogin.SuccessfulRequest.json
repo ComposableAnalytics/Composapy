@@ -1,0 +1,17 @@
+{
+  "Row": 9,
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Account/FormLogin.aspx",
+  "RequestBody": {
+    "__VIEWSTATE": "<omitted>",
+    "__EVENTVALIDATION": "<omitted>",
+    "ctl00$MainContent$LoginUser$UserName": "<omitted>",
+    "ctl00$MainContent$LoginUser$Password": "<omitted>",
+    "ctl00$MainContent$LoginUser$LoginButton": "Login Button"
+  },
+  "StatusCode": 302,
+  "ContentType": "text/html; charset=utf-8",
+  "ResponseBody": {
+    ".ASPXAUTH_in_cookies": true
+  }
+}

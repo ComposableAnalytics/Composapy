@@ -17,9 +17,8 @@ from _const import (
     XML_NAMESPACE,
     DATALABSERVICE_STATIC_DIR,
     DATALABSERVICE_WHEELS_DIR,
-    _DEV_COMPOSABLE_PYTHON_EXE,
     _DEV_REQUIREMENTS_TXT,
-    COMPOSAPY_ROOT_DIR,
+    dev_python_exe,
 )
 
 et.register_namespace("", XML_NAMESPACE)
@@ -48,7 +47,7 @@ def tfs_command(cwd: Path, *args) -> str:
     """Refer to link for available commands:
     https://learn.microsoft.com/en-us/azure/devops/repos/tfvc/use-team-foundation-version-control-commands?view=azure-devops
     """
-    run = subprocess.run([f"{TF_EXE_PATH}", *args], cwd=cwd, capture_output=True)
+    run = subprocess.run([f"{TF_EXE_PATH()}", *args], cwd=cwd, capture_output=True)
     if run.returncode > 1:
         raise TfsException(
             f"Return code greater than 1, failed tf.exe with args: {args} and cwd: {cwd}."
@@ -127,6 +126,20 @@ def tfs_files_info() -> List[TfsFile]:
     return TFS_FILE_INFO
 
 
+def remove_composapy_csproj_items() -> None:
+    tree = et.parse(DATALABSERVICE_CSPROJ)
+    root = tree.getroot()
+
+    prefix = "static\\wheels\\composapy-"
+    for item_group in root.iter(f"{{{XML_NAMESPACE}}}ItemGroup"):
+        for item in list(item_group):  # copy, since we remove while looping
+            include = item.get("Include", "").replace("/", "\\").lower()
+            if item.tag == f"{{{XML_NAMESPACE}}}None" and include.startswith(prefix):
+                item_group.remove(item)
+
+    tree.write(DATALABSERVICE_CSPROJ)
+
+
 @dataclass
 class TfsWheel:
     """Handles operations related to removing wheels that have been tracked by tfs."""
@@ -190,7 +203,7 @@ class TfsWheel:
     def _remove_from_static_wheels_dir(self) -> None:
         try:  # depending on how tfs is feeling that day, may need this. do not remove.
             self.tfs_file.local_path.unlink()
-        except:
+        except OSError:
             pass
 
 
@@ -277,70 +290,26 @@ class LocalWheel:
             _file.writelines(lines)
 
     def _inline_update_python_venv(self, python_version) -> None:
-        composapy_wheel_dist_dir = COMPOSAPY_ROOT_DIR.joinpath(".tox", "dist")
         run = subprocess.run(
             [
-                f"{_DEV_COMPOSABLE_PYTHON_EXE[python_version]}",
+                f"{dev_python_exe(python_version)}",
                 "-m",
                 "pip",
                 "install",
                 f"{self.wheel_info.project}=={self.wheel_info.version}",
                 "--no-index",
+                "--no-deps",
+                "--force-reinstall",
                 f"--find-links",
-                f"{composapy_wheel_dist_dir.as_posix()}",
+                f"{DATALABSERVICE_WHEELS_DIR.as_posix()}",
             ]
         )
-        if run.returncode > 1:
+        if run.returncode != 0:
             print(
                 f"Failed to update {self.wheel_info.project} package inline. You will need to "
                 f"restart the datalabservice to have this change deployed to your python "
                 f"environment."
             )
-
-
-@dataclass
-class WheelUpgrade:
-    """Info needed to make a wheel upgrade."""
-
-    tfs_wheel: TfsWheel  # used to remove any old wheels
-    local_wheel: LocalWheel  # used for validation of wheel version
-    new_wheel: LocalWheel  # used to add any new wheels
-
-    def make_upgrade(self, python_versions):
-        try:
-            # wheel is not tracked on tfs and does not exist in local repo
-            if self.tfs_wheel is None and self.local_wheel is None:
-                print(
-                    f"Adding {self.new_wheel.wheel_info.project} to project... ", end=""
-                )
-                self.new_wheel.add(python_versions)
-                print(colored("done.", "green"))
-
-            # same version of wheel already exists locally
-            if (
-                self.local_wheel is not None
-                and self.local_wheel.wheel_info.version
-                == self.new_wheel.wheel_info.version
-            ):
-                return
-
-            # same version of wheel already exists on tfs
-            if self.tfs_wheel.wheel_info.version == self.new_wheel.wheel_info.version:
-                return
-
-            # upgrade wheel is a new wheel version
-            print(
-                f"Upgrading {self.tfs_wheel.wheel_info.project} from "
-                f"{self.tfs_wheel.wheel_info.version} to "
-                f"{self.new_wheel.wheel_info.version}... ",
-                end="",
-            )
-            self.tfs_wheel.remove()
-            self.new_wheel.add(python_versions)
-            print(colored("done.", "green"))
-
-        except:
-            print(colored("failed.", "red"))
 
 
 def _indent(elem, level=0) -> None:

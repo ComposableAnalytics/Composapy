@@ -1,0 +1,15 @@
+{
+  "Row": "3",
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/ApplicationService.svc/GetApplication",
+  "RequestBody": {
+    "appId": 228506
+  },
+  "StatusCode": 401,
+  "ContentType": "application/json; charset=utf-8",
+  "ResponseBody": {
+    "Message": "Authentication failed.",
+    "StackTrace": null,
+    "ExceptionType": "System.InvalidOperationException"
+  }
+}

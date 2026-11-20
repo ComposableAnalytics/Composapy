@@ -1,0 +1,2946 @@
+{
+  "python": "3.13.11",
+  "composapy_version": "0.13.3",
+  "composapy_location": "C:\\dataLabsArtifacts\\python\\python313\\Lib\\site-packages\\composapy\\__init__.py",
+  "modules": {
+    "composapy": {
+      "ColumnNameSanitizer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Utils"
+      },
+      "CompAnalytics": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "Dict": {
+        "type": "_SpecialGenericAlias",
+        "defined_in": "typing"
+      },
+      "ExecutionHandle": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "ExecutionHandlePickleBehavior": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.patch.execution_handle"
+      },
+      "File": {
+        "type": "CLRMetatype",
+        "defined_in": "System.IO"
+      },
+      "FileReference": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "FileReferencePickleBehavior": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.patch.file_reference"
+      },
+      "FileUtils": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Utils"
+      },
+      "IDataSource": {
+        "type": "EnumType",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "ITableResult": {
+        "type": "type",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "InvalidFileReference": {
+        "type": "type",
+        "defined_in": "composapy.patch.file_reference"
+      },
+      "List": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Collections.Generic"
+      },
+      "MAP_CS_TYPES_TO_PANDAS_TYPES": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "MAP_STRING_TYPES_TO_PANDAS_TYPES": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "Path": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "PureWindowsPath": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "QueryView": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.QueryView"
+      },
+      "SeekOrigin": {
+        "type": "CLRMetatype",
+        "defined_in": "System.IO"
+      },
+      "StandardPaths": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Utils"
+      },
+      "System": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "Table": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.Tables"
+      },
+      "TableColumn": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.Tables"
+      },
+      "TableColumnCollection": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.Tables"
+      },
+      "TableOperations": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Tables"
+      },
+      "TablePickleBehavior": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.patch.table"
+      },
+      "Uri": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__path__": {
+        "type": "list",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "annotations": {
+        "type": "_Feature",
+        "defined_in": "__future__"
+      },
+      "auth": {
+        "type": "module",
+        "defined_in": null
+      },
+      "bindings": {
+        "type": "module",
+        "defined_in": null
+      },
+      "config": {
+        "type": "module",
+        "defined_in": null
+      },
+      "dataflow": {
+        "type": "module",
+        "defined_in": null
+      },
+      "datetime": {
+        "type": "type",
+        "defined_in": "datetime"
+      },
+      "decorators": {
+        "type": "module",
+        "defined_in": null
+      },
+      "deep_copy": {
+        "type": "function",
+        "defined_in": "composapy.patch.execution_handle"
+      },
+      "file_ref": {
+        "type": "function",
+        "defined_in": "composapy.utils"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "interactive": {
+        "type": "module",
+        "defined_in": null
+      },
+      "iopts": {
+        "type": "module",
+        "defined_in": null
+      },
+      "is_datetime": {
+        "type": "function",
+        "defined_in": "pandas.core.dtypes.common"
+      },
+      "json": {
+        "type": "module",
+        "defined_in": null
+      },
+      "json_fix": {
+        "type": "module",
+        "defined_in": null
+      },
+      "key": {
+        "type": "module",
+        "defined_in": null
+      },
+      "load_init": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "loader": {
+        "type": "module",
+        "defined_in": null
+      },
+      "notebook": {
+        "type": "module",
+        "defined_in": null
+      },
+      "np": {
+        "type": "module",
+        "defined_in": null
+      },
+      "os": {
+        "type": "module",
+        "defined_in": null
+      },
+      "parse_datetime_string": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "patch": {
+        "type": "module",
+        "defined_in": null
+      },
+      "pd": {
+        "type": "module",
+        "defined_in": null
+      },
+      "queryview": {
+        "type": "module",
+        "defined_in": null
+      },
+      "re": {
+        "type": "module",
+        "defined_in": null
+      },
+      "reduce_ex": {
+        "type": "function",
+        "defined_in": "composapy.patch.execution_handle"
+      },
+      "session": {
+        "type": "module",
+        "defined_in": null
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      },
+      "timedelta": {
+        "type": "type",
+        "defined_in": "datetime"
+      },
+      "to_file": {
+        "type": "function",
+        "defined_in": "composapy.patch.file_reference"
+      },
+      "to_pandas": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "to_table": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "utils": {
+        "type": "module",
+        "defined_in": null
+      }
+    },
+    "composapy.api": {
+      "ComposableApi": {
+        "type": "type",
+        "defined_in": "composapy.api"
+      },
+      "Session": {
+        "type": "type",
+        "defined_in": "composapy.session"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      }
+    },
+    "composapy.auth": {
+      "AuthMode": {
+        "type": "EnumType",
+        "defined_in": "composapy.auth"
+      },
+      "Enum": {
+        "type": "EnumType",
+        "defined_in": "enum"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.bindings": {
+      "TimeSpan": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "WebHttpBinding": {
+        "type": "CLRMetatype",
+        "defined_in": "System.ServiceModel"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_service_binding_configs": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "configure_binding": {
+        "type": "function",
+        "defined_in": "composapy.bindings"
+      },
+      "data_flow_binding": {
+        "type": "function",
+        "defined_in": "composapy.bindings"
+      },
+      "query_view_binding": {
+        "type": "function",
+        "defined_in": "composapy.bindings"
+      }
+    },
+    "composapy.config": {
+      "AuthMode": {
+        "type": "EnumType",
+        "defined_in": "composapy.auth"
+      },
+      "ConfigException": {
+        "type": "type",
+        "defined_in": "composapy.config"
+      },
+      "ConfigSession": {
+        "type": "type",
+        "defined_in": "composapy.config"
+      },
+      "FormSession": {
+        "type": "type",
+        "defined_in": "composapy.config"
+      },
+      "KeyConfigDoesNotExist": {
+        "type": "type",
+        "defined_in": "composapy.config"
+      },
+      "Path": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "SessionConfigDoesNotExist": {
+        "type": "type",
+        "defined_in": "composapy.config"
+      },
+      "TYPE_CHECKING": {
+        "type": "bool",
+        "defined_in": null
+      },
+      "TokenSession": {
+        "type": "type",
+        "defined_in": "composapy.config"
+      },
+      "Tuple": {
+        "type": "_TupleType",
+        "defined_in": "typing"
+      },
+      "WindowsSession": {
+        "type": "type",
+        "defined_in": "composapy.config"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_write_config": {
+        "type": "function",
+        "defined_in": "composapy.config"
+      },
+      "annotations": {
+        "type": "_Feature",
+        "defined_in": "__future__"
+      },
+      "configparser": {
+        "type": "module",
+        "defined_in": null
+      },
+      "dataclass": {
+        "type": "function",
+        "defined_in": "dataclasses"
+      },
+      "get_config_key_id": {
+        "type": "function",
+        "defined_in": "composapy.config"
+      },
+      "get_config_path": {
+        "type": "function",
+        "defined_in": "composapy.config"
+      },
+      "get_config_session": {
+        "type": "function",
+        "defined_in": "composapy.config"
+      },
+      "os": {
+        "type": "module",
+        "defined_in": null
+      },
+      "read_config": {
+        "type": "function",
+        "defined_in": "composapy.config"
+      },
+      "write_config_key": {
+        "type": "function",
+        "defined_in": "composapy.config"
+      },
+      "write_config_session": {
+        "type": "function",
+        "defined_in": "composapy.config"
+      }
+    },
+    "composapy.dataflow": {
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__path__": {
+        "type": "list",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.dataflow.api": {
+      "Contracts": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "DataFlow": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.api"
+      },
+      "DataFlowObject": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "DataFlowRun": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "Dict": {
+        "type": "_SpecialGenericAlias",
+        "defined_in": "typing"
+      },
+      "Optional": {
+        "type": "_SpecialForm",
+        "defined_in": "typing"
+      },
+      "System": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      }
+    },
+    "composapy.dataflow.const": {
+      "ExternalInput": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.const"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.dataflow.io": {
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "FileReference": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "FileUploadClient": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.IServices"
+      },
+      "PureWindowsPath": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "TYPE_CHECKING": {
+        "type": "bool",
+        "defined_in": null
+      },
+      "Uri": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_extract_serialized_file_ref": {
+        "type": "function",
+        "defined_in": "composapy.dataflow.io"
+      },
+      "_urljoin": {
+        "type": "function",
+        "defined_in": "composapy.utils"
+      },
+      "annotations": {
+        "type": "_Feature",
+        "defined_in": "__future__"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "json": {
+        "type": "module",
+        "defined_in": null
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      },
+      "upload_files_as_external_input": {
+        "type": "function",
+        "defined_in": "composapy.dataflow.io"
+      },
+      "upload_files_to_runs_dir": {
+        "type": "function",
+        "defined_in": "composapy.dataflow.io"
+      }
+    },
+    "composapy.dataflow.models": {
+      "Contracts": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "DataFlowObject": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "DataFlowRun": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "DataFlowRunSet": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "Dict": {
+        "type": "_SpecialGenericAlias",
+        "defined_in": "typing"
+      },
+      "ExternalInput": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.const"
+      },
+      "Input": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "InputSet": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "Module": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "ModuleMemberBase": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "ModuleResultException": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "ModuleSet": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "ObjectSetMixin": {
+        "type": "type",
+        "defined_in": "composapy.mixins"
+      },
+      "Optional": {
+        "type": "_SpecialForm",
+        "defined_in": "typing"
+      },
+      "Result": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "ResultSet": {
+        "type": "type",
+        "defined_in": "composapy.dataflow.models"
+      },
+      "Tuple": {
+        "type": "_TupleType",
+        "defined_in": "typing"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "annotations": {
+        "type": "_Feature",
+        "defined_in": "__future__"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "pd": {
+        "type": "module",
+        "defined_in": null
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      },
+      "to_table": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "upload_files_as_external_input": {
+        "type": "function",
+        "defined_in": "composapy.dataflow.io"
+      }
+    },
+    "composapy.decorators": {
+      "SessionRegistrationException": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.session"
+      },
+      "SessionRequiredError": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.decorators"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "functools": {
+        "type": "module",
+        "defined_in": null
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "handle_connection_exception": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      }
+    },
+    "composapy.interactive": {
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__path__": {
+        "type": "list",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "itable": {
+        "type": "module",
+        "defined_in": null
+      },
+      "options": {
+        "type": "module",
+        "defined_in": null
+      }
+    },
+    "composapy.interactive.itable": {
+      "Enum": {
+        "type": "EnumType",
+        "defined_in": "enum"
+      },
+      "IDataSource": {
+        "type": "EnumType",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "ITableException": {
+        "type": "type",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "ITableResult": {
+        "type": "type",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "List": {
+        "type": "_SpecialGenericAlias",
+        "defined_in": "typing"
+      },
+      "ResourceManager": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.IServices.Deploy"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_read_static_resource": {
+        "type": "function",
+        "defined_in": "composapy.utils"
+      },
+      "_urljoin": {
+        "type": "function",
+        "defined_in": "composapy.utils"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "json": {
+        "type": "module",
+        "defined_in": null
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      },
+      "uuid": {
+        "type": "module",
+        "defined_in": null
+      }
+    },
+    "composapy.interactive.options": {
+      "SHOW_INTERACTIVE_TABLES": {
+        "type": "bool",
+        "defined_in": null
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.key": {
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__path__": {
+        "type": "list",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.key.api": {
+      "FoundMultipleError": {
+        "type": "type",
+        "defined_in": "composapy.key.api"
+      },
+      "InvalidArgumentsError": {
+        "type": "type",
+        "defined_in": "composapy.key.api"
+      },
+      "Key": {
+        "type": "type",
+        "defined_in": "composapy.key.api"
+      },
+      "KeyException": {
+        "type": "type",
+        "defined_in": "composapy.key.api"
+      },
+      "KeyObject": {
+        "type": "type",
+        "defined_in": "composapy.key.models"
+      },
+      "List": {
+        "type": "_SpecialGenericAlias",
+        "defined_in": "typing"
+      },
+      "NoneFoundError": {
+        "type": "type",
+        "defined_in": "composapy.key.api"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      }
+    },
+    "composapy.key.models": {
+      "KeyObject": {
+        "type": "type",
+        "defined_in": "composapy.key.models"
+      },
+      "KeyObjectException": {
+        "type": "type",
+        "defined_in": "composapy.key.models"
+      },
+      "KeyObjectRegistrationException": {
+        "type": "type",
+        "defined_in": "composapy.key.models"
+      },
+      "Optional": {
+        "type": "_SpecialForm",
+        "defined_in": "typing"
+      },
+      "TYPE_CHECKING": {
+        "type": "bool",
+        "defined_in": null
+      },
+      "_KeyObjectSingleton": {
+        "type": "type",
+        "defined_in": "composapy.key.models"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "annotations": {
+        "type": "_Feature",
+        "defined_in": "__future__"
+      },
+      "config": {
+        "type": "module",
+        "defined_in": null
+      },
+      "get_key_object": {
+        "type": "function",
+        "defined_in": "composapy.key.models"
+      },
+      "json": {
+        "type": "module",
+        "defined_in": null
+      }
+    },
+    "composapy.loader": {
+      "Path": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_find_dlls": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "_is_ipython": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "_load_and_register_composapy_config": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "_load_and_register_key": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "_load_and_register_session": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "_load_dlls": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "_load_ipython_magics": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "_update_tls": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "add_dll_reference": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "clr": {
+        "type": "module",
+        "defined_in": null
+      },
+      "configparser": {
+        "type": "module",
+        "defined_in": null
+      },
+      "load_init": {
+        "type": "function",
+        "defined_in": "composapy.loader"
+      },
+      "logging": {
+        "type": "module",
+        "defined_in": null
+      },
+      "os": {
+        "type": "module",
+        "defined_in": null
+      },
+      "sys": {
+        "type": "module",
+        "defined_in": null
+      }
+    },
+    "composapy.mixins": {
+      "FoundMultipleError": {
+        "type": "type",
+        "defined_in": "composapy.mixins"
+      },
+      "NoneFoundError": {
+        "type": "type",
+        "defined_in": "composapy.mixins"
+      },
+      "ObjectSetMixin": {
+        "type": "type",
+        "defined_in": "composapy.mixins"
+      },
+      "ObjectSetMixinException": {
+        "type": "type",
+        "defined_in": "composapy.mixins"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.notebook": {
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__path__": {
+        "type": "list",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.notebook.inject": {
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "CsvFileReference": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "Dict": {
+        "type": "_SpecialGenericAlias",
+        "defined_in": "typing"
+      },
+      "ExecutionHandle": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "FileReference": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "ImageReference": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "KeyValuePair": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Collections.Generic"
+      },
+      "List": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Collections.Generic"
+      },
+      "Object": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "SUPPORTED_TYPES": {
+        "type": "tuple",
+        "defined_in": null
+      },
+      "System": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "Table": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.Tables"
+      },
+      "TypeNotSupportedError": {
+        "type": "type",
+        "defined_in": "composapy.notebook.inject"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "is_file_ref": {
+        "type": "function",
+        "defined_in": "composapy.notebook.inject"
+      },
+      "is_table": {
+        "type": "function",
+        "defined_in": "composapy.notebook.inject"
+      },
+      "marshall_actions": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "pd": {
+        "type": "module",
+        "defined_in": null
+      },
+      "serialize_return_values": {
+        "type": "function",
+        "defined_in": "composapy.notebook.inject"
+      },
+      "to_table": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "upload_files_to_runs_dir": {
+        "type": "function",
+        "defined_in": "composapy.dataflow.io"
+      }
+    },
+    "composapy.notebook.nb_wrap": {
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "EXECUTION_HANDLE_VAR": {
+        "type": "str",
+        "defined_in": null
+      },
+      "FileReference": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "FileReferencePickleBehavior": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.patch.file_reference"
+      },
+      "KeyValuePair": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Collections.Generic"
+      },
+      "List": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Collections.Generic"
+      },
+      "Object": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "Path": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "RETURN_VALUES_KEYWORD": {
+        "type": "str",
+        "defined_in": null
+      },
+      "Table": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.Tables"
+      },
+      "TablePickleBehavior": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.patch.table"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_inject_implicit_auth": {
+        "type": "function",
+        "defined_in": "composapy.notebook.nb_wrap"
+      },
+      "_inject_missing_parameters_cell": {
+        "type": "function",
+        "defined_in": "composapy.notebook.nb_wrap"
+      },
+      "_inject_notebook": {
+        "type": "function",
+        "defined_in": "composapy.notebook.nb_wrap"
+      },
+      "_inject_package_loading": {
+        "type": "function",
+        "defined_in": "composapy.notebook.nb_wrap"
+      },
+      "_inject_return_values_serialization": {
+        "type": "function",
+        "defined_in": "composapy.notebook.nb_wrap"
+      },
+      "execute_notebook": {
+        "type": "function",
+        "defined_in": "composapy.notebook.nb_wrap"
+      },
+      "nbformat": {
+        "type": "module",
+        "defined_in": null
+      },
+      "pm": {
+        "type": "module",
+        "defined_in": null
+      },
+      "sys": {
+        "type": "module",
+        "defined_in": null
+      },
+      "utils": {
+        "type": "module",
+        "defined_in": null
+      }
+    },
+    "composapy.notebook.nbr_globals": {
+      "EXECUTION_HANDLE_VAR": {
+        "type": "str",
+        "defined_in": null
+      },
+      "RETURN_VALUES_KEYWORD": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.notebook.script_wrap": {
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "EXECUTION_HANDLE_VAR": {
+        "type": "str",
+        "defined_in": null
+      },
+      "ExecutionHandle": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "KeyValuePair": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Collections.Generic"
+      },
+      "List": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Collections.Generic"
+      },
+      "Object": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "Path": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "RETURN_VALUES_KEYWORD": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "execute_script": {
+        "type": "function",
+        "defined_in": "composapy.notebook.script_wrap"
+      },
+      "inject": {
+        "type": "module",
+        "defined_in": null
+      },
+      "os": {
+        "type": "module",
+        "defined_in": null
+      },
+      "sys": {
+        "type": "module",
+        "defined_in": null
+      }
+    },
+    "composapy.patch": {
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "ExecutionHandle": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "FileReference": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "Table": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.Tables"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__path__": {
+        "type": "list",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "execution_handle": {
+        "type": "module",
+        "defined_in": null
+      },
+      "file_reference": {
+        "type": "module",
+        "defined_in": null
+      },
+      "integer_types": {
+        "type": "tuple",
+        "defined_in": null
+      },
+      "papermill": {
+        "type": "module",
+        "defined_in": null
+      },
+      "queryview": {
+        "type": "module",
+        "defined_in": null
+      },
+      "string_types": {
+        "type": "tuple",
+        "defined_in": null
+      },
+      "table": {
+        "type": "module",
+        "defined_in": null
+      },
+      "translate": {
+        "type": "classmethod",
+        "defined_in": "composapy.patch"
+      },
+      "translate_execution_handle": {
+        "type": "classmethod",
+        "defined_in": "composapy.patch"
+      },
+      "translate_file_ref": {
+        "type": "classmethod",
+        "defined_in": "composapy.patch"
+      },
+      "translate_table": {
+        "type": "classmethod",
+        "defined_in": "composapy.patch"
+      }
+    },
+    "composapy.patch.execution_handle": {
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "ExecutionHandle": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "ExecutionHandlePickleBehavior": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.patch.execution_handle"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_json": {
+        "type": "function",
+        "defined_in": "composapy.patch.execution_handle"
+      },
+      "deep_copy": {
+        "type": "function",
+        "defined_in": "composapy.patch.execution_handle"
+      },
+      "json": {
+        "type": "module",
+        "defined_in": null
+      },
+      "json_fix": {
+        "type": "module",
+        "defined_in": null
+      },
+      "reduce_ex": {
+        "type": "function",
+        "defined_in": "composapy.patch.execution_handle"
+      }
+    },
+    "composapy.patch.file_reference": {
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "ExecutionHandle": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "File": {
+        "type": "CLRMetatype",
+        "defined_in": "System.IO"
+      },
+      "FileReference": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "FileReferencePickleBehavior": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.patch.file_reference"
+      },
+      "FileUtils": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Utils"
+      },
+      "InvalidFileReference": {
+        "type": "type",
+        "defined_in": "composapy.patch.file_reference"
+      },
+      "Path": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "PureWindowsPath": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "SeekOrigin": {
+        "type": "CLRMetatype",
+        "defined_in": "System.IO"
+      },
+      "StandardPaths": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Utils"
+      },
+      "Uri": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_json": {
+        "type": "function",
+        "defined_in": "composapy.patch.file_reference"
+      },
+      "_urljoin": {
+        "type": "function",
+        "defined_in": "composapy.utils"
+      },
+      "annotations": {
+        "type": "_Feature",
+        "defined_in": "__future__"
+      },
+      "deep_copy": {
+        "type": "function",
+        "defined_in": "composapy.patch.file_reference"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "json": {
+        "type": "module",
+        "defined_in": null
+      },
+      "json_fix": {
+        "type": "module",
+        "defined_in": null
+      },
+      "os": {
+        "type": "module",
+        "defined_in": null
+      },
+      "reduce_ex": {
+        "type": "function",
+        "defined_in": "composapy.patch.file_reference"
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      },
+      "to_file": {
+        "type": "function",
+        "defined_in": "composapy.patch.file_reference"
+      }
+    },
+    "composapy.patch.queryview": {
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "QueryView": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.QueryView"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_json": {
+        "type": "function",
+        "defined_in": "composapy.patch.queryview"
+      },
+      "json": {
+        "type": "module",
+        "defined_in": null
+      },
+      "json_fix": {
+        "type": "module",
+        "defined_in": null
+      }
+    },
+    "composapy.patch.table": {
+      "ColumnNameSanitizer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Utils"
+      },
+      "CompAnalytics": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "ContractSerializer": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Core"
+      },
+      "Dict": {
+        "type": "_SpecialGenericAlias",
+        "defined_in": "typing"
+      },
+      "ExecutionHandle": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "IDataSource": {
+        "type": "EnumType",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "ITableResult": {
+        "type": "type",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "List": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Collections.Generic"
+      },
+      "MAP_CS_TYPES_TO_PANDAS_TYPES": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "MAP_STRING_TYPES_TO_PANDAS_TYPES": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "System": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "Table": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.Tables"
+      },
+      "TableColumn": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.Tables"
+      },
+      "TableColumnCollection": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.Tables"
+      },
+      "TableOperations": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Tables"
+      },
+      "TablePickleBehavior": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.patch.table"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_as_csharp_type_str": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "_has_default_range_index": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "_init_cs_list": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "_json": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "_make_pandas_dtypes_dict": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "_make_pandas_dtypes_from_list_of_column_defs": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "_repr_html_": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "datetime": {
+        "type": "type",
+        "defined_in": "datetime"
+      },
+      "deep_copy": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "iopts": {
+        "type": "module",
+        "defined_in": null
+      },
+      "is_datetime": {
+        "type": "function",
+        "defined_in": "pandas.core.dtypes.common"
+      },
+      "json": {
+        "type": "module",
+        "defined_in": null
+      },
+      "json_fix": {
+        "type": "module",
+        "defined_in": null
+      },
+      "np": {
+        "type": "module",
+        "defined_in": null
+      },
+      "parse_datetime_string": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "pd": {
+        "type": "module",
+        "defined_in": null
+      },
+      "re": {
+        "type": "module",
+        "defined_in": null
+      },
+      "reduce_ex": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      },
+      "timedelta": {
+        "type": "type",
+        "defined_in": "datetime"
+      },
+      "to_pandas": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      },
+      "to_table": {
+        "type": "function",
+        "defined_in": "composapy.patch.table"
+      }
+    },
+    "composapy.queryview": {
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__path__": {
+        "type": "list",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.queryview.api": {
+      "Dict": {
+        "type": "_SpecialGenericAlias",
+        "defined_in": "typing"
+      },
+      "ITableResult": {
+        "type": "type",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "KeyObject": {
+        "type": "type",
+        "defined_in": "composapy.key.models"
+      },
+      "QV_ACCEPTABLE_OPERATORS": {
+        "type": "tuple",
+        "defined_in": null
+      },
+      "QV_INPUT_PRIMITIVE_TYPES": {
+        "type": "tuple",
+        "defined_in": null
+      },
+      "QueryException": {
+        "type": "type",
+        "defined_in": "composapy.queryview.models"
+      },
+      "QueryInputException": {
+        "type": "type",
+        "defined_in": "composapy.queryview.models"
+      },
+      "QueryView": {
+        "type": "type",
+        "defined_in": "composapy.queryview.api"
+      },
+      "QueryViewObject": {
+        "type": "type",
+        "defined_in": "composapy.queryview.models"
+      },
+      "QueryViewPagedObject": {
+        "type": "type",
+        "defined_in": "composapy.queryview.models"
+      },
+      "QueryView_": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts.QueryView"
+      },
+      "TYPE_CHECKING": {
+        "type": "bool",
+        "defined_in": null
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "annotations": {
+        "type": "_Feature",
+        "defined_in": "__future__"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      }
+    },
+    "composapy.queryview.const": {
+      "QV_ACCEPTABLE_OPERATORS": {
+        "type": "tuple",
+        "defined_in": null
+      },
+      "QV_BOOLEAN_VALUE_MAP": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "QV_INPUT_PRIMITIVE_TYPES": {
+        "type": "tuple",
+        "defined_in": null
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      }
+    },
+    "composapy.queryview.models": {
+      "Any": {
+        "type": "_AnyMeta",
+        "defined_in": "typing"
+      },
+      "Contracts": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "Dict": {
+        "type": "_SpecialGenericAlias",
+        "defined_in": "typing"
+      },
+      "IDataSource": {
+        "type": "EnumType",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "ITableResult": {
+        "type": "type",
+        "defined_in": "composapy.interactive.itable"
+      },
+      "Key": {
+        "type": "type",
+        "defined_in": "composapy.key.api"
+      },
+      "KeyObject": {
+        "type": "type",
+        "defined_in": "composapy.key.models"
+      },
+      "KeyRequiredException": {
+        "type": "type",
+        "defined_in": "composapy.queryview.models"
+      },
+      "MAP_CS_TYPES_TO_PANDAS_TYPES": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "QV_BOOLEAN_VALUE_MAP": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "QueryException": {
+        "type": "type",
+        "defined_in": "composapy.queryview.models"
+      },
+      "QueryInputException": {
+        "type": "type",
+        "defined_in": "composapy.queryview.models"
+      },
+      "QueryViewObject": {
+        "type": "type",
+        "defined_in": "composapy.queryview.models"
+      },
+      "QueryViewPagedObject": {
+        "type": "type",
+        "defined_in": "composapy.queryview.models"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "get_key_object": {
+        "type": "function",
+        "defined_in": "composapy.key.models"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "pd": {
+        "type": "module",
+        "defined_in": null
+      },
+      "session_required": {
+        "type": "function",
+        "defined_in": "composapy.decorators"
+      }
+    },
+    "composapy.session": {
+      "AuthMode": {
+        "type": "EnumType",
+        "defined_in": "composapy.auth"
+      },
+      "EndpointNotFoundException": {
+        "type": "CLRMetatype",
+        "defined_in": "System.ServiceModel"
+      },
+      "Exception": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "IServices": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "InvalidAuthModeAction": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.session"
+      },
+      "InvalidFormConfigError": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.session"
+      },
+      "InvalidTokenConfigError": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.session"
+      },
+      "InvalidWindowsConfigError": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.session"
+      },
+      "Net": {
+        "type": "ModuleObject",
+        "defined_in": null
+      },
+      "Optional": {
+        "type": "_SpecialForm",
+        "defined_in": "typing"
+      },
+      "Session": {
+        "type": "type",
+        "defined_in": "composapy.session"
+      },
+      "SessionException": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.session"
+      },
+      "SessionRegistrationException": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.session"
+      },
+      "SocketException": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Net.Sockets"
+      },
+      "Uri": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "UriNotConfiguredError": {
+        "type": "CLRMetatype",
+        "defined_in": "composapy.session"
+      },
+      "WebException": {
+        "type": "CLRMetatype",
+        "defined_in": "System.Net"
+      },
+      "_SessionSingleton": {
+        "type": "type",
+        "defined_in": "composapy.session"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "annotations": {
+        "type": "_Feature",
+        "defined_in": "__future__"
+      },
+      "clr": {
+        "type": "module",
+        "defined_in": null
+      },
+      "configure_binding": {
+        "type": "function",
+        "defined_in": "composapy.bindings"
+      },
+      "get_session": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "handle_connection_exception": {
+        "type": "function",
+        "defined_in": "composapy.session"
+      },
+      "os": {
+        "type": "module",
+        "defined_in": null
+      },
+      "write_config_session": {
+        "type": "function",
+        "defined_in": "composapy.config"
+      }
+    },
+    "composapy.stream": {
+      "Array": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "Byte": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "CsStream": {
+        "type": "ABCMeta",
+        "defined_in": "composapy.stream"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "io": {
+        "type": "module",
+        "defined_in": null
+      }
+    },
+    "composapy.utils": {
+      "FileReference": {
+        "type": "CLRMetatype",
+        "defined_in": "CompAnalytics.Contracts"
+      },
+      "Path": {
+        "type": "type",
+        "defined_in": "pathlib._local"
+      },
+      "Uri": {
+        "type": "CLRMetatype",
+        "defined_in": "System"
+      },
+      "__builtins__": {
+        "type": "dict",
+        "defined_in": null
+      },
+      "__cached__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__doc__": {
+        "type": "NoneType",
+        "defined_in": null
+      },
+      "__file__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__loader__": {
+        "type": "SourceFileLoader",
+        "defined_in": "_frozen_importlib_external"
+      },
+      "__name__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__package__": {
+        "type": "str",
+        "defined_in": null
+      },
+      "__spec__": {
+        "type": "ModuleSpec",
+        "defined_in": "_frozen_importlib"
+      },
+      "_read_static_resource": {
+        "type": "function",
+        "defined_in": "composapy.utils"
+      },
+      "_remove_suffix": {
+        "type": "function",
+        "defined_in": "composapy.utils"
+      },
+      "_urljoin": {
+        "type": "function",
+        "defined_in": "composapy.utils"
+      },
+      "annotations": {
+        "type": "_Feature",
+        "defined_in": "__future__"
+      },
+      "file_ref": {
+        "type": "function",
+        "defined_in": "composapy.utils"
+      },
+      "pkgutil": {
+        "type": "module",
+        "defined_in": null
+      }
+    }
+  },
+  "import_errors": {
+    "composapy.magics": "NameError: Decorator can only run in context where `get_ipython` exists"
+  }
+}

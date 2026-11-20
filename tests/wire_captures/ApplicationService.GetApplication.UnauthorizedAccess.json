@@ -1,0 +1,24 @@
+{
+  "Row": "2",
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/ApplicationService.svc/GetApplication",
+  "RequestBody": {
+    "appId": 232787
+  },
+  "StatusCode": 500,
+  "ContentType": "application/json; charset=utf-8",
+  "ResponseBody": {
+    "__type": "FaultDetail:#CompAnalytics.Contracts.Fault",
+    "ExceptionDetail": {
+      "__type": "ExceptionDetail:#CompAnalytics.Contracts.Fault",
+      "HelpLink": null,
+      "InnerException": null,
+      "Message": "User does not have Read permissions for resource 232787",
+      "StackTrace": "   at CompAnalytics.Security.AclVerifier.VerifyPermissions(Int64 resourceId, MembershipUser user, String permission, Boolean checkLockedOut, String userDescription) in C:\\repo\\Product\\CompAnalytics.Security\\AclVerifier.cs:line 52\r\n   at CompAnalytics.Services.DataService.VerifyPermissions(Int64 resourceId, String permission, MembershipUser user) in C:\\repo\\Product\\CompAnalytics.Services\\DataService.cs:line 56\r\n   at CompAnalytics.Services.DataService.VerifyPermissions(Int64 resourceId, String permission) in C:\\repo\\Product\\CompAnalytics.Services\\DataService.cs:line 41\r\n   at CompAnalytics.Services.ApplicationService.GetApplication(Int64 appId) in C:\\repo\\Product\\CompAnalytics.Services\\ApplicationService.svc.cs:line 52\r\n   at SyncInvokeGetApplication(Object , Object[] , Object[] )\r\n   at System.ServiceModel.Dispatcher.SyncMethodInvoker.Invoke(Object instance, Object[] inputs, Object[]& outputs)\r\n   at System.ServiceModel.Dispatcher.DispatchOperationRuntime.InvokeBegin(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage5(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage11(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.MessageRpc.Process(Boolean isOperationContextSet)",
+      "Type": "System.UnauthorizedAccessException"
+    },
+    "ExceptionType": "System.UnauthorizedAccessException",
+    "Message": "User does not have Read permissions for resource 232787",
+    "StackTrace": "   at CompAnalytics.Security.AclVerifier.VerifyPermissions(Int64 resourceId, MembershipUser user, String permission, Boolean checkLockedOut, String userDescription) in C:\\repo\\Product\\CompAnalytics.Security\\AclVerifier.cs:line 52\r\n   at CompAnalytics.Services.DataService.VerifyPermissions(Int64 resourceId, String permission, MembershipUser user) in C:\\repo\\Product\\CompAnalytics.Services\\DataService.cs:line 56\r\n   at CompAnalytics.Services.DataService.VerifyPermissions(Int64 resourceId, String permission) in C:\\repo\\Product\\CompAnalytics.Services\\DataService.cs:line 41\r\n   at CompAnalytics.Services.ApplicationService.GetApplication(Int64 appId) in C:\\repo\\Product\\CompAnalytics.Services\\ApplicationService.svc.cs:line 52\r\n   at SyncInvokeGetApplication(Object , Object[] , Object[] )\r\n   at System.ServiceModel.Dispatcher.SyncMethodInvoker.Invoke(Object instance, Object[] inputs, Object[]& outputs)\r\n   at System.ServiceModel.Dispatcher.DispatchOperationRuntime.InvokeBegin(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage5(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.ImmutableDispatchRuntime.ProcessMessage11(MessageRpc& rpc)\r\n   at System.ServiceModel.Dispatcher.MessageRpc.Process(Boolean isOperationContextSet)"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "Row": "3",
+  "Method": "POST",
+  "URL": "http://localhost/CompApp/Services/ApplicationService.svc/GetApplication",
+  "RequestBody": {
+    "appId": 228506
+  },
+  "StatusCode": 401,
+  "ContentType": "application/json; charset=utf-8",
+  "ResponseBody": {
+    "ExceptionDetail": {
+      "HelpLink": null,
+      "InnerException": null,
+      "Message": "Not a valid JSON Web Token (JWT).",
+      "StackTrace": "   at CompAnalytics.Security.AuthTokenHandler.ValidateAndGetClaims(String tokenString, TokenOptions options) in C:\\repo\\Product\\CompAnalytics.Security\\AuthTokenHandler.cs:line 210\r\n   at CompAnalytics.Security.AuthTokenHandler.LoadAuthToken(String tokenString, CompAppModelContainer container, TokenOptions options) in C:\\repo\\Product\\CompAnalytics.Security\\AuthTokenHandler.cs:line 149\r\n   at CompAnalytics.Security.TokenAuthenticationHttpModule.Context_AuthenticateRequest(Object sender, EventArgs e) in C:\\repo\\Product\\CompAnalytics.Security\\TokenAuthenticationHttpModule.cs:line 86",
+      "Type": "Microsoft.IdentityModel.Tokens.SecurityTokenValidationException"
+    },
+    "ExceptionType": "Microsoft.IdentityModel.Tokens.SecurityTokenValidationException",
+    "Message": "Not a valid JSON Web Token (JWT).",
+    "StackTrace": "   at CompAnalytics.Security.AuthTokenHandler.ValidateAndGetClaims(String tokenString, TokenOptions options) in C:\\repo\\Product\\CompAnalytics.Security\\AuthTokenHandler.cs:line 210\r\n   at CompAnalytics.Security.AuthTokenHandler.LoadAuthToken(String tokenString, CompAppModelContainer container, TokenOptions options) in C:\\repo\\Product\\CompAnalytics.Security\\AuthTokenHandler.cs:line 149\r\n   at CompAnalytics.Security.TokenAuthenticationHttpModule.Context_AuthenticateRequest(Object sender, EventArgs e) in C:\\repo\\Product\\CompAnalytics.Security\\TokenAuthenticationHttpModule.cs:line 86"
+  }
+}
